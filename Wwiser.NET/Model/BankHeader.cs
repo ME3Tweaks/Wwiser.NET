@@ -1,6 +1,6 @@
 ﻿using BinarySerialization;
 
-namespace Wwiser.NET.Model
+namespace ME3Tweaks.Wwiser.Model
 {
     public class BankHeader : Chunk
     {

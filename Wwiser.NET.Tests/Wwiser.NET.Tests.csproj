@@ -22,4 +22,12 @@
     <ProjectReference Include="..\Wwiser.NET\Wwiser.NET.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TestData\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="TestData\**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>
