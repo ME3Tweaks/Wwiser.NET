@@ -1,6 +1,6 @@
 ﻿namespace ME3Tweaks.Wwiser;
 
-public class Class1
+public class BankParser
 {
 
 }
