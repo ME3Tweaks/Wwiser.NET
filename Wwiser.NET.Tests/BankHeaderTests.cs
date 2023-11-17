@@ -7,14 +7,14 @@ public class BankHeaderTests
     {
         var data = TestData.GetTestDataBytes(@"BankHeader\v134.bin");
         var serializer = new BinarySerializer();
-        var result = serializer.Deserialize<ChunkContainer>(data);
+        var result = serializer.Deserialize<ChunkContainer>(data, new BankSerializationContext(134));
         
         Assert.AreEqual("BKHD", result.Tag);
         Assert.IsInstanceOf<BankHeader>(result.Chunk);
         
         var chunk = result.Chunk as BankHeader;
         Assert.AreEqual(134, chunk.BankGeneratorVersion);
-        Assert.AreEqual(7572, chunk.ProjectID);
+        Assert.AreEqual(7572, chunk.ProjectId);
     }
 
     [Test]
@@ -22,7 +22,7 @@ public class BankHeaderTests
     {
         var data = TestData.GetTestDataBytes(@"BankHeader\v134.bin");
         var serializer = new BinarySerializer();
-        var result = serializer.Deserialize<ChunkContainer>(data);
+        var result = serializer.Deserialize<ChunkContainer>(data, new BankSerializationContext(134));
         
         var outputStream = new MemoryStream();
         serializer.Serialize(outputStream, result);
