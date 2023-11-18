@@ -18,7 +18,7 @@ namespace ME3Tweaks.Wwiser.Model
         //[Subtype(nameof(Tag), "DATA", typeof(FakeChunk))]
         //[Subtype(nameof(Tag), "FXPR", typeof(FakeChunk))]
         //[Subtype(nameof(Tag), "ENVS", typeof(FakeChunk))]
-        //[Subtype(nameof(Tag), "STID", typeof(FakeChunk))]
+        [Subtype(nameof(Tag), "STID", typeof(StringMappingChunk))]
         //[Subtype(nameof(Tag), "STMG", typeof(FakeChunk))]
         [Subtype(nameof(Tag), "DIDX", typeof(MediaIndexChunk))]
         [Subtype(nameof(Tag), "PLAT", typeof(PlatformChunk))]
