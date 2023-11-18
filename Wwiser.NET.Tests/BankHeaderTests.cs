@@ -22,7 +22,7 @@ public class BankHeaderTests
     {
         var data = TestData.GetTestDataBytes(@"BankHeader\v56.bin");
         var serializer = new BinarySerializer();
-        var result = serializer.Deserialize<ChunkContainer>(data, new BankSerializationContext(134));
+        var result = serializer.Deserialize<ChunkContainer>(data, new BankSerializationContext(56));
         
         Assert.AreEqual("BKHD", result.Tag);
         Assert.AreEqual(0x18, result.ChunkSize);

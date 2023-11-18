@@ -21,8 +21,8 @@ namespace ME3Tweaks.Wwiser.Model
         //[Subtype(nameof(Tag), "STID", typeof(FakeChunk))]
         //[Subtype(nameof(Tag), "STMG", typeof(FakeChunk))]
         //[Subtype(nameof(Tag), "DIDX", typeof(FakeChunk))]
-        //[Subtype(nameof(Tag), "PLAT", typeof(FakeChunk))]
-        //[Subtype(nameof(Tag), "INIT", typeof(FakeChunk))]
+        [Subtype(nameof(Tag), "PLAT", typeof(PlatformChunk))]
+        [Subtype(nameof(Tag), "INIT", typeof(PluginChunk))]
         public Chunk Chunk { get; set; }
     }
 }
