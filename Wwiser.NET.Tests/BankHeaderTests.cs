@@ -12,10 +12,10 @@ public class BankHeaderTests
         Assert.Multiple(() =>
         {
             Assert.That(result.Tag, Is.EqualTo("BKHD"));
-            Assert.That(result.Chunk, Is.InstanceOf<BankHeader>());
+            Assert.That(result.Chunk, Is.InstanceOf<BankHeaderChunk>());
         });
         
-        var chunk = result.Chunk as BankHeader;
+        var chunk = result.Chunk as BankHeaderChunk;
         Assert.Multiple(() =>
         {
             Assert.That(chunk.BankGeneratorVersion, Is.EqualTo(134));
@@ -34,10 +34,10 @@ public class BankHeaderTests
         {
             Assert.That(result.Tag, Is.EqualTo("BKHD"));
             Assert.That(result.ChunkSize, Is.EqualTo(0x18));
-            Assert.That(result.Chunk, Is.InstanceOf<BankHeader>());
+            Assert.That(result.Chunk, Is.InstanceOf<BankHeaderChunk>());
         });
         
-        var chunk = result.Chunk as BankHeader;
+        var chunk = result.Chunk as BankHeaderChunk;
         Assert.Multiple(() =>
         {
             Assert.That(chunk.BankGeneratorVersion, Is.EqualTo(56));

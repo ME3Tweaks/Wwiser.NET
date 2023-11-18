@@ -53,7 +53,7 @@ namespace ME3Tweaks.Wwiser.Model
         Bus = 0x1F
     }
     
-    public class BankHeader : Chunk
+    public class BankHeaderChunk : Chunk
     {
         public override string Tag => @"BKHD";
         

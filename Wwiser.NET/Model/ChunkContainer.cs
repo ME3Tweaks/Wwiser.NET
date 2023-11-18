@@ -13,14 +13,14 @@ namespace ME3Tweaks.Wwiser.Model
 
         [FieldOrder(2)]
         [FieldLength(nameof(ChunkSize))]
-        [Subtype(nameof(Tag), "BKHD", typeof(BankHeader))]
+        [Subtype(nameof(Tag), "BKHD", typeof(BankHeaderChunk))]
         //[Subtype(nameof(Tag), "HIRC", typeof(FakeChunk))]
         //[Subtype(nameof(Tag), "DATA", typeof(FakeChunk))]
         //[Subtype(nameof(Tag), "FXPR", typeof(FakeChunk))]
         //[Subtype(nameof(Tag), "ENVS", typeof(FakeChunk))]
         //[Subtype(nameof(Tag), "STID", typeof(FakeChunk))]
         //[Subtype(nameof(Tag), "STMG", typeof(FakeChunk))]
-        //[Subtype(nameof(Tag), "DIDX", typeof(FakeChunk))]
+        [Subtype(nameof(Tag), "DIDX", typeof(MediaIndexChunk))]
         [Subtype(nameof(Tag), "PLAT", typeof(PlatformChunk))]
         [Subtype(nameof(Tag), "INIT", typeof(PluginChunk))]
         public Chunk Chunk { get; set; }
