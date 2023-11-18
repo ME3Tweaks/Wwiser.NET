@@ -5,7 +5,7 @@ public class MediaIndexTests
     [Test]
     public void V134_Parses()
     {
-        var data = TestData.GetTestDataBytes(@"MediaIndex\DIDXv134.bin");
+        var data = TestData.GetTestDataBytes(Path.Combine(@"MediaIndex",@"DIDXv134.bin"));
         var serializer = new BinarySerializer();
         var result = serializer.Deserialize<ChunkContainer>(data, new BankSerializationContext(134));
         
@@ -30,7 +30,7 @@ public class MediaIndexTests
     [Test]
     public void V134_Reserializes()
     {
-        var data = TestData.GetTestDataBytes(@"MediaIndex\DIDXv134.bin");
+        var data = TestData.GetTestDataBytes(Path.Combine(@"MediaIndex",@"DIDXv134.bin"));
         var serializer = new BinarySerializer();
         var result = serializer.Deserialize<ChunkContainer>(data, new BankSerializationContext(134));
         

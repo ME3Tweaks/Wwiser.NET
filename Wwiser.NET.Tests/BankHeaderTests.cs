@@ -5,7 +5,7 @@ public class BankHeaderTests
     [Test]
     public void V134_Parses()
     {
-        var data = TestData.GetTestDataBytes(@"BankHeader\v134.bin");
+        var data = TestData.GetTestDataBytes(Path.Combine(@"BankHeader",@"v134.bin"));
         var serializer = new BinarySerializer();
         var result = serializer.Deserialize<ChunkContainer>(data, new BankSerializationContext(134));
         
@@ -26,7 +26,7 @@ public class BankHeaderTests
     [Test]
     public void V56_Parses()
     {
-        var data = TestData.GetTestDataBytes(@"BankHeader\v56.bin");
+        var data = TestData.GetTestDataBytes(Path.Combine(@"BankHeader",@"v56.bin"));
         var serializer = new BinarySerializer();
         var result = serializer.Deserialize<ChunkContainer>(data, new BankSerializationContext(56));
         
@@ -48,7 +48,7 @@ public class BankHeaderTests
     [Test]
     public void V134_Reserializes()
     {
-        var data = TestData.GetTestDataBytes(@"BankHeader\v134.bin");
+        var data = TestData.GetTestDataBytes(Path.Combine(@"BankHeader",@"v134.bin"));
         var serializer = new BinarySerializer();
         var result = serializer.Deserialize<ChunkContainer>(data, new BankSerializationContext(134));
         
