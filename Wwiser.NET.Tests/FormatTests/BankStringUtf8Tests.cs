@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace ME3Tweaks.Wwiser.Tests;
+namespace ME3Tweaks.Wwiser.Tests.FormatTests;
 
 public class BankStringUtf8Tests
 {

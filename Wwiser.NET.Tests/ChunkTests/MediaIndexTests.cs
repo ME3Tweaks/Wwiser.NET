@@ -1,13 +1,12 @@
-﻿namespace ME3Tweaks.Wwiser.Tests;
+﻿namespace ME3Tweaks.Wwiser.Tests.ChunkTests;
 
 public class MediaIndexTests
 {
     [Test]
     public void V134_Parses()
     {
-        var data = TestData.GetTestDataBytes(Path.Combine(@"MediaIndex",@"DIDXv134.bin"));
-        var serializer = new BinarySerializer();
-        var result = serializer.Deserialize<ChunkContainer>(data, new BankSerializationContext(134));
+        var data = TestData.GetTestDataBytes(@"MediaIndex",@"DIDXv134.bin");
+        var (_, result) = TestHelpers.Deserialize<ChunkContainer>(data, 134);
         
         Assert.Multiple(() =>
         {
@@ -30,9 +29,8 @@ public class MediaIndexTests
     [Test]
     public void V134_Reserializes()
     {
-        var data = TestData.GetTestDataBytes(Path.Combine(@"MediaIndex",@"DIDXv134.bin"));
-        var serializer = new BinarySerializer();
-        var result = serializer.Deserialize<ChunkContainer>(data, new BankSerializationContext(134));
+        var data = TestData.GetTestDataBytes(@"MediaIndex",@"DIDXv134.bin");
+        var (serializer, result) = TestHelpers.Deserialize<ChunkContainer>(data, 134);
         
         var outputStream = new MemoryStream();
         serializer.Serialize(outputStream, result);

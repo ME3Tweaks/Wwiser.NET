@@ -1,13 +1,12 @@
-﻿namespace ME3Tweaks.Wwiser.Tests;
+﻿namespace ME3Tweaks.Wwiser.Tests.ChunkTests;
 
 public class StringMappingTests
 {
     [Test]
     public void V56_Parses()
     {
-        var data = TestData.GetTestDataBytes(Path.Combine(@"StringMapping",@"STIDv56.bin"));
-        var serializer = new BinarySerializer();
-        var result = serializer.Deserialize<ChunkContainer>(data, new BankSerializationContext(56));
+        var data = TestData.GetTestDataBytes(@"StringMapping",@"STIDv56.bin");
+        var (_, result) = TestHelpers.Deserialize<ChunkContainer>(data, 56);
         
         Assert.Multiple(() =>
         {
@@ -30,9 +29,8 @@ public class StringMappingTests
     [Test]
     public void V56_Reserializes()
     {
-        var data = TestData.GetTestDataBytes(Path.Combine(@"StringMapping",@"STIDv56.bin"));
-        var serializer = new BinarySerializer();
-        var result = serializer.Deserialize<ChunkContainer>(data, new BankSerializationContext(56));
+        var data = TestData.GetTestDataBytes(@"StringMapping",@"STIDv56.bin");
+        var (serializer, result) = TestHelpers.Deserialize<ChunkContainer>(data, 56);
         
         var outputStream = new MemoryStream();
         serializer.Serialize(outputStream, result);
