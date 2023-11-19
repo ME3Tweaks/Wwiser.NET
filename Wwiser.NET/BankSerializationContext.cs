@@ -1,3 +1,7 @@
 ﻿namespace ME3Tweaks.Wwiser;
 
-public record BankSerializationContext(int Version);
+/// <summary>
+/// Common contextual data that is made available to every part of the tree as it gets serialized.
+/// </summary>
+/// <param name="Version">Wwise build version to target</param>
+public record BankSerializationContext(uint Version);

@@ -2,25 +2,26 @@
 
 public static class TestData
 {
-    public static Stream GetTestDataStream(string folder, string filename)
+    private static readonly string[] TestDir = { TestContext.CurrentContext.WorkDirectory, "TestData" };
+    public static Stream GetTestDataStream(params string[] args)
     {
-        var file = Path.Combine(TestContext.CurrentContext.WorkDirectory, "TestData", folder, filename);
-        return new FileStream(file, FileMode.Open);
-    }
-    
-    public static Stream GetTestDataStream(string filename)
-    {
-        return GetTestDataStream("", filename);
+        var file = Path.Combine(TestDir.Concat(args).ToArray());
+        if (!File.Exists(file))
+        {
+            throw new FileNotFoundException();
+        }
+        
+        return File.OpenRead(file);
     }
 
-    public static byte[] GetTestDataBytes(string folder, string filename)
+    public static byte[] GetTestDataBytes(params string[] args)
     {
-        var file = Path.Combine(TestContext.CurrentContext.WorkDirectory, "TestData", folder, filename);
+        var file = Path.Combine(TestDir.Concat(args).ToArray());
+        if (!File.Exists(file))
+        {
+            throw new FileNotFoundException();
+        }
+        
         return File.ReadAllBytes(file);
-    }
-    
-    public static byte[] GetTestDataBytes(string filename)
-    {
-        return GetTestDataBytes("", filename);
     }
 }

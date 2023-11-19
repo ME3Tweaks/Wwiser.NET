@@ -9,7 +9,7 @@ public static class TestHelpers
     /// <param name="version">Wwise version to pass into serializer</param>
     /// <typeparam name="T">Type of class to deserialize in to</typeparam>
     /// <returns></returns>
-    public static (BinarySerializer, T) Deserialize<T>(byte[] data, int version)
+    public static (BinarySerializer, T) Deserialize<T>(byte[] data, uint version)
     {
         var serializer = new BinarySerializer();
         var result = serializer.Deserialize<T>(data, new BankSerializationContext(version));
