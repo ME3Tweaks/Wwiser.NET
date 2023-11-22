@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wwiser.NET", "Wwiser.NET\Wwiser.NET.csproj", "{7023152C-0D87-4D33-B255-7331CEEE77A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ME3Tweaks.Wwiser", "ME3Tweaks.Wwiser\ME3Tweaks.Wwiser.csproj", "{7023152C-0D87-4D33-B255-7331CEEE77A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wwiser.NET.Tests", "Wwiser.NET.Tests\Wwiser.NET.Tests.csproj", "{7621D24A-2428-4BFC-A8F8-EAEAAB333BCA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ME3Tweaks.Wwiser.Tests", "ME3Tweaks.Wwiser.Tests\ME3Tweaks.Wwiser.Tests.csproj", "{7621D24A-2428-4BFC-A8F8-EAEAAB333BCA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

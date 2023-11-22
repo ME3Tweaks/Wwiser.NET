@@ -15,7 +15,7 @@ namespace ME3Tweaks.Wwiser.Model
         [FieldLength(nameof(ChunkSize))]
         [Subtype(nameof(Tag), "BKHD", typeof(BankHeaderChunk))]
         //[Subtype(nameof(Tag), "HIRC", typeof(FakeChunk))]
-        //[Subtype(nameof(Tag), "DATA", typeof(FakeChunk))]
+        [Subtype(nameof(Tag), "DATA", typeof(DataChunk))]
         //[Subtype(nameof(Tag), "FXPR", typeof(FakeChunk))]
         //[Subtype(nameof(Tag), "ENVS", typeof(FakeChunk))]
         [Subtype(nameof(Tag), "STID", typeof(StringMappingChunk))]

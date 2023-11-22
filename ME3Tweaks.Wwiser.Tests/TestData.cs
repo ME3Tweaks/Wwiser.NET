@@ -24,4 +24,9 @@ public static class TestData
         
         return File.ReadAllBytes(file);
     }
+    
+    public static string GetTestDataFilePath(params string[] args)
+    {
+        return Path.Combine(TestDir.Concat(args).ToArray());
+    }
 }

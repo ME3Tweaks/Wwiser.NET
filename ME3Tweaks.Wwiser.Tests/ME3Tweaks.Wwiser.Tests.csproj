@@ -7,6 +7,7 @@
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <RootNamespace>Wwiser.NET.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Wwiser.NET\Wwiser.NET.csproj" />
+    <ProjectReference Include="..\ME3Tweaks.Wwiser\ME3Tweaks.Wwiser.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -26,11 +26,6 @@ public class WwiseBankParser
         Version = GetWwiseVersionNumber(_stream);
         _stream.Position = 0;
     }
-
-    public WwiseBankParser()
-    {
-        
-    }
     
     /// <summary>
     /// Determines the wwise build version of a bank
@@ -43,7 +38,7 @@ public class WwiseBankParser
     /// </remarks>
     /// <param name="stream">Stream of a complete Wwise bank</param>
     /// <returns></returns>
-    public uint GetWwiseVersionNumber(Stream stream)
+    private uint GetWwiseVersionNumber(Stream stream)
     {
         var reader = new BinaryReader(stream, Encoding.UTF8);
         var firstHeader = new string(reader.ReadChars(4));
