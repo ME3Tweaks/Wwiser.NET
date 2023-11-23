@@ -6,14 +6,6 @@ namespace ME3Tweaks.Wwiser.Model
     {
         [Ignore]
         public abstract string Tag { get; }
-
-        public ChunkContainer ToContainer()
-        {
-            return new ChunkContainer() { 
-                Chunk = this, 
-                Tag = Tag 
-            };
-        }
     }
 
     public class FakeChunk : Chunk

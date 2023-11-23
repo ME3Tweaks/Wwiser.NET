@@ -2,27 +2,27 @@
 
 namespace ME3Tweaks.Wwiser.Model
 {
-    public class ChunkContainer
+    public class ChunkContainer(Chunk chunk)
     {
         [FieldOrder(0)]
         [FieldLength(4)]
-        public string Tag { get; set; }
+        public required string Tag { get; init; } = chunk.Tag;
 
         [FieldOrder(1)]
         public uint ChunkSize { get; set; }
 
         [FieldOrder(2)]
         [FieldLength(nameof(ChunkSize))]
-        [Subtype(nameof(Tag), "BKHD", typeof(BankHeaderChunk))]
-        //[Subtype(nameof(Tag), "HIRC", typeof(FakeChunk))]
+        [Subtype(nameof(Tag), "BKHD", typeof(BankHeaderChunk))] // > 26
+        [Subtype(nameof(Tag), "HIRC", typeof(HierarchyChunk))]
         [Subtype(nameof(Tag), "DATA", typeof(DataChunk))]
         //[Subtype(nameof(Tag), "FXPR", typeof(FakeChunk))]
         //[Subtype(nameof(Tag), "ENVS", typeof(FakeChunk))]
-        [Subtype(nameof(Tag), "STID", typeof(StringMappingChunk))]
+        [Subtype(nameof(Tag), "STID", typeof(StringMappingChunk))] // > 26
         //[Subtype(nameof(Tag), "STMG", typeof(FakeChunk))]
-        [Subtype(nameof(Tag), "DIDX", typeof(MediaIndexChunk))]
-        [Subtype(nameof(Tag), "PLAT", typeof(PlatformChunk))]
-        [Subtype(nameof(Tag), "INIT", typeof(PluginChunk))]
-        public Chunk Chunk { get; set; }
+        [Subtype(nameof(Tag), "DIDX", typeof(MediaIndexChunk))] // >= v34
+        [Subtype(nameof(Tag), "PLAT", typeof(PlatformChunk))] // >= v113
+        [Subtype(nameof(Tag), "INIT", typeof(PluginChunk))] // >= v118
+        public required Chunk Chunk { get; set; } = chunk;
     }
 }
