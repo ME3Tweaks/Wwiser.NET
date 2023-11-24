@@ -2,9 +2,10 @@
 
 namespace ME3Tweaks.Wwiser.Model.Hierarchy;
 
-public class HircItemContainer : IHircItemContainer
+public class HircItemContainerV49 : IHircItemContainer
 {
     [FieldOrder(0)]
+    [SerializeAs(SerializedType.UInt8)]
     public required HircType Type { get; set; }
     
     [FieldOrder(1)]

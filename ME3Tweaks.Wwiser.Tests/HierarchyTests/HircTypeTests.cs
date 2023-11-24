@@ -5,6 +5,28 @@ namespace ME3Tweaks.Wwiser.Tests.HierarchyTests;
 public class HircTypeTests
 {
     [Test]
+    public void HircTypeValue_MatchesWwiseCode()
+    {
+        Assert.Multiple(() =>
+        {
+            Assert.That(HircType.Action, Is.EqualTo((HircType)0x03));
+            Assert.That(HircType.DialogueEvent, Is.EqualTo((HircType)0x0F));
+            Assert.That(HircType.FxShareSet, Is.EqualTo((HircType)0x12));
+        });
+    }
+    
+    [Test]
+    public void HircType128Value_MatchesWwiseCode()
+    {
+        Assert.Multiple(() =>
+        {
+            Assert.That(HircType128.Action, Is.EqualTo((HircType128)0x03));
+            Assert.That(HircType128.DialogueEvent, Is.EqualTo((HircType128)0x0F));
+            Assert.That(HircType128.FxShareSet, Is.EqualTo((HircType128)0x10));
+        });
+    }
+    
+    [Test]
     public void ToHircType_ReturnsSameEnumMeaning()
     {
         Assert.Multiple(() =>

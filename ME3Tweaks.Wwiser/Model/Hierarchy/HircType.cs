@@ -2,6 +2,7 @@
 
 public enum HircType128 : byte
 {
+    None,
     State,
     Sound,
     Action,
@@ -26,8 +27,9 @@ public enum HircType128 : byte
     TimeMod,
 }
 
-public enum HircType : byte
+public enum HircType : uint
 {
+    None,
     State,
     Sound,
     Action,

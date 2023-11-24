@@ -28,11 +28,14 @@ public class HircContainerTypeFactory : ISubtypeFactory
 
     public bool TryGetType(object key, [UnscopedRef] out Type type)
     {
-        if ((int)key < 128)
+        var version = (uint)key;
+        type = version switch
         {
-            type = typeof(HircItemContainer);
-        }
-        type = typeof(HircItemContainerV128);
+            <= 48 => typeof(HircItemContainer),
+            < 128 => typeof(HircItemContainerV49),
+            _ => typeof(HircItemContainerV128)
+        };
+
         return true;
     }
 }
