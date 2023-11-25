@@ -14,7 +14,7 @@ public class BadVarCount : IBinarySerializable
     [Ignore]
     public uint Value { get; set; }
 
-    [Ignore] private bool _isOneBit;
+    private bool _isOneBit;
 
     public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
