@@ -2,29 +2,26 @@
 
 namespace ME3Tweaks.Wwiser.Model.Hierarchy;
 
-public class HircEventItem : HircItem, IHircEventItem
+public class HircEventItem : HircItem
 {
     [FieldOrder(0)]
-    public uint ActionCount { get; set; }
+    public BadVarCount ActionCount { get; set; }
 
     [FieldOrder(1)]
-    [FieldCount(nameof(ActionCount))]
+    [FieldCount(nameof(ActionCount), ConverterType = typeof(ShitValueConverter))]
     public required List<uint> ActionIds { get; set; }
 }
 
-public class HircEventItem122 : HircItem, IHircEventItem
+public class ShitValueConverter : IValueConverter
 {
-    //TODO: Fix this, find some way to merge with prev class.
-    //Cheap hack to deal with potentially variable length count
-    [FieldOrder(0)]
-    public byte ActionCount { get; set; }
+    public object Convert(object value, object parameter, BinarySerializationContext context)
+    {
+        return ((BadVarCount)value).Value;
+    }
 
-    [FieldOrder(1)]
-    [FieldCount(nameof(ActionCount))]
-    public required List<uint> ActionIds { get; set; }
+    public object ConvertBack(object value, object parameter, BinarySerializationContext context)
+    {
+        throw new NotImplementedException();
+    }
 }
 
-public interface IHircEventItem
-{
-    public List<uint> ActionIds { get; set; }
-}

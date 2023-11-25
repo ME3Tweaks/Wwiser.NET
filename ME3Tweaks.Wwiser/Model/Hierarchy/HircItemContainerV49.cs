@@ -5,8 +5,7 @@ namespace ME3Tweaks.Wwiser.Model.Hierarchy;
 public class HircItemContainerV49 : IHircItemContainer
 {
     [FieldOrder(0)]
-    [SerializeAs(SerializedType.UInt8)]
-    public required HircType Type { get; set; }
+    public required byte Type { get; set; }
     
     [FieldOrder(1)]
     public uint Size { get; set; }

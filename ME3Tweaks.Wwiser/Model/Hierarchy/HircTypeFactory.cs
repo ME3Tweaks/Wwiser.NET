@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using BinarySerialization;
 
 namespace ME3Tweaks.Wwiser.Model.Hierarchy;
@@ -26,7 +27,14 @@ public class HircTypeFactory : ISubtypeFactory
 
     public bool TryGetType(object key, [UnscopedRef] out Type type)
     {
-        type = key switch
+        // I don't know why i have to do it this way
+        uint value;
+        if (key is byte bt)
+        {
+            value = bt;
+        }
+        else value = (uint)key;
+        type = (HircType)value switch
         {
             HircType.Event => typeof(HircEventItem),
             _ => typeof(HircItem)
@@ -39,7 +47,7 @@ public class HircTypeFactory128 : ISubtypeFactory
 { 
     private static readonly Dictionary<Type, HircType128> _typeToEnum = new()
     {
-        { typeof(HircEventItem122), HircType128.Event }
+        { typeof(HircEventItem), HircType128.Event }
     };
     
     public bool TryGetKey(Type valueType, [UnscopedRef] out object key)
@@ -59,7 +67,7 @@ public class HircTypeFactory128 : ISubtypeFactory
     {
         type = key switch
         {
-            HircType128.Event => typeof(HircEventItem122),
+            HircType128.Event => typeof(HircEventItem),
             _ => typeof(HircItem)
         };
         return true;
