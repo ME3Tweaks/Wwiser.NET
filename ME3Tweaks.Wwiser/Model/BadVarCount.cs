@@ -5,6 +5,10 @@ namespace ME3Tweaks.Wwiser.Model;
 /// <summary>
 /// Shitty hack JUST FOR NOW. This is going to blow up in my face.
 /// </summary>
+/// <remarks>
+/// See wmodel.py line 428 for what this needs to be.
+/// I think it's a space-saving uint - only uses relevant bytes
+/// </remarks>
 public class BadVarCount : IBinarySerializable
 {
     [Ignore]

@@ -7,14 +7,14 @@ namespace ME3Tweaks.Wwiser.Model.Hierarchy;
 
 public class HircTypeFactory : ISubtypeFactory
 {
-    private static readonly Dictionary<Type, HircType> _typeToEnum = new()
+    private static readonly Dictionary<Type, HircType> TypeToEnum = new()
     {
         { typeof(HircEventItem), HircType.Event }
     };
     
     public bool TryGetKey(Type valueType, [UnscopedRef] out object key)
     {
-        if (_typeToEnum.TryGetValue(valueType, out var value))
+        if (TypeToEnum.TryGetValue(valueType, out var value))
         {
             key = value;
             return true;
@@ -27,14 +27,12 @@ public class HircTypeFactory : ISubtypeFactory
 
     public bool TryGetType(object key, [UnscopedRef] out Type type)
     {
-        // I don't know why i have to do it this way
-        uint value;
-        if (key is byte bt)
+        if (key is byte b)
         {
-            value = bt;
+            key = (uint)b; // explicit cast from byte to uint is required here for... some reason
         }
-        else value = (uint)key;
-        type = (HircType)value switch
+        
+        type = (HircType)key switch
         {
             HircType.Event => typeof(HircEventItem),
             _ => typeof(HircItem)
@@ -45,14 +43,14 @@ public class HircTypeFactory : ISubtypeFactory
 
 public class HircTypeFactory128 : ISubtypeFactory
 { 
-    private static readonly Dictionary<Type, HircType128> _typeToEnum = new()
+    private static readonly Dictionary<Type, HircType128> TypeToEnum = new()
     {
         { typeof(HircEventItem), HircType128.Event }
     };
     
     public bool TryGetKey(Type valueType, [UnscopedRef] out object key)
     {
-        if (_typeToEnum.TryGetValue(valueType, out var value))
+        if (TypeToEnum.TryGetValue(valueType, out var value))
         {
             key = value;
             return true;
