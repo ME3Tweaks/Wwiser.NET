@@ -2,7 +2,7 @@
 
 namespace ME3Tweaks.Wwiser.Model.Hierarchy;
 
-public class HircEventItem : HircItem
+public class Event : HircItem
 {
     [FieldOrder(0)]
     public BadVarCount ActionCount { get; set; }

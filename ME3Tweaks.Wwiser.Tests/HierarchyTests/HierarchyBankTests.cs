@@ -24,7 +24,7 @@ public class HierarchyBankTests
             
             var hircItemContainer = hirc.Items[0] as HircItemContainer;
             Assert.That(hircItemContainer.Type, Is.EqualTo(HircType.Event));
-            Assert.That(hircItemContainer.Item, Is.InstanceOf<HircEventItem>());
+            Assert.That(hircItemContainer.Item, Is.InstanceOf<Event>());
         });
     }
     
@@ -72,7 +72,7 @@ public class HierarchyBankTests
             
             var hircItemContainer = hirc.Items[0] as HircItemContainerV128;
             Assert.That(hircItemContainer.Type, Is.EqualTo(HircType128.Event));
-            Assert.That(hircItemContainer.Item, Is.InstanceOf<HircEventItem>());
+            Assert.That(hircItemContainer.Item, Is.InstanceOf<Event>());
         });
     }
 }
