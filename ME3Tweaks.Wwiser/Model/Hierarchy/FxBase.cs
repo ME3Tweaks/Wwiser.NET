@@ -5,6 +5,10 @@ using ME3Tweaks.Wwiser.Model.Plugins;
 
 namespace ME3Tweaks.Wwiser.Model.Hierarchy;
 
+// These are exactly the same
+public class FxShareSet : FxBase { }
+public class FxCustom : FxBase { }
+
 public class FxBase : HircItem
 {
     [FieldOrder(0)]
@@ -40,7 +44,7 @@ public class FxBase : HircItem
     [SerializeWhen(nameof(BankSerializationContext.Version), 126,
         ComparisonOperator.GreaterThan,
         RelativeSourceMode = RelativeSourceMode.SerializationContext)]
-    public StateChunk State { get; set; }
+    public StateChunk_Aware StateChunk { get; set; }
     
     [FieldOrder(8)]
     [SerializeWhen(nameof(BankSerializationContext.Version), 90,

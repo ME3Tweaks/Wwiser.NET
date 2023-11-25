@@ -1,6 +1,6 @@
 ﻿using BinarySerialization;
 
-namespace ME3Tweaks.Wwiser.Model;
+namespace ME3Tweaks.Wwiser.Model.Plugins;
 
 public class Plugin
 {

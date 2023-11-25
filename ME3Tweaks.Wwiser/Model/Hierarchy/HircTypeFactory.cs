@@ -9,7 +9,9 @@ public class HircTypeFactory : ISubtypeFactory
 {
     private static readonly Dictionary<Type, HircType> TypeToEnum = new()
     {
-        { typeof(Event), HircType.Event }
+        { typeof(Event), HircType.Event },
+        { typeof(FxShareSet), HircType.FxShareSet },
+        { typeof(FxCustom), HircType.FxCustom}
     };
     
     public bool TryGetKey(Type valueType, [UnscopedRef] out object key)
@@ -35,6 +37,8 @@ public class HircTypeFactory : ISubtypeFactory
         type = (HircType)key switch
         {
             HircType.Event => typeof(Event),
+            HircType.FxShareSet => typeof(FxShareSet),
+            HircType.FxCustom => typeof(FxCustom),
             _ => typeof(HircItem)
         };
         return true;
@@ -45,7 +49,9 @@ public class HircTypeFactory128 : ISubtypeFactory
 { 
     private static readonly Dictionary<Type, HircType128> TypeToEnum = new()
     {
-        { typeof(Event), HircType128.Event }
+        { typeof(Event), HircType128.Event },
+        { typeof(FxShareSet), HircType128.FxShareSet },
+        { typeof(FxCustom), HircType128.FxCustom}
     };
     
     public bool TryGetKey(Type valueType, [UnscopedRef] out object key)
@@ -66,6 +72,8 @@ public class HircTypeFactory128 : ISubtypeFactory
         type = key switch
         {
             HircType128.Event => typeof(Event),
+            HircType128.FxShareSet => typeof(FxShareSet),
+            HircType128.FxCustom => typeof(FxCustom),
             _ => typeof(HircItem)
         };
         return true;

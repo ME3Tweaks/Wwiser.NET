@@ -2,8 +2,6 @@
 
 namespace ME3Tweaks.Wwiser.Model.Hierarchy;
 
-public class HircItem
+public class HircItem : AkIdentifiable
 {
-    [FieldOrder(0)]
-    public uint Id { get; set; }
 }
