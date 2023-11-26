@@ -1,4 +1,5 @@
-﻿using BinarySerialization;
+﻿using System.Collections.Generic;
+using BinarySerialization;
 
 namespace ME3Tweaks.Wwiser.Model;
 

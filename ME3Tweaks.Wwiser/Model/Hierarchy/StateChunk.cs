@@ -1,17 +1,18 @@
-﻿using BinarySerialization;
+﻿using System.Collections.Generic;
+using BinarySerialization;
 
 namespace ME3Tweaks.Wwiser.Model.Hierarchy;
 
 public interface IStateChunk
 {
-    public BadVarCount StateGroupsCount { get; set; }
+    public VarCount StateGroupsCount { get; set; }
     public List<StateGroupChunk> GroupChunks { get; set; }
 }
 
 public class StateChunk : IStateChunk
 {
     [FieldOrder(0)]
-    public BadVarCount StateGroupsCount { get; set; }
+    public VarCount StateGroupsCount { get; set; }
     
     [FieldOrder(3)]
     [FieldCount($"{nameof(StateGroupsCount)}.{nameof(StateGroupsCount.Value)}")]
@@ -21,14 +22,14 @@ public class StateChunk : IStateChunk
 public class StateChunk_Aware : IStateChunk
 {
     [FieldOrder(0)]
-    public BadVarCount StatePropsCount { get; set; }
+    public VarCount StatePropsCount { get; set; }
     
     [FieldOrder(1)]
     [FieldCount($"{nameof(StatePropsCount)}.{nameof(StatePropsCount.Value)}")]
     public List<StateProp> PropertyInfo { get; set; }
     
     [FieldOrder(2)]
-    public BadVarCount StateGroupsCount { get; set; }
+    public VarCount StateGroupsCount { get; set; }
     
     [FieldOrder(3)]
     [FieldCount($"{nameof(StateGroupsCount)}.{nameof(StateGroupsCount.Value)}")]
@@ -38,7 +39,7 @@ public class StateChunk_Aware : IStateChunk
 public class StateProp
 {
     [FieldOrder(0)]
-    public BadVarCount PropertyId { get; set; }
+    public VarCount PropertyId { get; set; }
     
     // TODO: make custom serialized class. Enum with different values for different versions!
     [FieldOrder(1)]
@@ -58,7 +59,7 @@ public class StateGroupChunk : AkIdentifiable
     public SyncType StateSyncType { get; set; }
     
     [FieldOrder(2)]
-    public BadVarCount StateCount { get; set; }
+    public VarCount StateCount { get; set; }
     
     [FieldOrder(3)]
     [FieldCount($"{nameof(StateCount)}.{nameof(StateCount.Value)}")]

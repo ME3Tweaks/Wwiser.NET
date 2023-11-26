@@ -1,4 +1,5 @@
-﻿using BinarySerialization;
+﻿using System.Collections.Generic;
+using BinarySerialization;
 using ME3Tweaks.Wwiser.Model.Plugins;
 
 namespace ME3Tweaks.Wwiser.Model.Hierarchy;
@@ -46,7 +47,7 @@ public class Rtpc
     
     //TODO: this is complicated, needs to be it's own class with an enum backing? Modulator is involved
     [FieldOrder(6)]
-    public BadVarCount ParamId { get; set; }
+    public VarCount ParamId { get; set; }
     
     [FieldOrder(7)]
     public uint RtpcCurveId { get; set; }
