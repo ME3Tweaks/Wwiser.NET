@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BinarySerializer" Version="8.6.4.1" />
+    <ProjectReference Include="..\BinarySerializer\BinarySerializer\BinarySerializer.csproj" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
   </ItemGroup>
 
