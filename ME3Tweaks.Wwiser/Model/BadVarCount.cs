@@ -29,6 +29,8 @@ public class BadVarCount : IBinarySerializable
     }
     public void Deserialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
+
+        var context = serializationContext;
         Span<byte> span = stackalloc byte[4];
         var read = stream.Read(span);
         if (span[1] == 0x00 && span[2] == 0x00 && span[3] == 0x00)

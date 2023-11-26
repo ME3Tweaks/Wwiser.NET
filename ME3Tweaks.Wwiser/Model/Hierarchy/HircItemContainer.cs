@@ -10,7 +10,7 @@ public class HircItemContainer : IHircItemContainer
     [FieldOrder(1)]
     public uint Size { get; set; }
 
-    [FieldOrder(2)]
+    [FieldOrder(3)]
     [FieldLength(nameof(Size))]
     [SubtypeFactory(nameof(Type), typeof(HircTypeFactory))]
     public required HircItem Item { get; set; }

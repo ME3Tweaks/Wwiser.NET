@@ -52,7 +52,7 @@ public class FxBase : HircItem
         RelativeSourceMode = RelativeSourceMode.SerializationContext)]
     public ushort RtpcInitCount { get; set; }
     
-    [FieldOrder(8)]
+    [FieldOrder(9)]
     [FieldCount(nameof(RtpcInitCount))]
     [SerializeWhen(nameof(BankSerializationContext.Version), 90,
         ComparisonOperator.GreaterThan,
