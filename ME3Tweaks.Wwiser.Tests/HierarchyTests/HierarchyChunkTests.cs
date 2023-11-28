@@ -23,7 +23,7 @@ public class HierarchyChunkTests
             Assert.That(hirc.Items[0], Is.InstanceOf<HircItemContainer>());
             
             var hircItemContainer = hirc.Items[0] as HircItemContainer;
-            Assert.That(hircItemContainer.SmartType.Value, Is.EqualTo(HircType.Event));
+            Assert.That(hircItemContainer.Type.Value, Is.EqualTo(HircType.Event));
             Assert.That(hircItemContainer.Item, Is.InstanceOf<Event>());
         });
     }
@@ -71,7 +71,7 @@ public class HierarchyChunkTests
             Assert.That(hirc.Items[0], Is.InstanceOf<HircItemContainer>());
             
             var hircItemContainer = hirc.Items[0] as HircItemContainer;
-            Assert.That(hircItemContainer.SmartType.Value, Is.EqualTo(HircType.Event));
+            Assert.That(hircItemContainer.Type.Value, Is.EqualTo(HircType.Event));
             Assert.That(hircItemContainer.Item, Is.InstanceOf<Event>());
         });
     }

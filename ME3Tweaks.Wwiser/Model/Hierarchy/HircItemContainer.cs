@@ -2,16 +2,16 @@
 
 namespace ME3Tweaks.Wwiser.Model.Hierarchy;
 
-public class HircItemContainer : IHircItemContainer
+public class HircItemContainer
 {
     [FieldOrder(0)]
-    public required HircSmartType SmartType { get; set; }
+    public required HircSmartType Type { get; set; }
     
     [FieldOrder(1)]
     public uint Size { get; set; }
 
     [FieldOrder(3)]
     [FieldLength(nameof(Size))]
-    [SubtypeFactory($"{nameof(SmartType)}.{nameof(SmartType.Value)}", typeof(HircTypeFactory))]
+    [SubtypeFactory($"{nameof(Type)}.{nameof(Type.Value)}", typeof(HircTypeFactory))]
     public required HircItem Item { get; set; }
 }

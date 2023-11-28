@@ -37,13 +37,13 @@ public class Rtpc
     [SerializeWhen(nameof(BankSerializationContext.Version), 89,
         ComparisonOperator.GreaterThan,
         RelativeSourceMode = RelativeSourceMode.SerializationContext)]
-    public byte RtpcType { get; set; }
+    public RtpcType RtpcType { get; set; }
     
     [FieldOrder(5)]
     [SerializeWhen(nameof(BankSerializationContext.Version), 89,
         ComparisonOperator.GreaterThan,
         RelativeSourceMode = RelativeSourceMode.SerializationContext)]
-    public byte RtpcAccum { get; set; }
+    public AccumType RtpcAccum { get; set; }
     
     //TODO: this is complicated, needs to be it's own class with an enum backing? Modulator is involved
     [FieldOrder(6)]

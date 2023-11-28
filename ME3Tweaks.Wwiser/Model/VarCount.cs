@@ -12,8 +12,7 @@ public class VarCount : IBinarySerializable
 {
     [Ignore]
     public uint Value { get; set; }
-
-    //TODO: THIS!
+    
     public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
         var context = serializationContext.FindAncestor<BankSerializationContext>();

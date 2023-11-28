@@ -41,9 +41,8 @@ public class StateProp
     [FieldOrder(0)]
     public VarCount PropertyId { get; set; }
     
-    // TODO: make custom serialized class. Enum with different values for different versions!
     [FieldOrder(1)]
-    public byte AccumType { get; set; } 
+    public AccumType AccumType { get; set; } 
     
     [FieldOrder(2)]
     [SerializeAs(SerializedType.UInt8)]
