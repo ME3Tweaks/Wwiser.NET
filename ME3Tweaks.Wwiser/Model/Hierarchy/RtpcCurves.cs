@@ -45,16 +45,14 @@ public class Rtpc
         RelativeSourceMode = RelativeSourceMode.SerializationContext)]
     public AccumType RtpcAccum { get; set; }
     
-    //TODO: this is complicated, needs to be it's own class with an enum backing? Modulator is involved
     [FieldOrder(6)]
-    public VarCount ParamId { get; set; }
+    public ParameterId ParamId { get; set; }
     
     [FieldOrder(7)]
     public uint RtpcCurveId { get; set; }
     
-    //TODO: <=v36 this is a uint - not relevant to mass effect. Another custom enum with different values for versions
     [FieldOrder(8)]
-    public byte Scaling { get; set; }
+    public CurveScaling Scaling { get; set; }
     
     //TODO: <=v36 this is a uint - not relevant to mass effect
     [FieldOrder(9)]
