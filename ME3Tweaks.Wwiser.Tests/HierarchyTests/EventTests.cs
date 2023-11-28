@@ -27,7 +27,7 @@ public class EventTests
         var (serializer, result) = TestHelpers.Deserialize<Event>(data, (uint)version);
         
         var outputStream = new MemoryStream();
-        serializer.Serialize(outputStream, result);
+        serializer.Serialize(outputStream, result, new BankSerializationContext((uint)version));
         outputStream.Position = 0;
         
         Assert.That(outputStream.ToArray(), Is.EqualTo(data));

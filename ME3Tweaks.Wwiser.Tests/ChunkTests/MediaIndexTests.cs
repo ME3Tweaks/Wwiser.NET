@@ -33,7 +33,7 @@ public class MediaIndexTests
         var (serializer, result) = TestHelpers.Deserialize<ChunkContainer>(data, 134);
         
         var outputStream = new MemoryStream();
-        serializer.Serialize(outputStream, result);
+        serializer.Serialize(outputStream, result, new BankSerializationContext(134));
         outputStream.Position = 0;
         
         Assert.That(outputStream.ToArray(), Is.EqualTo(data));

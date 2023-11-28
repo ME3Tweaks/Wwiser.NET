@@ -16,7 +16,15 @@ public class VarCount : IBinarySerializable
     //TODO: THIS!
     public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
-        
+        var context = serializationContext.FindAncestor<BankSerializationContext>();
+        if (context.Version <= 122)
+        {
+            stream.Write(BitConverter.GetBytes(Value));
+        }
+        else
+        {
+            WriteResizingUint(stream, Value);
+        }
     }
     public void Deserialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
@@ -51,5 +59,10 @@ public class VarCount : IBinarySerializable
         }
 
         return value;
+    }
+
+    public static void WriteResizingUint(Stream stream, uint value)
+    {
+        //TODO: This
     }
 }
