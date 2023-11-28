@@ -1,30 +1,74 @@
-﻿namespace ME3Tweaks.Wwiser.Model.Hierarchy;
+﻿using System;
+using System.IO;
+using BinarySerialization;
 
-public enum HircType128 : byte
+namespace ME3Tweaks.Wwiser.Model.Hierarchy;
+
+/// <summary>
+/// Wrapper around the HircType enum that serializes it correctly depending on version.
+/// Will throw errors when trying to serialize a type that is not compatible with that wwise version.
+/// </summary>
+public class HircSmartType : IBinarySerializable
 {
-    None,
-    State,
-    Sound,
-    Action,
-    Event,
-    RandomSequenceContainer,
-    SwitchContainer,
-    ActorMixer,
-    Bus,
-    LayerContainer,
-    MusicSegment,
-    MusicTrack,
-    MusicSwitch,
-    MusicRandomSequence,
-    Attenuation,
-    DialogueEvent,
-    FxShareSet,
-    FxCustom,
-    AuxiliaryBus,
-    LFO,
-    Envelope,
-    AudioDevice,
-    TimeMod,
+    public HircType Value { get; set; }
+
+    public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
+    {
+        var context = serializationContext.FindAncestor<BankSerializationContext>();
+        if (Value >= HircType.FeedbackBus && context.Version > 126)
+        {
+            if (Value < HircType.FxShareSet)
+            {
+                throw new NotSupportedException($"Feedback not supported in version {context.Version}");
+            }
+            var actualValueToWrite = (uint)Value - 2;
+            stream.WriteByte((byte)actualValueToWrite);
+        }
+        else if (Value is HircType.TimeMod && context.Version <= 126)
+        {
+            throw new NotSupportedException($"TimeMod not supported in version {context.Version}");
+        }
+        
+        else
+        {
+            // Uint <= 48, byte otherwise
+            if (context.Version <= 48)
+            {
+                stream.Write(BitConverter.GetBytes((uint)Value));
+            }
+            else
+            {
+                stream.WriteByte((byte)Value);
+            }
+        }
+    }
+
+    public void Deserialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
+    {
+        var context = serializationContext.FindAncestor<BankSerializationContext>();
+
+        uint initialValue;
+        
+        // Uint <= 48, byte otherwise
+        if (context.Version <= 48)
+        {
+            Span<byte> span = stackalloc byte[4];
+            var read = stream.Read(span);
+            initialValue = BitConverter.ToUInt32(span);
+        }
+        else
+        {
+            initialValue = (uint)stream.ReadByte();
+        }
+        
+        // Handle the two removed type values on higher versions
+        if (context.Version > 126 && initialValue > 0x0f)
+        {
+            initialValue += 2;
+        }
+        
+        Value = (HircType)initialValue;
+    }
 }
 
 public enum HircType : uint
@@ -53,35 +97,5 @@ public enum HircType : uint
     LFO,
     Envelope,
     AudioDevice,
-}
-
-public static class HircTypeExtensions
-{
-    public static HircType ToHircType(this HircType128 type)
-    {
-        if (type is HircType128.TimeMod)
-        {
-            throw new NotSupportedException($"Cannot convert type {type}");
-        }
-        
-        if (type >= HircType128.FxShareSet)
-        {
-            return (HircType)(type + 2);
-        }
-        return (HircType)type;
-    }
-
-    public static HircType128 ToHircType128(this HircType type)
-    {
-        if (type is HircType.FeedbackBus or HircType.FeedbackNode)
-        {
-            throw new NotSupportedException($"Cannot convert type {type}");
-        }
-
-        if (type >= HircType.FxShareSet)
-        {
-            return (HircType128)(type - 2);
-        }
-        return (HircType128)type;
-    }
+    TimeMod,
 }

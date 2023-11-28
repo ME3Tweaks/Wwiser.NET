@@ -15,4 +15,24 @@ public static class TestHelpers
         var result = serializer.Deserialize<T>(data, new BankSerializationContext(version));
         return (serializer, result);
     }
+    
+    public static (BinarySerializer, T) Deserialize<T>(byte[] data, int version)
+    {
+        return Deserialize<T>(data, (uint)version);
+    }
+
+    public static byte[] Serialize(object data, uint version)
+    {
+        var serializer = new BinarySerializer();
+        var stream = new MemoryStream();
+        serializer.Serialize(stream, data, new BankSerializationContext(version));
+        stream.Position = 0;
+
+        return stream.ToArray();
+    }
+    
+    public static byte[] Serialize(object data, int version)
+    {
+        return Serialize(data, (uint)version);
+    }
 }

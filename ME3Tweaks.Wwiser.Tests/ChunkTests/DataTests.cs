@@ -23,12 +23,9 @@ public class DataTests
     public void DataChunk_Reserializes()
     {
         var data = TestData.GetTestDataBytes(@"Data",@"DATAv134.bin");
-        var (serializer, result) = TestHelpers.Deserialize<ChunkContainer>(data, 134);
+        var (_, result) = TestHelpers.Deserialize<ChunkContainer>(data, 134);
         
-        var outputStream = new MemoryStream();
-        serializer.Serialize(outputStream, result, new BankSerializationContext(134));
-        outputStream.Position = 0;
-        
-        Assert.That(outputStream.ToArray(), Is.EqualTo(data));
+        var reserialized = TestHelpers.Serialize(result, 134);
+        Assert.That(reserialized, Is.EqualTo(data));
     }
 }

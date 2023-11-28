@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
 using BinarySerialization;
 using ME3Tweaks.Wwiser.Model.Hierarchy;
 
@@ -13,7 +13,6 @@ public class HierarchyChunk : Chunk
     
     [FieldOrder(1)]
     [FieldCount(nameof(ItemCount))]
-    [ItemSubtypeFactory(nameof(BankSerializationContext.Version), typeof(HircContainerTypeFactory), RelativeSourceMode = RelativeSourceMode.SerializationContext)]
-    public required List<IHircItemContainer> Items { get; set; }
+    public required List<HircItemContainer> Items { get; set; }
 
 }

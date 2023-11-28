@@ -30,12 +30,9 @@ public class StringMappingTests
     public void V56_Reserializes()
     {
         var data = TestData.GetTestDataBytes(@"StringMapping",@"STIDv56.bin");
-        var (serializer, result) = TestHelpers.Deserialize<ChunkContainer>(data, 56);
+        var (_, result) = TestHelpers.Deserialize<ChunkContainer>(data, 56);
         
-        var outputStream = new MemoryStream();
-        serializer.Serialize(outputStream, result, new BankSerializationContext(134));
-        outputStream.Position = 0;
-        
-        Assert.That(outputStream.ToArray(), Is.EqualTo(data));
+        var reserialized = TestHelpers.Serialize(result, 56);
+        Assert.That(reserialized, Is.EqualTo(data));
     }
 }

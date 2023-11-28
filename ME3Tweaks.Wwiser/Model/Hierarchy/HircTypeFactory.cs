@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using BinarySerialization;
 
 namespace ME3Tweaks.Wwiser.Model.Hierarchy;
@@ -39,41 +39,6 @@ public class HircTypeFactory : ISubtypeFactory
             HircType.Event => typeof(Event),
             HircType.FxShareSet => typeof(FxShareSet),
             HircType.FxCustom => typeof(FxCustom),
-            _ => typeof(HircItem)
-        };
-        return true;
-    }
-}
-
-public class HircTypeFactory128 : ISubtypeFactory
-{ 
-    private static readonly Dictionary<Type, HircType128> TypeToEnum = new()
-    {
-        { typeof(Event), HircType128.Event },
-        { typeof(FxShareSet), HircType128.FxShareSet },
-        { typeof(FxCustom), HircType128.FxCustom}
-    };
-    
-    public bool TryGetKey(Type valueType, [UnscopedRef] out object key)
-    {
-        if (TypeToEnum.TryGetValue(valueType, out var value))
-        {
-            key = value;
-            return true;
-        }
-
-        // fallback
-        key = HircType128.Action;
-        return false;
-    }
-
-    public bool TryGetType(object key, [UnscopedRef] out Type type)
-    {
-        type = key switch
-        {
-            HircType128.Event => typeof(Event),
-            HircType128.FxShareSet => typeof(FxShareSet),
-            HircType128.FxCustom => typeof(FxCustom),
             _ => typeof(HircItem)
         };
         return true;

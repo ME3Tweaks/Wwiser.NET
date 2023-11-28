@@ -2,10 +2,10 @@
 
 namespace ME3Tweaks.Wwiser.Tests.HierarchyTests;
 
-public class HierarchyBankTests
+public class HierarchyChunkTests
 {
     [Test]
-    public void v44_LoadsCorrectItemContainer()
+    public void SimpleChunk_v44_Parses()
     {
         var data = TestData.GetTestDataBytes(@"Hierarchy", @"SmallFullChunks", @"HIRCv44.bin");
         var (serializer, result) = TestHelpers.Deserialize<ChunkContainer>(data, 44);
@@ -23,13 +23,13 @@ public class HierarchyBankTests
             Assert.That(hirc.Items[0], Is.InstanceOf<HircItemContainer>());
             
             var hircItemContainer = hirc.Items[0] as HircItemContainer;
-            Assert.That(hircItemContainer.Type, Is.EqualTo(HircType.Event));
+            Assert.That(hircItemContainer.SmartType.Value, Is.EqualTo(HircType.Event));
             Assert.That(hircItemContainer.Item, Is.InstanceOf<Event>());
         });
     }
     
     [Test]
-    public void v56_LoadsCorrectItemContainer()
+    public void SimpleChunk_v56_Parses()
     {
         var data = TestData.GetTestDataBytes(@"Hierarchy", @"SmallFullChunks", @"HIRCv56.bin");
         var (serializer, result) = TestHelpers.Deserialize<ChunkContainer>(data, 56);
@@ -44,16 +44,16 @@ public class HierarchyBankTests
         Assert.Multiple(() =>
         {
             Assert.That(hirc.ItemCount, Is.EqualTo(1));
-            Assert.That(hirc.Items[0], Is.InstanceOf<HircItemContainerV49>());
+            Assert.That(hirc.Items[0], Is.InstanceOf<HircItemContainer>());
             
-            var hircItemContainer = hirc.Items[0] as HircItemContainerV49;
+            var hircItemContainer = hirc.Items[0] as HircItemContainer;
             //Assert.That(hircItemContainer.Type, Is.EqualTo(HircType.Event as byte));
             //Assert.That(hircItemContainer.Item, Is.InstanceOf<HircEventItem>());
         });
     }
     
     [Test]
-    public void v134_LoadsCorrectItemContainer()
+    public void SimpleChunk_v134_Parses()
     {
         var data = TestData.GetTestDataBytes(@"Hierarchy", @"SmallFullChunks", @"HIRCv134.bin");
         var (serializer, result) = TestHelpers.Deserialize<ChunkContainer>(data, 134);
@@ -68,10 +68,10 @@ public class HierarchyBankTests
         Assert.Multiple(() =>
         {
             Assert.That(hirc.ItemCount, Is.EqualTo(1));
-            Assert.That(hirc.Items[0], Is.InstanceOf<HircItemContainerV128>());
+            Assert.That(hirc.Items[0], Is.InstanceOf<HircItemContainer>());
             
-            var hircItemContainer = hirc.Items[0] as HircItemContainerV128;
-            Assert.That(hircItemContainer.Type, Is.EqualTo(HircType128.Event));
+            var hircItemContainer = hirc.Items[0] as HircItemContainer;
+            Assert.That(hircItemContainer.SmartType.Value, Is.EqualTo(HircType.Event));
             Assert.That(hircItemContainer.Item, Is.InstanceOf<Event>());
         });
     }

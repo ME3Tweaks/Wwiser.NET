@@ -24,12 +24,9 @@ public class EventTests
     public void Event_Reserializes(string filename, int version)
     {
         var data = TestData.GetTestDataBytes(@"Hierarchy",@"Event", filename);
-        var (serializer, result) = TestHelpers.Deserialize<Event>(data, (uint)version);
-        
-        var outputStream = new MemoryStream();
-        serializer.Serialize(outputStream, result, new BankSerializationContext((uint)version));
-        outputStream.Position = 0;
-        
-        Assert.That(outputStream.ToArray(), Is.EqualTo(data));
+        var (_, result) = TestHelpers.Deserialize<Event>(data, version);
+
+        var reserialized = TestHelpers.Serialize(result, version);
+        Assert.That(reserialized, Is.EqualTo(data));
     }
 }
