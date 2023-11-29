@@ -52,6 +52,12 @@ public class Rtpc
     public uint RtpcCurveId { get; set; }
     
     [FieldOrder(8)]
+    public RtpcConversionTable RtpcConversionTable { get; set; }
+}
+
+public class RtpcConversionTable
+{
+    [FieldOrder(8)]
     public CurveScaling Scaling { get; set; }
     
     //TODO: <=v36 this is a uint - not relevant to mass effect
