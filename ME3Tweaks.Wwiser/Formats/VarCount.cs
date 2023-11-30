@@ -2,7 +2,7 @@
 using System.IO;
 using BinarySerialization;
 
-namespace ME3Tweaks.Wwiser.Model;
+namespace ME3Tweaks.Wwiser.Formats;
 
 /// <summary>
 /// Weirdly serialized count in different versions.

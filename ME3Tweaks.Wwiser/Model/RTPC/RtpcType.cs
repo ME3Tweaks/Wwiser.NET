@@ -2,7 +2,7 @@
 using System.IO;
 using BinarySerialization;
 
-namespace ME3Tweaks.Wwiser.Model.Hierarchy;
+namespace ME3Tweaks.Wwiser.Model.RTPC;
 
 public class RtpcType : IBinarySerializable
 {

@@ -1,6 +1,6 @@
 ﻿using BinarySerialization;
 
-namespace ME3Tweaks.Wwiser.Model;
+namespace ME3Tweaks.Wwiser.Formats;
 
 public class BankStringUtf8
 {
@@ -8,7 +8,7 @@ public class BankStringUtf8
     [SerializeWhen(nameof(BankSerializationContext.Version), 136,
         ComparisonOperator.LessThanOrEqual,
         RelativeSourceMode = RelativeSourceMode.SerializationContext)]
-    public UInt32 Length;
+    public uint Length;
     
     [FieldOrder(1)]
     [FieldLength(nameof(Length))]

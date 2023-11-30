@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using ME3Tweaks.Wwiser.Formats;
 
 namespace ME3Tweaks.Wwiser.Tests.FormatTests;
 

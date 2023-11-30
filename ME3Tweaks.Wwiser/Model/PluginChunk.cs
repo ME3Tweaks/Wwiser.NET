@@ -1,4 +1,7 @@
-﻿using BinarySerialization;
+﻿using System;
+using System.Collections.Generic;
+using BinarySerialization;
+using ME3Tweaks.Wwiser.Formats;
 using ME3Tweaks.Wwiser.Model.Plugins;
 
 namespace ME3Tweaks.Wwiser.Model;
@@ -8,7 +11,7 @@ public class PluginChunk : Chunk
     public override string Tag => @"INIT";
     
     [FieldOrder(0)]
-    public UInt32 PluginCount { get; set; }
+    public uint PluginCount { get; set; }
     
     [FieldOrder(1)]
     [FieldLength(nameof(PluginCount))]

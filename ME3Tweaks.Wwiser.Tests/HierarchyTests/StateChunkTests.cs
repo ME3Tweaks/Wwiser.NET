@@ -1,4 +1,5 @@
 ﻿using ME3Tweaks.Wwiser.Model.Hierarchy;
+using ME3Tweaks.Wwiser.Model.State;
 
 namespace ME3Tweaks.Wwiser.Tests.HierarchyTests;
 
