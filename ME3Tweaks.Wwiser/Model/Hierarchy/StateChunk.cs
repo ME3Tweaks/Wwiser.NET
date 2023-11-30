@@ -45,7 +45,7 @@ public class StateProp
     public AccumType AccumType { get; set; } 
     
     [FieldOrder(2)]
-    [SerializeAs(SerializedType.UInt8)]
+    [SerializeAs(SerializedType.UInt1)]
     [SerializeWhen(nameof(BankSerializationContext.Version), 126,
         ComparisonOperator.GreaterThan,
         RelativeSourceMode = RelativeSourceMode.SerializationContext)]

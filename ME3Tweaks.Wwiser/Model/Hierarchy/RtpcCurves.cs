@@ -27,7 +27,7 @@ public class Rtpc
     [SerializeWhen(nameof(BankSerializationContext.Version), 48,
         ComparisonOperator.LessThanOrEqual,
         RelativeSourceMode = RelativeSourceMode.SerializationContext)]
-    [SerializeAs(SerializedType.UInt8)]
+    [SerializeAs(SerializedType.UInt1)]
     public bool IsRendered { get; set; }
     
     [FieldOrder(3)]
@@ -62,7 +62,7 @@ public class RtpcConversionTable
     
     //TODO: <=v36 this is a uint - not relevant to mass effect
     [FieldOrder(9)]
-    public sbyte GraphPointCount { get; set; }
+    public ushort GraphPointCount { get; set; }
     
     [FieldOrder(10)]
     [FieldCount(nameof(GraphPointCount))]
@@ -86,9 +86,11 @@ public enum CurveInterpolation : uint
 public class RtpcGraphItem
 {
     [FieldOrder(1)]
+    [SerializeAs(SerializedType.Float4)]
     public float From { get; set; }
     
     [FieldOrder(2)]
+    [SerializeAs(SerializedType.Float4)]
     public float To { get; set; }
     
     [FieldOrder(3)]

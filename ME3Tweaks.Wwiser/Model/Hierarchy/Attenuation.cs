@@ -9,13 +9,13 @@ namespace ME3Tweaks.Wwiser.Model.Hierarchy;
 public class Attenuation : HircItem
 {
     [FieldOrder(0)]
-    [SerializeAs(SerializedType.UInt8)]
+    [SerializeAs(SerializedType.UInt1)]
     [SerializeWhen(nameof(BankSerializationContext.Version), 136, 
         ComparisonOperator.GreaterThan, RelativeSourceMode = RelativeSourceMode.SerializationContext)]
     public bool IsHeightSpreadEnabled { get; set; }
     
     [FieldOrder(1)]
-    [SerializeAs(SerializedType.UInt8)]
+    [SerializeAs(SerializedType.UInt1)]
     public bool IsConeEnabled { get; set; }
     
     [FieldOrder(2)]
@@ -27,15 +27,19 @@ public class Attenuation : HircItem
     
     //TODO: <=v36 this is a uint - not relevant to mass effect
     [FieldOrder(4)]
-    public sbyte NumCurves { get; set; }
+    public byte NumCurves { get; set; }
     
     [FieldOrder(5)]
     [FieldCount(nameof(NumCurves))]
     public List<RtpcConversionTable> Curves { get; set; }
+    
+    [FieldOrder(6)]
+    public RtpcCurves RtpcCurves { get; set; }
 }
 
 public class CurveToUse : IBinarySerializable
 {
+    [Ignore]
     public sbyte[] CurveMap { get; set; } = new sbyte[19];
 
     private static int GetCurveCount(uint version) => version switch
@@ -59,6 +63,7 @@ public class CurveToUse : IBinarySerializable
     public void Deserialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
         var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
+        Array.Fill(CurveMap, (sbyte)-1);
         for(int i = 0; i < GetCurveCount(version); i++)
         {
             CurveMap[i] = (sbyte)stream.ReadByte();
