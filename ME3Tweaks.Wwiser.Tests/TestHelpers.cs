@@ -20,6 +20,12 @@ public static class TestHelpers
     {
         return Deserialize<T>(data, (uint)version);
     }
+    
+    public static (BinarySerializer, T) Deserialize<T>(byte data, int version)
+    {
+        var dataArr = new [] { data };
+        return Deserialize<T>(dataArr, (uint)version);
+    }
 
     public static byte[] Serialize(object data, uint version)
     {

@@ -1,4 +1,5 @@
 ﻿using BinarySerialization;
+using ME3Tweaks.Wwiser.Formats;
 
 namespace ME3Tweaks.Wwiser.Model.State;
 
@@ -14,6 +15,6 @@ public class State : AkIdentifiable
     [SerializeWhen(nameof(BankSerializationContext.Version), 145,
         ComparisonOperator.GreaterThan,
         RelativeSourceMode = RelativeSourceMode.SerializationContext)]
-    public PropBundle_Float_UnsignedShort Properties { get; set; }
+    public PropBundle<ushort, float> Properties { get; set; }
     
 }
