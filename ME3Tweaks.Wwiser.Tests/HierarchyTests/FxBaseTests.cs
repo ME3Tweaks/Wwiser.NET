@@ -4,7 +4,7 @@ namespace ME3Tweaks.Wwiser.Tests.HierarchyTests;
 
 public class FxBaseTests
 {
-    [TestCase("FxCustomv134.bin", 134,  0x006E1003, 0x8B)]
+    [TestCase("FxCustomV134.bin", 134,  0x006E1003, 0x8B)]
     public void FxCustom_ParsesCorrectly(string filename, int version, int pluginId, int dataSize)
     {
         var data = TestData.GetTestDataBytes(@"Hierarchy",@"FxCustom", filename);

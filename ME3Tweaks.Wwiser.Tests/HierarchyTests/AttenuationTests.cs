@@ -5,8 +5,8 @@ namespace ME3Tweaks.Wwiser.Tests.HierarchyTests;
 
 public class AttenuationTests
 {
-    [TestCase("Attenuationv134.bin", 134, 0x02, (float)0.0)]
-    [TestCase("Attenuationv56.bin", 56, 0x02,  (float)-69.15897369384766)]
+    [TestCase("AttenuationV134.bin", 134, 0x02, (float)0.0)]
+    [TestCase("AttenuationV56.bin", 56, 0x02,  (float)-69.15897369384766)]
     public void Attenuation_ParsesCorrectly(string filename, int version, byte firstScaling, float firstTo)
     {
         var data = TestData.GetTestDataBytes(@"Hierarchy",@"Attenuation", filename);
@@ -19,8 +19,8 @@ public class AttenuationTests
         });
     }
     
-    [TestCase("Attenuationv134.bin", 134)]
-    [TestCase("Attenuationv56.bin", 56)]
+    [TestCase("AttenuationV134.bin", 134)]
+    [TestCase("AttenuationV56.bin", 56)]
     public void Attenuation_Reserializes(string filename, int version)
     {
         var data = TestData.GetTestDataBytes(@"Hierarchy",@"Attenuation", filename);
