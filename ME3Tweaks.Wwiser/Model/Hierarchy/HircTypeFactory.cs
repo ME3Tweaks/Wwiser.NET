@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using BinarySerialization;
+using ME3Tweaks.Wwiser.Model.Hierarchy.Enums;
 
 namespace ME3Tweaks.Wwiser.Model.Hierarchy;
 

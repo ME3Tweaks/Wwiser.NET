@@ -1,4 +1,5 @@
-﻿using BinarySerialization;
+﻿using System;
+using BinarySerialization;
 
 namespace ME3Tweaks.Wwiser.Converters;
 

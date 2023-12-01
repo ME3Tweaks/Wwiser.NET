@@ -18,12 +18,7 @@ public class FxBase : HircItem
     public required Plugin Plugin { get; set; }
     
     [FieldOrder(1)]
-    public uint ParamSize { get; set; }
-
-    [FieldOrder(2)]
-    [FieldLength(nameof(ParamSize))]
-    [SubtypeDefault(typeof(EmptyPluginParams))]
-    public required IPluginParams PluginParams { get; set; } = new EmptyPluginParams();
+    public PluginParameters PluginParameters { get; set; }
     
     // Turn into class - AKMediaMap???
     [FieldOrder(3)]

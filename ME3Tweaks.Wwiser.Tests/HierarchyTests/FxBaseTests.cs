@@ -13,7 +13,7 @@ public class FxBaseTests
         Assert.Multiple(() =>
         {
             Assert.That(result.Plugin.PluginId, Is.EqualTo(pluginId));
-            Assert.That(result.ParamSize, Is.EqualTo(dataSize));
+            Assert.That(result.PluginParameters.ParamSize, Is.EqualTo(dataSize));
         });
     }
 }
