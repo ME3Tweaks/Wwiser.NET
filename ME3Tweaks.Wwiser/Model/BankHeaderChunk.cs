@@ -100,10 +100,11 @@ namespace ME3Tweaks.Wwiser.Model
         /// (v27 &lt;= version &gt;= v126)
         /// </summary>
         [FieldOrder(5)]
+        [SerializeAs(SerializedType.UInt4)]
         [SerializeWhen(nameof(BankGeneratorVersion), true, 
             ConverterType = typeof(BetweenConverter), 
             ConverterParameter = new[] {27, 126})]
-        public UInt32 FeedbackInBank { get; set; }
+        public bool FeedbackInBank { get; set; }
 
         /// <summary>
         /// Bitpacked bools encoded in AltValues depending on version

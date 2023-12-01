@@ -1,4 +1,5 @@
 ﻿using BinarySerialization;
+using ME3Tweaks.Wwiser.Model.ParameterNode;
 
 namespace ME3Tweaks.Wwiser.Model.Hierarchy;
 

@@ -2,49 +2,7 @@
 using ME3Tweaks.Wwiser.Converters;
 using ME3Tweaks.Wwiser.Model.Plugins;
 
-namespace ME3Tweaks.Wwiser.Model.Hierarchy;
-
-
-public class NodeBaseParameters
-{
-    [FieldOrder(0)]
-    public ParameterNode_InitialFxParams FxParams { get; set; }
-    
-    [FieldOrder(1)]
-    [SerializeAs(SerializedType.UInt1)]
-    [SerializeWhen(nameof(BankSerializationContext.Version), true, 
-        RelativeSourceMode = RelativeSourceMode.SerializationContext,
-        ConverterType = typeof(BetweenConverter), 
-        ConverterParameter = new[] {90, 145})]
-    public bool OverrideAttachmentParams { get; set; }
-    
-    [FieldOrder(2)]
-    public uint OverrideBusId { get; set; }
-    
-    [FieldOrder(3)]
-    public uint DirectParentId { get; set; }
-    
-}
-
-public class ParameterNode_InitialFxParams
-{
-    [FieldOrder(0)]
-    [SerializeAs(SerializedType.UInt1)]
-    public bool IsOverrideParentFx { get; set; }
-    
-    //TODO: <=v26 this is a bool serialized as a uint - not relevant to mass effect
-    [FieldOrder(1)]
-    public byte NumFx { get; set; }
-    
-    //TODO: This doesn't exist <=26 and means something else >145 - not relevant to mass effect
-    [FieldOrder(2)]
-    [SerializeWhen(nameof(NumFx), 0, ComparisonOperator.GreaterThan)]
-    public byte BitsFxBypass { get; set; }
-    
-    [FieldOrder(3)]
-    [FieldCount(nameof(NumFx))]
-    public List<FxChunk> FxChunks { get; set; }
-}
+namespace ME3Tweaks.Wwiser.Model.ParameterNode;
 
 public class FxChunk : IAkIdentifiable
 {
@@ -80,6 +38,7 @@ public class FxChunk : IAkIdentifiable
         ComparisonOperator.LessThanOrEqual, RelativeSourceMode = RelativeSourceMode.SerializationContext)]
     public PluginParameters PluginParameters { get; set; }
     
+    //TODO: Custom serialized class - merge with IsShareSet, IsRendered, BitsFXBypass
     [FieldOrder(6)]
     [SerializeWhen(nameof(BankSerializationContext.Version), 145, 
         ComparisonOperator.GreaterThan, RelativeSourceMode = RelativeSourceMode.SerializationContext)]
