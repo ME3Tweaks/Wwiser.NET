@@ -56,24 +56,9 @@ public class MediaInformation : IBinarySerializable
     
     [Ignore]
     public uint InMemoryMediaSize { get; set; }
-
-    [Ignore]
-    public byte SourceBits { get; set; }
     
     [Ignore]
-    public bool IsLanguageSpecific { get; set; }
-    
-    [Ignore]
-    public bool PreFetch { get; set; }
-    
-    [Ignore]
-    public bool NonCachable { get; set; }
-    
-    [Ignore]
-    public bool HasSource { get; set; }
-    
-    [Ignore]
-    public bool ExternallySupplied { get; set; }
+    public MediaInformationFlags Flags { get; set; }
     
     public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
@@ -100,10 +85,25 @@ public class MediaInformation : IBinarySerializable
             stream.Write(BitConverter.GetBytes(InMemoryMediaSize));
         }
         
-        //TODO: Properly convert differing bitfield schemas
         if (version > 26)
         {
-            stream.WriteByte(SourceBits);
+            var flags = Flags;
+            if(version <= 112)
+            {
+                // On <= 122, HasSource is bit 1. To serialize, set it to Prefetch which is bit 1 on the enum
+                if (flags.HasFlag(MediaInformationFlags.HasSource))
+                {
+                    flags &= MediaInformationFlags.Prefetch;
+                    flags &= ~MediaInformationFlags.HasSource;
+                }
+                // Remove flags not relevant to  this version
+                flags &= ~MediaInformationFlags.NonCachable;
+            }
+            else
+            {
+                flags &= ~MediaInformationFlags.ExternallySupplied;
+            }
+            stream.WriteByte((byte)flags);
         }
     }
 
@@ -135,8 +135,25 @@ public class MediaInformation : IBinarySerializable
 
         if (version > 26)
         {
-            SourceBits = reader.ReadByte();
+            var flags = (MediaInformationFlags)reader.ReadByte();
+            if(version <= 112 && flags.HasFlag(MediaInformationFlags.Prefetch))
+            {
+                // On <= 122, HasSource is bit 1. To deserialize, replace prefetch with HasSource
+                flags &= MediaInformationFlags.HasSource;
+                flags &= ~MediaInformationFlags.Prefetch;
+            }
+            Flags = flags;
         }
         
+    }
+
+    [Flags]
+    public enum MediaInformationFlags : byte
+    {
+        IsLanguageSpecific = 0b0000_0001,
+        Prefetch = 0b0000_0010,
+        ExternallySupplied = 0b0000_0100,
+        NonCachable = 0b0000_1000,
+        HasSource = 0b1000_0000,
     }
 }
