@@ -4,52 +4,83 @@ namespace ME3Tweaks.Wwiser.Model.ParameterNode;
 
 public class SmartPropId : IBinarySerializable
 {
-    public PropId Value { get; set; }
+    //TODO: Version 150 PropId
+    [Ignore]
+    public PropId PropValue { get; set; }
+    [Ignore]
+    public ModulatorPropId ModulatorValue { get; set; }
     
     public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
-        var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
-        var id = Value;
-        if (version == 113)
+        var context = serializationContext.FindAncestor<BankSerializationContext>();
+        var version = context.Version;
+        if (context.UseModulator)
         {
-            id = SerializeVersion113(id, version);
+            var id = ModulatorValue;
+            if (version < 150 && id > ModulatorPropId.Lfo_Retrigger)
+            {
+                id--;
+            }
+            stream.WriteByte((byte)id);
         }
-        else if (version <= 65)
+        else
         {
-            id = SerializeVersionLte65(id, version);
+            var id = PropValue;
+            if (version == 113)
+            {
+                id = SerializeVersion113(id, version);
+            }
+            else if (version <= 65)
+            {
+                id = SerializeVersionLte65(id, version);
+            }
+            else if (version <= 112)
+            {
+                id = SerializeVersionLte112(id, version);
+            }
+            else if (version <= 150)
+            {
+                id = SerializeVersionLte150(id, version);
+            }
+            stream.WriteByte((byte)id);
         }
-        else if (version <= 112)
-        {
-            id = SerializeVersionLte112(id, version);
-        }
-        else if (version <= 150)
-        {
-            id = SerializeVersionLte150(id, version);
-        }
-        stream.WriteByte((byte)id);
     }
     
     public void Deserialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
-        var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
-        var id = (PropId)stream.ReadByte();
-        if (version == 113)
+        var context = serializationContext.FindAncestor<BankSerializationContext>();
+        var version = context.Version;
+        if (context.UseModulator)
         {
-            id = DeserializeVersion113(id);
+            var id = (ModulatorPropId)stream.ReadByte();
+            if (version < 150 && id >= ModulatorPropId.Lfo_Retrigger)
+            {
+                id++;
+            }
+            ModulatorValue = id;
         }
-        else if (version <= 65)
+        else
         {
-            id = DeserializeVersionLte65(id);
-        } 
-        else if (version <= 112)
-        {
-            id = DeserializeVersionLte112(id);
+            var id = (PropId)stream.ReadByte();
+            if (version == 113)
+            {
+                id = DeserializeVersion113(id);
+            }
+            else if (version <= 65)
+            {
+                id = DeserializeVersionLte65(id);
+            }
+            else if (version <= 112)
+            {
+                id = DeserializeVersionLte112(id);
+            }
+            else if (version <= 150)
+            {
+                id = DeserializeVersionLte150(id);
+            }
+
+            PropValue = id;
         }
-        else if (version <= 150)
-        {
-            id = DeserializeVersionLte150(id);
-        }
-        Value = id;
     }
 
     private static PropId SerializeVersion113(PropId input, uint version)
@@ -177,6 +208,31 @@ public class SmartPropId : IBinarySerializable
 
         return id;
     }
+}
+
+public enum ModulatorPropId : byte
+{
+    Scope,
+    Envelope_StopPlayback,
+    Lfo_Depth,
+    Lfo_Attack,
+    Lfo_Frequency,
+    Lfo_Waveform,
+    Lfo_Smoothing,
+    Lfo_PWM,
+    Lfo_InitialPhase,
+    Lfo_Retrigger,
+    Envelope_AttackTime,
+    Envelope_AttackCurve,
+    Envelope_DecayTime,
+    Envelope_SustainLevel,
+    Envelope_SustainTime,
+    Envelope_ReleaseTime,
+    Envelope_TriggerOn,
+    Time_Duration,
+    Time_Loops,
+    Time_PlaybackRate,
+    Time_InitialDelay
 }
 
 /// <summary>

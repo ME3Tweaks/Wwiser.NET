@@ -15,7 +15,7 @@ public class SmartPropIdTests
     public void PropsIdParsesAndReserializes_V65(int hex, PropId expected, bool noReserialize = false)
     {
         var (_, result) = TestHelpers.Deserialize<SmartPropId>((byte)hex, 65);
-        Assert.That(result.Value, Is.EqualTo(expected));
+        Assert.That(result.PropValue, Is.EqualTo(expected));
 
         if (!noReserialize)
         {
@@ -34,7 +34,7 @@ public class SmartPropIdTests
     public void PropsIdParsesAndReserializes_V88(byte hex, PropId expected)
     {
         var (_, result) = TestHelpers.Deserialize<SmartPropId>(hex, 88);
-        Assert.That(result.Value, Is.EqualTo(expected));
+        Assert.That(result.PropValue, Is.EqualTo(expected));
         
         var reserialized = TestHelpers.Serialize(result, 88);
         Assert.That(reserialized[0], Is.EqualTo(hex));
@@ -50,7 +50,7 @@ public class SmartPropIdTests
     public void PropsIdParsesAndReserializes_V113(byte hex, PropId expected)
     {
         var (_, result) = TestHelpers.Deserialize<SmartPropId>(hex, 113);
-        Assert.That(result.Value, Is.EqualTo(expected));
+        Assert.That(result.PropValue, Is.EqualTo(expected));
         
         var reserialized = TestHelpers.Serialize(result, 113);
         Assert.That(reserialized[0], Is.EqualTo(hex));
@@ -72,9 +72,37 @@ public class SmartPropIdTests
     public void PropsIdParsesAndReserializes_V125(byte hex, PropId expected)
     {
         var (_, result) = TestHelpers.Deserialize<SmartPropId>(hex, 125);
-        Assert.That(result.Value, Is.EqualTo(expected));
+        Assert.That(result.PropValue, Is.EqualTo(expected));
         
         var reserialized = TestHelpers.Serialize(result, 125);
+        Assert.That(reserialized[0], Is.EqualTo(hex));
+    }
+    
+    [TestCase(0x00, ModulatorPropId.Scope)]
+    [TestCase(0x08, ModulatorPropId.Lfo_InitialPhase)]
+    [TestCase(0x09, ModulatorPropId.Envelope_AttackTime)]
+    [TestCase(0x0A, ModulatorPropId.Envelope_AttackCurve)]
+    [TestCase(0x13, ModulatorPropId.Time_InitialDelay)]
+    public void ModulatorPropsIdParsesAndReserializes_V125(byte hex, ModulatorPropId expected)
+    {
+        var (_, result) = TestHelpers.Deserialize<SmartPropId>(hex, 125, true);
+        Assert.That(result.ModulatorValue, Is.EqualTo(expected));
+        
+        var reserialized = TestHelpers.Serialize(result, 125, true);
+        Assert.That(reserialized[0], Is.EqualTo(hex));
+    }
+    
+    [TestCase(0x00, ModulatorPropId.Scope)]
+    [TestCase(0x08, ModulatorPropId.Lfo_InitialPhase)]
+    [TestCase(0x09, ModulatorPropId.Lfo_Retrigger)]
+    [TestCase(0x0A, ModulatorPropId.Envelope_AttackTime)]
+    [TestCase(0x14, ModulatorPropId.Time_InitialDelay)]
+    public void ModulatorPropsIdParsesAndReserializes_V150(byte hex, ModulatorPropId expected)
+    {
+        var (_, result) = TestHelpers.Deserialize<SmartPropId>(hex, 150, true);
+        Assert.That(result.ModulatorValue, Is.EqualTo(expected));
+        
+        var reserialized = TestHelpers.Serialize(result, 150, true);
         Assert.That(reserialized[0], Is.EqualTo(hex));
     }
 }

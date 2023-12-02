@@ -93,7 +93,7 @@ namespace ME3Tweaks.Wwiser.Model
         /// </summary>
         [FieldOrder(4)]
         [SerializeWhen(nameof(BankGeneratorVersion), 26, ComparisonOperator.LessThanOrEqual)]
-        public UInt64 Timestamp { get; set; }
+        public ulong Timestamp { get; set; }
         
         /// <summary>
         /// Bool of feedback in bank

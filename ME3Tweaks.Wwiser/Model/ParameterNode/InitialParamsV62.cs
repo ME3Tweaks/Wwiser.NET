@@ -7,8 +7,8 @@ public class InitialParamsV62
 {
     // This uint could be a uni for some prop ids. It's dumb
     [FieldOrder(0)]
-    public PropBundle<PropId, uint> Parameters { get; set; }
+    public PropBundle<SmartPropId, uint> Parameters { get; set; }
     
     [FieldOrder(1)]
-    public PropBundle<PropId, UnionRange> RangedModifiers { get; set; }
+    public PropBundle<SmartPropId, UnionRange> RangedModifiers { get; set; }
 }
