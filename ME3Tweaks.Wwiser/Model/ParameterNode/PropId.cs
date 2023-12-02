@@ -12,19 +12,19 @@ public class SmartPropId : IBinarySerializable
         var id = Value;
         if (version == 113)
         {
-            id = SerializeVersion113(id);
+            id = SerializeVersion113(id, version);
         }
         else if (version <= 65)
         {
-            id = SerializeVersionLte65(id);
+            id = SerializeVersionLte65(id, version);
         }
         else if (version <= 112)
         {
-            id = SerializeVersionLte112(id);
+            id = SerializeVersionLte112(id, version);
         }
-        else if (version <= 125)
+        else if (version <= 150)
         {
-            id = SerializeVersionLte125(id);
+            id = SerializeVersionLte150(id, version);
         }
         stream.WriteByte((byte)id);
     }
@@ -45,16 +45,16 @@ public class SmartPropId : IBinarySerializable
         {
             id = DeserializeVersionLte112(id);
         }
-        else if (version <= 125)
+        else if (version <= 150)
         {
-            id = DeserializeVersionLte125(id);
+            id = DeserializeVersionLte150(id);
         }
         Value = id;
     }
 
-    private static PropId SerializeVersion113(PropId input)
+    private static PropId SerializeVersion113(PropId input, uint version)
     {
-        return input switch
+        var id = input switch
         {
             PropId.Loop => (PropId)0x3A,
             PropId.InitialDelay => (PropId)0x3B,
@@ -62,6 +62,11 @@ public class SmartPropId : IBinarySerializable
             > PropId.PriorityDistanceOffset => input - 1,
             _ => input
         };
+        if (id > (PropId)0x3B)
+        {
+            throw new ArgumentException($"Cannot serialize {id} on version {version}");
+        }
+        return id;
     }
 
     private static PropId DeserializeVersion113(PropId input)
@@ -76,7 +81,7 @@ public class SmartPropId : IBinarySerializable
         };
     }
     
-    private static PropId DeserializeVersionLte125(PropId input)
+    private static PropId DeserializeVersionLte150(PropId input)
     {
         return input switch
         {
@@ -91,19 +96,24 @@ public class SmartPropId : IBinarySerializable
         };
     }
 
-    private static PropId SerializeVersionLte125(PropId input)
+    private static PropId SerializeVersionLte150(PropId input, uint version)
     {
-        return input switch
+        var id = input switch
         {
             PropId.Loop => (PropId)0x3A,
             PropId.InitialDelay => (PropId)0x3B,
             PropId.MakeUpGain => (PropId)0x06,
             > PropId.MakeUpGain => input - 2,
             > PropId.InitialDelay => input - 1,
-            > PropId.Loop=> input,
+            > PropId.Loop => input,
             > PropId.BusVolume => input + 1,
             _ => input
         };
+        if (id > (PropId)0x3B && version < 128)
+        {
+            throw new ArgumentException($"Cannot serialize {id} on version {version}");
+        }
+        return id;
     }
 
     private static PropId DeserializeVersionLte112(PropId input)
@@ -116,14 +126,24 @@ public class SmartPropId : IBinarySerializable
         };
     }
 
-    private static PropId SerializeVersionLte112(PropId input)
+    private static PropId SerializeVersionLte112(PropId input, uint version)
     {
-        return input switch
+        var id = input switch
         {
             >= PropId.OutputBusHPF => input - 2,
             >= PropId.HPF => input - 1,
             _ => input
         };
+        if (id > (PropId)0x2C)
+        {
+            throw new ArgumentException($"Cannot serialize {id} on version {version}");
+        }
+        if (id > (PropId)0x18 && version <= 72)
+        {
+            throw new ArgumentException($"Cannot serialize {id} on version {version}");
+        }
+
+        return id;
     }
 
     protected virtual PropId DeserializeVersionLte65(PropId input)
@@ -137,16 +157,25 @@ public class SmartPropId : IBinarySerializable
         };
     }
 
-    private static PropId SerializeVersionLte65(PropId input)
+    private static PropId SerializeVersionLte65(PropId input, uint version)
     {
-        
-        return input switch
+        var id = input switch
         {
             PropId.OutputBusLPF => (PropId)0x18,
             >= PropId.DialogueMode => input - 1,
             >= PropId.BusVolume => input - 2,
             _ => input
         };
+        if (id > (PropId)0x0F && version <= 62)
+        {
+            throw new ArgumentException($"Cannot serialize {id} on version {version}");
+        }
+        if (id > (PropId)0x18 && version <= 65)
+        {
+            throw new ArgumentException($"Cannot serialize {id} on version {version}");
+        }
+
+        return id;
     }
 }
 
@@ -216,4 +245,12 @@ public enum PropId : byte
     MidiTempoSource,
     MidiTargetNode,
     AttachedPluginFXID,
+    UserAuxSendLPF0,
+    UserAuxSendLPF1,
+    UserAuxSendLPF2,
+    UserAuxSendLPF3,
+    UserAuxSendHPF0,
+    UserAuxSendHPF1,
+    UserAuxSendHPF2,
+    UserAuxSendHPF3,
 }

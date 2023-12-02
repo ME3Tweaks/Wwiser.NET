@@ -68,6 +68,7 @@ public class SmartPropIdTests
     [TestCase(0x22, PropId.LoopStart)]
     [TestCase(0x3A, PropId.Loop)]
     [TestCase(0x3B, PropId.InitialDelay)]
+    [TestCase(0x39, PropId.AttachedPluginFXID)]
     public void PropsIdParsesAndReserializes_V125(byte hex, PropId expected)
     {
         var (_, result) = TestHelpers.Deserialize<SmartPropId>(hex, 125);
