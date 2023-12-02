@@ -9,6 +9,7 @@ namespace ME3Tweaks.Wwiser;
 public class WwiseBankParser
 {
     public uint Version { get; set; }
+    public bool UseFeedback { get; set; }
     public WwiseBank? WwiseBank { get; private set; }
     
     private BinarySerializer _serializer;
@@ -25,7 +26,7 @@ public class WwiseBankParser
         }
 
         _stream = File.OpenRead(_fileName);
-        Version = GetWwiseVersionNumber(_stream);
+        (Version, UseFeedback) = ReadWwiseHeaderInfo(_stream);
         _stream.Position = 0;
     }
     
@@ -40,7 +41,7 @@ public class WwiseBankParser
     /// </remarks>
     /// <param name="stream">Stream of a complete Wwise bank</param>
     /// <returns></returns>
-    private uint GetWwiseVersionNumber(Stream stream)
+    private (uint, bool) ReadWwiseHeaderInfo(Stream stream)
     {
         var reader = new BinaryReader(stream, Encoding.UTF8);
         var firstHeader = new string(reader.ReadChars(4));
@@ -69,12 +70,30 @@ public class WwiseBankParser
             version = reader.ReadUInt32();
         }
         
-        //TODO: Handle custom versions and strange variations
+        // SoundBank ID
+        reader.BaseStream.Seek(sizeof(uint), SeekOrigin.Current);
         
+        // Language ID
+        reader.BaseStream.Seek(sizeof(uint), SeekOrigin.Current);
+        
+        // Timestamp?
+        if (version <= 26)
+        {
+            reader.BaseStream.Seek(sizeof(ulong), SeekOrigin.Current);
+        }
+
+        bool feedback = false;
+        if (version >= 27 && version <= 126)
+        {
+            var value = reader.ReadUInt32();
+            feedback = value != 0;
+        }
+        
+        //TODO: Handle custom versions and strange variations
         //TODO: Handle slightly encrypted headers in LIMBO demo and World of Tanks
 
         stream.Position = 0;
-        return version;
+        return (version, feedback);
     }
 
     public async void Deserialize()
@@ -86,6 +105,6 @@ public class WwiseBankParser
         
         _stream.Position = 0;
         WwiseBank = await _serializer
-            .DeserializeAsync<WwiseBank>(_stream, new BankSerializationContext(Version));
+            .DeserializeAsync<WwiseBank>(_stream, new BankSerializationContext(Version, false, UseFeedback));
     }
 }
