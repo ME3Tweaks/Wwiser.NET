@@ -55,4 +55,25 @@ public class SmartPropIdTests
         var reserialized = TestHelpers.Serialize(result, 113);
         Assert.That(reserialized[0], Is.EqualTo(hex));
     }
+    
+    [TestCase(0x00, PropId.Volume)]
+    [TestCase(0x05, PropId.BusVolume)]
+    [TestCase(0x06, PropId.MakeUpGain)]
+    [TestCase(0x07, PropId.Priority)]
+    [TestCase(0x09, PropId.FeedbackVolume)]
+    [TestCase(0x1A, PropId.OutputBusLPF)]
+    [TestCase(0x1B, PropId.HDRBusThreshold)]
+    [TestCase(0x2D, PropId.MidiTrackingRootNote)]
+    [TestCase(0x21, PropId.HDRActiveRange)]
+    [TestCase(0x22, PropId.LoopStart)]
+    [TestCase(0x3A, PropId.Loop)]
+    [TestCase(0x3B, PropId.InitialDelay)]
+    public void PropsIdParsesAndReserializes_V125(byte hex, PropId expected)
+    {
+        var (_, result) = TestHelpers.Deserialize<SmartPropId>(hex, 125);
+        Assert.That(result.Value, Is.EqualTo(expected));
+        
+        var reserialized = TestHelpers.Serialize(result, 125);
+        Assert.That(reserialized[0], Is.EqualTo(hex));
+    }
 }

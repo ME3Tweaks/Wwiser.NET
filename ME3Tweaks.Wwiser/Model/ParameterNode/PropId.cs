@@ -16,11 +16,15 @@ public class SmartPropId : IBinarySerializable
         }
         else if (version <= 65)
         {
-            id = SerializeVersionLt65(id);
+            id = SerializeVersionLte65(id);
         }
-        else if (version < 112)
+        else if (version <= 112)
         {
-            id = SerializeVersionLt112(id);
+            id = SerializeVersionLte112(id);
+        }
+        else if (version <= 125)
+        {
+            id = SerializeVersionLte125(id);
         }
         stream.WriteByte((byte)id);
     }
@@ -35,17 +39,20 @@ public class SmartPropId : IBinarySerializable
         }
         else if (version <= 65)
         {
-            id = DeserializeVersionLt65(id);
+            id = DeserializeVersionLte65(id);
         } 
         else if (version <= 112)
         {
-            id = DeserializeVersionLt112(id);
+            id = DeserializeVersionLte112(id);
         }
-
+        else if (version <= 125)
+        {
+            id = DeserializeVersionLte125(id);
+        }
         Value = id;
     }
-    
-    public PropId SerializeVersion113(PropId input)
+
+    private static PropId SerializeVersion113(PropId input)
     {
         return input switch
         {
@@ -57,7 +64,7 @@ public class SmartPropId : IBinarySerializable
         };
     }
 
-    public PropId DeserializeVersion113(PropId input)
+    private static PropId DeserializeVersion113(PropId input)
     {
         return input switch
         {
@@ -69,7 +76,37 @@ public class SmartPropId : IBinarySerializable
         };
     }
     
-    public PropId DeserializeVersionLt112(PropId input)
+    private static PropId DeserializeVersionLte125(PropId input)
+    {
+        return input switch
+        {
+            (PropId)0x3A => PropId.Loop,
+            (PropId)0x3B => PropId.InitialDelay,
+            (PropId)0x06 => PropId.MakeUpGain,
+            >= PropId.HDRActiveRange => input + 2,
+            >= PropId.InitialDelay => input + 1,
+            >= PropId.FeedbackVolume => input,
+            >= PropId.Priority => input - 1,
+            _ => input
+        };
+    }
+
+    private static PropId SerializeVersionLte125(PropId input)
+    {
+        return input switch
+        {
+            PropId.Loop => (PropId)0x3A,
+            PropId.InitialDelay => (PropId)0x3B,
+            PropId.MakeUpGain => (PropId)0x06,
+            > PropId.MakeUpGain => input - 2,
+            > PropId.InitialDelay => input - 1,
+            > PropId.Loop=> input,
+            > PropId.BusVolume => input + 1,
+            _ => input
+        };
+    }
+
+    private static PropId DeserializeVersionLte112(PropId input)
     {
         return input switch
         {
@@ -78,8 +115,8 @@ public class SmartPropId : IBinarySerializable
             _ => input
         };
     }
-    
-    public PropId SerializeVersionLt112(PropId input)
+
+    private static PropId SerializeVersionLte112(PropId input)
     {
         return input switch
         {
@@ -88,8 +125,8 @@ public class SmartPropId : IBinarySerializable
             _ => input
         };
     }
-    
-    public PropId DeserializeVersionLt65(PropId input)
+
+    protected virtual PropId DeserializeVersionLte65(PropId input)
     {
         return input switch
         {
@@ -99,8 +136,8 @@ public class SmartPropId : IBinarySerializable
             _ => input
         };
     }
-    
-    public PropId SerializeVersionLt65(PropId input)
+
+    private static PropId SerializeVersionLte65(PropId input)
     {
         
         return input switch
@@ -113,6 +150,10 @@ public class SmartPropId : IBinarySerializable
     }
 }
 
+/// <summary>
+/// Represents a property type. DO NOT SERIALIZE THIS ENUM ALONE, it is not valid
+/// for ANY version of Wwise. Use SmartPropId to convert to appropriate version.
+/// </summary>
 public enum PropId : byte
 {
     Volume,
@@ -142,8 +183,6 @@ public enum PropId : byte
     OutputBusVolume,
     OutputBusHPF,
     OutputBusLPF,
-    
-    //>= 88
     InitialDelay,
     HDRBusThreshold,
     HDRBusRatio,
@@ -177,5 +216,4 @@ public enum PropId : byte
     MidiTempoSource,
     MidiTargetNode,
     AttachedPluginFXID,
-
 }
