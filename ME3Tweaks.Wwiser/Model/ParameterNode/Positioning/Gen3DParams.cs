@@ -2,14 +2,8 @@
 
 namespace ME3Tweaks.Wwiser.Model.ParameterNode.Positioning;
 
-public class Gen3DParams : IBinarySerializable
+public class Gen3DParams
 {
-    [Ignore]
-    public bool HasAutomation { get; set; }
-    
-    [Ignore]
-    public bool HasDynamic { get; set; }
-    
     [Ignore]
     public PositioningType Type { get; set; }
     
@@ -22,12 +16,9 @@ public class Gen3DParams : IBinarySerializable
     [Ignore]
     public bool IsSpatialized { get; set; }
     
-    public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
+    public void Serialize(Stream stream, PositioningChunk parent, uint version)
     {
-        var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
-        var parent = serializationContext.FindAncestor<PositioningChunk>();
-        
-        SetPropertiesFromBools(version);
+        SetPropertiesFromBools(parent, version);
         
         if (version <= 89)
         {
@@ -61,10 +52,8 @@ public class Gen3DParams : IBinarySerializable
         if (version <= 89) stream.WriteBoolByte(IsSpatialized);
     }
 
-    public void Deserialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
+    public void Deserialize(Stream stream, PositioningChunk parent, uint version)
     {
-        var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
-        var parent = serializationContext.FindAncestor<PositioningChunk>();
         var reader = new BinaryReader(stream);
 
         if (version <= 89)
@@ -95,14 +84,14 @@ public class Gen3DParams : IBinarySerializable
         if (version <= 129) AttenuationId = reader.ReadUInt32();
         if (version <= 89) IsSpatialized = reader.ReadBoolean();
         
-        SetBoolsFromProperties(version);
+        SetBoolsFromProperties(parent, version);
     }
 
     /// <summary>
     /// Correctly sets the properties based on version and
     /// the HasAutomation and HasDynamic flags
     /// </summary>
-    private void SetPropertiesFromBools(uint version)
+    private void SetPropertiesFromBools(PositioningChunk parent, uint version)
     {
         // TODO: Crossversion - this will need to be implemented
     }
@@ -111,10 +100,10 @@ public class Gen3DParams : IBinarySerializable
     /// Correctly sets the HasAutomation and HasDynamic flags based on the
     /// other properties in the class
     /// </summary>
-    private void SetBoolsFromProperties(uint version)
+    private void SetBoolsFromProperties(PositioningChunk parent, uint version)
     {
         // Todo: rewrite so bitwise operators use IsFlag - more readable
-        HasAutomation = version switch
+        parent.HasAutomation = version switch
         {
             <= 72 => Type is PositioningType.UserDef3D,
             <= 89 => Type is not PositioningType.Positioning2D,
@@ -124,10 +113,10 @@ public class Gen3DParams : IBinarySerializable
             _ => (((byte)Mode >> 5 ) & 3) != 1,
         };
 
-        HasDynamic = version switch
+        parent.HasDynamic = version switch
         {
             <= 72 => Type is PositioningType.GameDef3D,
-            <= 89 => !HasAutomation,
+            <= 89 => !parent.HasDynamic,
             _ => false
         };
     }

@@ -2,7 +2,7 @@
 
 namespace ME3Tweaks.Wwiser.Model.ParameterNode.Positioning;
 
-public class PositioningFlags : IBinarySerializable
+public class PositioningFlags
 {
     [Ignore]
     public int CenterPct { get; set; }
@@ -13,10 +13,8 @@ public class PositioningFlags : IBinarySerializable
     [Ignore]
     public float PanFR { get; set; }
     
-    public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
+    public void Serialize(Stream stream, PositioningChunk parent, uint version)
     {
-        var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
-        var parent = serializationContext.FindAncestor<PositioningChunk>();
         if (parent.HasPositioning)
         {
             if (version <= 56)
@@ -39,10 +37,8 @@ public class PositioningFlags : IBinarySerializable
         }
     }
 
-    public void Deserialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
+    public void Deserialize(Stream stream, PositioningChunk parent, uint version)
     {
-        var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
-        var parent = serializationContext.FindAncestor<PositioningChunk>();
         var reader = new BinaryReader(stream);
 
         if (parent.HasPositioning)

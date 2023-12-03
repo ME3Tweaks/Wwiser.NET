@@ -2,16 +2,19 @@
 
 namespace ME3Tweaks.Wwiser.Model.ParameterNode.Positioning;
 
-public class BitsPositioning : IBinarySerializable
+public class BitsPositioning
 {
     [Ignore]
     public BitsPositioningInner Value { get; set; }
     
-    public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
+    [Ignore]
+    public SpeakerPanningType PanningType { get; set; }
+    
+    [Ignore]
+    public PositionType3D PositionType { get; set; }
+    
+    public void Serialize(Stream stream, PositioningChunk parent, uint version)
     {
-        var version = serializationContext.FindAncestor<BankSerializationContext>().Version; 
-        var parent = serializationContext.FindAncestor<PositioningChunk>();
-        
         // Apply the two bool properties in case their values have changed since deserialization.
         if (parent.HasPositioning)
         {
@@ -32,26 +35,27 @@ public class BitsPositioning : IBinarySerializable
             write &= BitsPositioningInner.Unknown2D2;
         }
         
-        stream.WriteByte((byte)write);
+        stream.WriteByte((byte)((byte)write & ((byte)PanningType << 2) & ((byte)PositionType) << 5));
     }
 
-    public void Deserialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
+    public void Deserialize(Stream stream, PositioningChunk parent, uint version)
     {
-        var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
-        var parent = serializationContext.FindAncestor<PositioningChunk>();
-        var read = (BitsPositioningInner)(byte)stream.ReadByte();
-
+        var read = (byte)stream.ReadByte();
+        var bits = (BitsPositioningInner)read;
+        
         // Is3DPositioningAvailable is bit 3 on this version
-        if (version is > 112 and <= 122 && read.HasFlag(BitsPositioningInner.Unknown2D2))
+        if (version is > 112 and <= 122 && bits.HasFlag(BitsPositioningInner.Unknown2D2))
         {
-            read &= BitsPositioningInner.Is3DPositioningAvailable;
-            read &= ~BitsPositioningInner.Unknown2D2;
+            bits &= BitsPositioningInner.Is3DPositioningAvailable;
+            bits &= ~BitsPositioningInner.Unknown2D2;
         }
 
-        Value = read;
+        Value = bits;
+        PanningType = (SpeakerPanningType)(read >> 2);
+        PositionType = (PositionType3D)(read >> 5);
         
         // Set this bool so we can reference it later
-        parent.HasPositioning = read.HasFlag(BitsPositioningInner.PositioningInfoOverrideParent);
+        parent.HasPositioning = bits.HasFlag(BitsPositioningInner.PositioningInfoOverrideParent);
 
         // Also this one
         if (version > 129) parent.Has3DPositioning = Value.HasFlag(BitsPositioningInner.HasListenerRelativeRouting);
@@ -68,15 +72,21 @@ public class BitsPositioning : IBinarySerializable
         Unknown3D1 = 1 << 5,
         Unknown3D2 = 1 << 6,
         Unknown3D3 = 1 << 7,
-        
-        //AkSpeakerPanningType v132>
+    }
+
+    [Flags]
+    public enum SpeakerPanningType : byte
+    {
         DirectSpeakerAssignment = 0b0000_0000,
-        BalanceFadeHeight = 0b0000_0100,
-        SteeringPanner = 0b0000_1000,
-        
-        //Ak3DPositionType v120>
+        BalanceFadeHeight = 0b0000_0001,
+        SteeringPanner = 0b0000_0010,
+    }
+    
+    [Flags]
+    public enum PositionType3D : byte
+    {
         Emitter = 0b0000_0000,
-        EmitterWithAutomation = 0b0010_0000,
-        ListenerWithAutomation = 0b0100_0000,
+        EmitterWithAutomation = 0b0000_0001,
+        ListenerWithAutomation = 0b0000_0010,
     }
 }
