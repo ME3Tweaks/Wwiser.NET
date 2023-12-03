@@ -10,7 +10,7 @@ public class BitsPositioning : IBinarySerializable
     public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
         var version = serializationContext.FindAncestor<BankSerializationContext>().Version; 
-        var parent = serializationContext.FindAncestor<Positioning>();
+        var parent = serializationContext.FindAncestor<PositioningChunk>();
         
         // Apply the two bool properties in case their values have changed since deserialization.
         if (parent.HasPositioning)
@@ -38,7 +38,7 @@ public class BitsPositioning : IBinarySerializable
     public void Deserialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
         var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
-        var parent = serializationContext.FindAncestor<Positioning>();
+        var parent = serializationContext.FindAncestor<PositioningChunk>();
         var read = (BitsPositioningInner)(byte)stream.ReadByte();
 
         // Is3DPositioningAvailable is bit 3 on this version

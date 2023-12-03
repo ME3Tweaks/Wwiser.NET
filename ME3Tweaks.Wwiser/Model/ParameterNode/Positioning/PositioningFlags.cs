@@ -16,7 +16,7 @@ public class PositioningFlags : IBinarySerializable
     public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
         var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
-        var parent = serializationContext.FindAncestor<Positioning>();
+        var parent = serializationContext.FindAncestor<PositioningChunk>();
         if (parent.HasPositioning)
         {
             if (version <= 56)
@@ -42,7 +42,7 @@ public class PositioningFlags : IBinarySerializable
     public void Deserialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
         var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
-        var parent = serializationContext.FindAncestor<Positioning>();
+        var parent = serializationContext.FindAncestor<PositioningChunk>();
         var reader = new BinaryReader(stream);
 
         if (parent.HasPositioning)

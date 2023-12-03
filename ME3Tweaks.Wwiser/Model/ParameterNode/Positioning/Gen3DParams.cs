@@ -2,13 +2,8 @@
 
 namespace ME3Tweaks.Wwiser.Model.ParameterNode.Positioning;
 
-// This class has a lot of logic based on prior data,
-// so basically all the serialized properties use custom serialization
-// and depend on the [Ignore] bools in this class
-
 public class Gen3DParams : IBinarySerializable
 {
-    
     [Ignore]
     public bool HasAutomation { get; set; }
     
@@ -30,7 +25,10 @@ public class Gen3DParams : IBinarySerializable
     public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
         var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
-        var parent = serializationContext.FindAncestor<Positioning>();
+        var parent = serializationContext.FindAncestor<PositioningChunk>();
+        
+        SetPropertiesFromBools(version);
+        
         if (version <= 89)
         {
             stream.Write(BitConverter.GetBytes((uint)Type));
@@ -66,7 +64,7 @@ public class Gen3DParams : IBinarySerializable
     public void Deserialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
         var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
-        var parent = serializationContext.FindAncestor<Positioning>();
+        var parent = serializationContext.FindAncestor<PositioningChunk>();
         var reader = new BinaryReader(stream);
 
         if (version <= 89)
@@ -96,7 +94,25 @@ public class Gen3DParams : IBinarySerializable
 
         if (version <= 129) AttenuationId = reader.ReadUInt32();
         if (version <= 89) IsSpatialized = reader.ReadBoolean();
+        
+        SetBoolsFromProperties(version);
+    }
 
+    /// <summary>
+    /// Correctly sets the properties based on version and
+    /// the HasAutomation and HasDynamic flags
+    /// </summary>
+    private void SetPropertiesFromBools(uint version)
+    {
+        // TODO: Crossversion - this will need to be implemented
+    }
+
+    /// <summary>
+    /// Correctly sets the HasAutomation and HasDynamic flags based on the
+    /// other properties in the class
+    /// </summary>
+    private void SetBoolsFromProperties(uint version)
+    {
         // Todo: rewrite so bitwise operators use IsFlag - more readable
         HasAutomation = version switch
         {
@@ -114,7 +130,6 @@ public class Gen3DParams : IBinarySerializable
             <= 89 => !HasAutomation,
             _ => false
         };
-
     }
 
     public enum PositioningType : uint

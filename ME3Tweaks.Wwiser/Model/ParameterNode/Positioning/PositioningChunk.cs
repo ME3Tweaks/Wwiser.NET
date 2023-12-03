@@ -1,8 +1,11 @@
 ﻿using BinarySerialization;
 
 namespace ME3Tweaks.Wwiser.Model.ParameterNode.Positioning;
+// This class has a lot of logic based on prior data,
+// so basically all the serialized properties use custom serialization
+// and depend on the [Ignore] bools in this class
 
-public class Positioning
+public class PositioningChunk
 {
     [Ignore]
     public bool HasPositioning { get; set; }

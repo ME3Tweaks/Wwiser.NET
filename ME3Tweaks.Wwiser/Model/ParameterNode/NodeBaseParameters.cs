@@ -53,7 +53,7 @@ public class NodeBaseParameters
     public uint StateGroupId { get; set; }
     
     [FieldOrder(10)]
-    public Positioning.Positioning Positioning { get; set; }
+    public Positioning.PositioningChunk PositioningChunk { get; set; }
     
     [FieldOrder(11)]
     [SerializeWhen(nameof(BankSerializationContext.Version), 65, 
