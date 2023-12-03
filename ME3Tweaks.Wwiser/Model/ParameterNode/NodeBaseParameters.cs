@@ -47,4 +47,17 @@ public class NodeBaseParameters
         ComparisonOperator.GreaterThan, RelativeSourceMode = RelativeSourceMode.SerializationContext)]
     public InitialParamsV62 InitialParams62 { get; set; }
     
+    [FieldOrder(9)]
+    [SerializeWhen(nameof(BankSerializationContext.Version), 52, 
+        ComparisonOperator.LessThanOrEqual, RelativeSourceMode = RelativeSourceMode.SerializationContext)]
+    public uint StateGroupId { get; set; }
+    
+    [FieldOrder(10)]
+    public Positioning.Positioning Positioning { get; set; }
+    
+    [FieldOrder(11)]
+    [SerializeWhen(nameof(BankSerializationContext.Version), 65, 
+        ComparisonOperator.GreaterThan, RelativeSourceMode = RelativeSourceMode.SerializationContext)]
+    public AuxParams AuxParams { get; set; }
+    
 }
