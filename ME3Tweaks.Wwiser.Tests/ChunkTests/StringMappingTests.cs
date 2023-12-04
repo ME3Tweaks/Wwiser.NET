@@ -15,15 +15,17 @@ public class StringMappingTests
             Assert.That(result.Chunk, Is.InstanceOf<StringMappingChunk>());
         });
         
-        var chunk = result.Chunk as StringMappingChunk;
         var firstElement = new BankHashHeader(1564500913, "Wwise_Generic_Gameplay");
-        Assert.Multiple(() =>
+        if (result.Chunk is StringMappingChunk chunk)
         {
-            Assert.That(chunk.BankIdToFilename.Count, Is.EqualTo(1));
-            Assert.That(chunk.BankIdToFilename[0].BankId, Is.EqualTo(firstElement.BankId));
-            Assert.That(chunk.BankIdToFilename[0].StringLength, Is.EqualTo(firstElement.FileName.Length));
-            Assert.That(chunk.BankIdToFilename[0].FileName, Is.EqualTo(firstElement.FileName));
-        });
+            Assert.Multiple(() =>
+            {
+                Assert.That(chunk.BankIdToFilename.Count, Is.EqualTo(1));
+                Assert.That(chunk.BankIdToFilename[0].BankId, Is.EqualTo(firstElement.BankId));
+                Assert.That(chunk.BankIdToFilename[0].StringLength, Is.EqualTo(firstElement.FileName.Length));
+                Assert.That(chunk.BankIdToFilename[0].FileName, Is.EqualTo(firstElement.FileName));
+            });
+        }
     }
     
     [Test]

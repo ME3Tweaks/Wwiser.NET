@@ -7,7 +7,7 @@ namespace ME3Tweaks.Wwiser.Model.ParameterNode;
 public class NodeBaseParameters
 {
     [FieldOrder(0)]
-    public InitialFxParams FxParams { get; set; }
+    public InitialFxParams FxParams { get; set; } = new();
     
     [FieldOrder(1)]
     [SerializeAs(SerializedType.UInt1)]
@@ -25,7 +25,7 @@ public class NodeBaseParameters
     public byte Priority { get; set; }
     
     [FieldOrder(5)]
-    public PriorityOverrideFlags PriorityOverrideFlags { get; set; }
+    public PriorityOverrideFlags PriorityOverrideFlags { get; set; } = new();
 
     [FieldOrder(6)]
     [SerializeWhenVersion(56, ComparisonOperator.LessThanOrEqual)]
@@ -34,21 +34,21 @@ public class NodeBaseParameters
     // TODO: Convert between these two variants when changing version
     [FieldOrder(7)]
     [SerializeWhenVersion(56, ComparisonOperator.LessThanOrEqual)]
-    public InitialParamsV56 InitialParams56 { get; set; }
+    public InitialParamsV56 InitialParams56 { get; set; } = new();
     
     [FieldOrder(8)]
     [SerializeWhenVersion(56, ComparisonOperator.GreaterThan)]
-    public InitialParamsV62 InitialParams62 { get; set; }
+    public InitialParamsV62 InitialParams62 { get; set; } = new();
     
     [FieldOrder(9)]
     [SerializeWhenVersion(52, ComparisonOperator.LessThanOrEqual)]
     public uint StateGroupId { get; set; }
-    
-    [FieldOrder(10)]
-    public Positioning.PositioningChunk PositioningChunk { get; set; }
+
+    [FieldOrder(10)] 
+    public Positioning.PositioningChunk PositioningChunk { get; set; } = new();
     
     [FieldOrder(11)]
     [SerializeWhenVersion(65, ComparisonOperator.GreaterThan)]
-    public AuxParams AuxParams { get; set; }
+    public AuxParams AuxParams { get; set; } = new();
     
 }

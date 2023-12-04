@@ -7,7 +7,7 @@ namespace ME3Tweaks.Wwiser.Model.RTPC;
 public class RtpcConversionTable
 {
     [FieldOrder(8)]
-    public CurveScaling Scaling { get; set; }
+    public CurveScaling Scaling { get; set; } = new();
     
     //TODO: <=v36 this is a uint - not relevant to mass effect
     [FieldOrder(9)]
@@ -15,5 +15,5 @@ public class RtpcConversionTable
     
     [FieldOrder(10)]
     [FieldCount(nameof(GraphPointCount))]
-    public List<RtpcGraphItem> Graph { get; set; }
+    public List<RtpcGraphItem> Graph { get; set; } = new();
 }

@@ -3,7 +3,7 @@ using ME3Tweaks.Wwiser.Attributes;
 
 namespace ME3Tweaks.Wwiser.Model
 {
-    public enum LanguageID : uint
+    public enum LanguageId : uint
     {
         SFX,
         Arabic,
@@ -77,7 +77,7 @@ namespace ME3Tweaks.Wwiser.Model
         /// </summary>
         [FieldOrder(2)]
         [SerializeWhenVersion(122, ComparisonOperator.LessThanOrEqual)]
-        public LanguageID LanguageId { get; set; }
+        public LanguageId LanguageId { get; set; }
         
         /// <summary>
         /// String hash of language ID
@@ -144,7 +144,7 @@ namespace ME3Tweaks.Wwiser.Model
         [FieldOrder(9)]
         [FieldCount(16)]
         [SerializeWhenVersion(141, ComparisonOperator.GreaterThan)]
-        public sbyte[] BankHash { get; set; }
+        public sbyte[]? BankHash { get; set; }
         
         // TODO: Copy any padding over into a byte[]? Will allow proper reserialization.
     }

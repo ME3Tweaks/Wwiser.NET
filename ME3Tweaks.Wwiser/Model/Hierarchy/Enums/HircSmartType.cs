@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using BinarySerialization;
+﻿using BinarySerialization;
 
 namespace ME3Tweaks.Wwiser.Model.Hierarchy.Enums;
 

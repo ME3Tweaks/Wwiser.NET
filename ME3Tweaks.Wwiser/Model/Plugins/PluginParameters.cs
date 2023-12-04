@@ -10,5 +10,5 @@ public class PluginParameters
     [FieldOrder(2)]
     [FieldLength(nameof(ParamSize))]
     [SubtypeDefault(typeof(EmptyPluginParams))]
-    public required IPluginParams PluginParams { get; set; } = new EmptyPluginParams();
+    public IPluginParams PluginParams { get; set; } = new EmptyPluginParams();
 }

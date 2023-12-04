@@ -14,24 +14,24 @@ public class Attenuation : HircItem
     [FieldOrder(1)]
     [SerializeAs(SerializedType.UInt1)]
     public bool IsConeEnabled { get; set; }
-    
+
     [FieldOrder(2)]
     [SerializeWhen(nameof(IsConeEnabled), true)]
-    public ConeParams ConeParams { get; set; }
-    
-    [FieldOrder(3)]
-    public CurveToUse CurveToUse { get; set; }
+    public ConeParams ConeParams { get; set; } = new();
+
+    [FieldOrder(3)] 
+    public CurveToUse CurveToUse { get; set; } = new();
     
     //TODO: <=v36 this is a uint - not relevant to mass effect
     [FieldOrder(4)]
     public byte NumCurves { get; set; }
-    
+
     [FieldOrder(5)]
     [FieldCount(nameof(NumCurves))]
-    public List<RtpcConversionTable> Curves { get; set; }
-    
-    [FieldOrder(6)]
-    public RtpcCurves RtpcCurves { get; set; }
+    public List<RtpcConversionTable> Curves { get; set; } = new();
+
+    [FieldOrder(6)] 
+    public RtpcCurves RtpcCurves { get; set; } = new();
 }
 
 public class CurveToUse : IBinarySerializable

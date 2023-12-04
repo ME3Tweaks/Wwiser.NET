@@ -7,10 +7,10 @@ namespace ME3Tweaks.Wwiser.Model.Hierarchy;
 public class Sound : HircItem
 {
     [FieldOrder(0)]
-    public BankSourceData BankSourceData { get; set; }
+    public BankSourceData BankSourceData { get; set; } = new();
     
     [FieldOrder(1)]
-    public NodeBaseParameters NodeBaseParameters { get; set; }
+    public NodeBaseParameters NodeBaseParameters { get; set; } = new();
     
     [FieldOrder(2)]
     [SerializeWhenVersion(56, ComparisonOperator.LessThanOrEqual)]

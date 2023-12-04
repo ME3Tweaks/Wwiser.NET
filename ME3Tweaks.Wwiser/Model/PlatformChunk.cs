@@ -8,5 +8,5 @@ public class PlatformChunk : Chunk
     public override string Tag => @"PLAT";
     
     [FieldOrder(0)]
-    public BankStringUtf8 CustomPlatformName { get; set; }
+    public BankStringUtf8 CustomPlatformName { get; set; } = new("");
 }

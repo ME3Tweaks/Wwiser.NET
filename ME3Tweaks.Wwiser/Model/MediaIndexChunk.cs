@@ -10,7 +10,7 @@ public class MediaIndexChunk : Chunk
     [FieldLength(nameof(ChunkContainer.ChunkSize), 
         RelativeSourceMode = RelativeSourceMode.FindAncestor,
         AncestorLevel = 2)]
-    public List<MediaHeader> LoadedMedia { get; set; }
+    public List<MediaHeader> LoadedMedia { get; set; } = new();
 }
 
 public class MediaHeader

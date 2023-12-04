@@ -1,6 +1,5 @@
 ﻿using BinarySerialization;
 using ME3Tweaks.Wwiser.Attributes;
-using ME3Tweaks.Wwiser.Converters;
 using ME3Tweaks.Wwiser.Model.Plugins;
 
 namespace ME3Tweaks.Wwiser.Model.ParameterNode;
@@ -27,10 +26,10 @@ public class FxChunk : IAkIdentifiable
     [SerializeAs(SerializedType.UInt1)]
     [SerializeWhenVersion(145, ComparisonOperator.LessThanOrEqual)]
     public bool IsRendered { get; set; }
-    
+
     [FieldOrder(5)]
     [SerializeWhenVersion(48, ComparisonOperator.LessThanOrEqual)]
-    public PluginParameters PluginParameters { get; set; }
+    public PluginParameters PluginParameters { get; set; } = new();
     
     //TODO: Custom serialized class - merge with IsShareSet, IsRendered, BitsFXBypass
     [FieldOrder(6)]
@@ -40,12 +39,12 @@ public class FxChunk : IAkIdentifiable
     [FieldOrder(7)]
     [SerializeWhenVersion(48)]
     public uint NumBankData { get; set; }
-    
+
     [FieldOrder(8)]
     [SerializeWhenVersion(48)]
-    public List<BankData> BankDatas { get; set; }
+    public List<BankDataItem> BankData { get; set; } = new();
 
-    public class BankData
+    public class BankDataItem
     {
         [FieldOrder(0)]
         public uint FxParameterSetId { get; set; }

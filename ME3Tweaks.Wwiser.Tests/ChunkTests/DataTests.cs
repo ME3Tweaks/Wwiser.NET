@@ -14,9 +14,11 @@ public class DataTests
             Assert.That(result.ChunkSize, Is.EqualTo(0xF919));
             Assert.That(result.Chunk, Is.InstanceOf<DataChunk>());
         });
-        
-        var chunk = result.Chunk as DataChunk;
-        Assert.That(chunk.Data.Length, Is.EqualTo(0xF919));
+
+        if (result.Chunk is DataChunk chunk)
+        {
+            Assert.That(chunk.Data.Length, Is.EqualTo(0xF919));
+        }
     }
     
     [Test]

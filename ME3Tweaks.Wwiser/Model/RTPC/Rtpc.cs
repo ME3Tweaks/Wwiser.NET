@@ -9,7 +9,7 @@ public class Rtpc
 {
     [FieldOrder(0)]
     [SerializeWhenVersion(48, ComparisonOperator.LessThanOrEqual)]
-    public Plugin Plugin { get; set; }
+    public Plugin Plugin { get; set; } = new();
     
     [FieldOrder(1)]
     [SerializeWhenVersion(48, ComparisonOperator.LessThanOrEqual)]
@@ -21,18 +21,18 @@ public class Rtpc
     
     [FieldOrder(4)]
     [SerializeWhenVersion(89, ComparisonOperator.GreaterThan)]
-    public RtpcType RtpcType { get; set; }
+    public RtpcType RtpcType { get; set; } = new();
     
     [FieldOrder(5)]
     [SerializeWhenVersion(89, ComparisonOperator.GreaterThan)]
-    public AccumType RtpcAccum { get; set; }
+    public AccumType RtpcAccum { get; set; } = new();
     
     [FieldOrder(6)]
-    public ParameterId ParamId { get; set; }
+    public ParameterId ParamId { get; set; } = new();
     
     [FieldOrder(7)]
     public uint RtpcCurveId { get; set; }
     
     [FieldOrder(8)]
-    public RtpcConversionTable RtpcConversionTable { get; set; }
+    public RtpcConversionTable RtpcConversionTable { get; set; } = new();
 }

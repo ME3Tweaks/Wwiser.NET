@@ -15,7 +15,7 @@ public class StringMappingChunk : Chunk
 
     [FieldOrder(3)]
     [FieldCount(nameof(StringCount))]
-    public List<BankHashHeader> BankIdToFilename { get; set; }
+    public List<BankHashHeader> BankIdToFilename { get; set; } = new();
 }
 
 public enum AKBKStringType : uint

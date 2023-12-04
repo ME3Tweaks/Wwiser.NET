@@ -1,6 +1,4 @@
-﻿using System;
-using BinarySerialization;
-using ME3Tweaks.Wwiser.Model.Hierarchy;
+﻿using BinarySerialization;
 
 namespace ME3Tweaks.Wwiser.Model.Plugins;
 

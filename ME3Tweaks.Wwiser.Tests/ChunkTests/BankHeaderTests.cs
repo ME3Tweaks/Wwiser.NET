@@ -14,12 +14,14 @@ public class BankHeaderTests
             Assert.That(result.Chunk, Is.InstanceOf<BankHeaderChunk>());
         });
         
-        var chunk = result.Chunk as BankHeaderChunk;
-        Assert.Multiple(() =>
+        if (result.Chunk is BankHeaderChunk chunk)
         {
-            Assert.That(chunk.BankGeneratorVersion, Is.EqualTo(134));
-            Assert.That(chunk.ProjectId, Is.EqualTo(7572));
-        });
+            Assert.Multiple(() =>
+            {
+                Assert.That(chunk.BankGeneratorVersion, Is.EqualTo(134));
+                Assert.That(chunk.ProjectId, Is.EqualTo(7572));
+            });
+        }
     }
 
     [Test]
@@ -34,13 +36,15 @@ public class BankHeaderTests
             Assert.That(result.ChunkSize, Is.EqualTo(0x18));
             Assert.That(result.Chunk, Is.InstanceOf<BankHeaderChunk>());
         });
-        
-        var chunk = result.Chunk as BankHeaderChunk;
-        Assert.Multiple(() =>
+
+        if (result.Chunk is BankHeaderChunk chunk)
         {
-            Assert.That(chunk.BankGeneratorVersion, Is.EqualTo(56));
-            Assert.That(chunk.SoundBankId, Is.EqualTo(1564500913));
-        });
+            Assert.Multiple(() =>
+            {
+                Assert.That(chunk.BankGeneratorVersion, Is.EqualTo(56));
+                Assert.That(chunk.SoundBankId, Is.EqualTo(1564500913));
+            });
+        }
     }
 
     [Test]

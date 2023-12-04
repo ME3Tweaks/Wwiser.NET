@@ -16,8 +16,8 @@ public class InitialFxParams
     [FieldOrder(2)]
     [SerializeWhen(nameof(NumFx), 0, ComparisonOperator.GreaterThan)]
     public byte BitsFxBypass { get; set; }
-    
+
     [FieldOrder(3)]
     [FieldCount(nameof(NumFx))]
-    public List<FxChunk> FxChunks { get; set; }
+    public List<FxChunk> FxChunks { get; set; } = new();
 }

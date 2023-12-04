@@ -16,17 +16,19 @@ public class HierarchyChunkTests
             Assert.That(result.Tag, Is.EqualTo("HIRC"));
             Assert.That(result.Chunk, Is.InstanceOf<HierarchyChunk>());
         });
-        
-        var hirc = result.Chunk as HierarchyChunk;
-        Assert.Multiple(() =>
+
+        if (result.Chunk is HierarchyChunk hirc)
         {
-            Assert.That(hirc.ItemCount, Is.EqualTo(1));
-            Assert.That(hirc.Items[0], Is.InstanceOf<HircItemContainer>());
-            
-            var hircItemContainer = hirc.Items[0] as HircItemContainer;
-            Assert.That(hircItemContainer.Type.Value, Is.EqualTo(HircType.Event));
-            Assert.That(hircItemContainer.Item, Is.InstanceOf<Event>());
-        });
+            Assert.Multiple(() =>
+            {
+                Assert.That(hirc.ItemCount, Is.EqualTo(1));
+                Assert.That(hirc.Items[0], Is.InstanceOf<HircItemContainer>());
+
+                var hircItemContainer = hirc.Items[0] as HircItemContainer;
+                Assert.That(hircItemContainer.Type.Value, Is.EqualTo(HircType.Event));
+                Assert.That(hircItemContainer.Item, Is.InstanceOf<Event>());
+            });
+        }
     }
     
     [Test]
@@ -40,17 +42,19 @@ public class HierarchyChunkTests
             Assert.That(result.Tag, Is.EqualTo("HIRC"));
             Assert.That(result.Chunk, Is.InstanceOf<HierarchyChunk>());
         });
-        
-        var hirc = result.Chunk as HierarchyChunk;
-        Assert.Multiple(() =>
+
+        if (result.Chunk is HierarchyChunk hirc)
         {
-            Assert.That(hirc.ItemCount, Is.EqualTo(1));
-            Assert.That(hirc.Items[0], Is.InstanceOf<HircItemContainer>());
-            
-            var hircItemContainer = hirc.Items[0] as HircItemContainer;
-            //Assert.That(hircItemContainer.Type, Is.EqualTo(HircType.Event as byte));
-            //Assert.That(hircItemContainer.Item, Is.InstanceOf<HircEventItem>());
-        });
+            Assert.Multiple(() =>
+            {
+                Assert.That(hirc.ItemCount, Is.EqualTo(1));
+                Assert.That(hirc.Items[0], Is.InstanceOf<HircItemContainer>());
+
+                var hircItemContainer = hirc.Items[0] as HircItemContainer;
+                //Assert.That(hircItemContainer.Type, Is.EqualTo(HircType.Event as byte));
+                //Assert.That(hircItemContainer.Item, Is.InstanceOf<HircEventItem>());
+            });
+        }
     }
     
     [Test]
@@ -64,16 +68,18 @@ public class HierarchyChunkTests
             Assert.That(result.Tag, Is.EqualTo("HIRC"));
             Assert.That(result.Chunk, Is.InstanceOf<HierarchyChunk>());
         });
-        
-        var hirc = result.Chunk as HierarchyChunk;
-        Assert.Multiple(() =>
+
+        if (result.Chunk is HierarchyChunk hirc)
         {
-            Assert.That(hirc.ItemCount, Is.EqualTo(1));
-            Assert.That(hirc.Items[0], Is.InstanceOf<HircItemContainer>());
-            
-            var hircItemContainer = hirc.Items[0] as HircItemContainer;
-            Assert.That(hircItemContainer.Type.Value, Is.EqualTo(HircType.Event));
-            Assert.That(hircItemContainer.Item, Is.InstanceOf<Event>());
-        });
+            Assert.Multiple(() =>
+            {
+                Assert.That(hirc.ItemCount, Is.EqualTo(1));
+                Assert.That(hirc.Items[0], Is.InstanceOf<HircItemContainer>());
+
+                var hircItemContainer = hirc.Items[0] as HircItemContainer;
+                Assert.That(hircItemContainer.Type.Value, Is.EqualTo(HircType.Event));
+                Assert.That(hircItemContainer.Item, Is.InstanceOf<Event>());
+            });
+        }
     }
 }

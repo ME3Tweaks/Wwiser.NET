@@ -26,13 +26,13 @@ public class PositioningChunk : IBinarySerializable
     public bool HasDynamic { get; set; }
     
     [Ignore]
-    public BitsPositioning PositioningBits { get; set; }  = new();
+    public BitsPositioning PositioningBits { get; } = new();
 
     [Ignore]
-    public PositioningFlags PositioningFlags { get; set; }  = new();
+    public PositioningFlags PositioningFlags { get; }  = new();
 
     [Ignore]
-    public Gen3DParams Gen3DParams { get; set; }  = new();
+    public Gen3DParams Gen3DParams { get; }  = new();
 
     public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {

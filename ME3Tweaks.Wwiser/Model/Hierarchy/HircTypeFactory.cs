@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using BinarySerialization;
 using ME3Tweaks.Wwiser.Model.Hierarchy.Enums;
 

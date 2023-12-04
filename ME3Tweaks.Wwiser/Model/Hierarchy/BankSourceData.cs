@@ -9,22 +9,22 @@ namespace ME3Tweaks.Wwiser.Model.Hierarchy;
 public class BankSourceData
 {
     [FieldOrder(0)]
-    public Plugin Plugin { get; set; }
+    public Plugin Plugin { get; set; } = new();
     
     [FieldOrder(1)]
-    public StreamType StreamType { get; set; }
+    public StreamType StreamType { get; set; } = new();
     
     [FieldOrder(2)]
     [SerializeWhenVersion(46, ComparisonOperator.LessThanOrEqual)]
-    public AudioFormat AudioFormat { get; set; }
-    
-    [FieldOrder(3)]
-    public MediaInformation MediaInformation {get; set;}
+    public AudioFormat AudioFormat { get; set; } = new();
+
+    [FieldOrder(3)] 
+    public MediaInformation MediaInformation { get; set; } = new();
     
     [FieldOrder(4)]
     [SerializeWhen(nameof(Plugin), true,
         ConverterType = typeof(HasPluginParamConverter))]
-    public PluginParameters PluginParameters { get; set; }
+    public PluginParameters PluginParameters { get; set; } = new();
 }
 
 public class AudioFormat
@@ -84,24 +84,29 @@ public class MediaInformation : IBinarySerializable
         
         if (version > 26)
         {
-            var flags = Flags;
-            if(version <= 112)
-            {
-                // On <= 122, HasSource is bit 1. To serialize, set it to Prefetch which is bit 1 on the enum
-                if (flags.HasFlag(MediaInformationFlags.HasSource))
-                {
-                    flags &= MediaInformationFlags.Prefetch;
-                    flags &= ~MediaInformationFlags.HasSource;
-                }
-                // Remove flags not relevant to  this version
-                flags &= ~MediaInformationFlags.NonCachable;
-            }
-            else
-            {
-                flags &= ~MediaInformationFlags.ExternallySupplied;
-            }
-            stream.WriteByte((byte)flags);
+            stream.WriteByte((byte)ConvertFlagsForSerialize(Flags, version));
         }
+    }
+
+    private MediaInformationFlags ConvertFlagsForSerialize(MediaInformationFlags flags, uint version)
+    {
+        if(version <= 112)
+        {
+            // On <= 122, HasSource is bit 1. To serialize, set it to Prefetch which is bit 1 on the enum
+            if (flags.HasFlag(MediaInformationFlags.HasSource))
+            {
+                flags &= MediaInformationFlags.Prefetch;
+                flags &= ~MediaInformationFlags.HasSource;
+            }
+            // Remove flags not relevant to this version
+            flags &= ~MediaInformationFlags.NonCachable;
+        }
+        else
+        {
+            flags &= ~MediaInformationFlags.ExternallySupplied;
+        }
+
+        return flags;
     }
 
     public void Deserialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)

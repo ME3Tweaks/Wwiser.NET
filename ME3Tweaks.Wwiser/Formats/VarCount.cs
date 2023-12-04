@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using BinarySerialization;
+﻿using BinarySerialization;
 
 namespace ME3Tweaks.Wwiser.Formats;
 
@@ -33,6 +31,7 @@ public class VarCount : IBinarySerializable
         {
             Span<byte> span = stackalloc byte[4];
             var read = stream.Read(span);
+            if (read != 4) throw new Exception();
             Value = BitConverter.ToUInt32(span);
         }
         else
@@ -47,12 +46,14 @@ public class VarCount : IBinarySerializable
     {
         uint value;
         Span<byte> cur = stackalloc byte[1];
-        stream.Read(cur);
+        var read = stream.Read(cur);
+        if (read != 1) throw new Exception();
         value = (uint)(cur[0] & 0x7F);
         var max = 0;
         while ((cur[0] & 0x80) != 0 && max < 10)
         {
-            stream.Read(cur);
+            read = stream.Read(cur);
+            if (read != 1) throw new Exception();
             value = (value << 7) | (uint)(cur[0] & 0x7F);
             max++;
         }

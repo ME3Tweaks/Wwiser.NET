@@ -12,6 +12,6 @@ public class State : AkIdentifiable
     
     // Higher versions, data is inlined???? idk
     [SerializeWhenVersion(145, ComparisonOperator.GreaterThan)]
-    public PropBundle<ushort, float> Properties { get; set; }
+    public PropBundle<ushort, float> Properties { get; set; } = new();
     
 }

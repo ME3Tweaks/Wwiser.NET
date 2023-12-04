@@ -1,7 +1,3 @@
-﻿using BinarySerialization;
+﻿namespace ME3Tweaks.Wwiser.Model.Hierarchy;
 
-namespace ME3Tweaks.Wwiser.Model.Hierarchy;
-
-public class HircItem : AkIdentifiable
-{
-}
+public abstract class HircItem : AkIdentifiable;

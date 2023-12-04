@@ -15,15 +15,17 @@ public class MediaIndexTests
             Assert.That(result.Chunk, Is.InstanceOf<MediaIndexChunk>());
         });
         
-        var chunk = result.Chunk as MediaIndexChunk;
         var firstElement = new MediaHeader() { Id = 6098048, Offset = 0x00, Size = 0x12BD };
-        Assert.Multiple(() =>
+        if (result.Chunk is MediaIndexChunk chunk)
         {
-            Assert.That(chunk.LoadedMedia.Count, Is.EqualTo(35));
-            Assert.That(chunk.LoadedMedia[0].Id, Is.EqualTo(firstElement.Id));
-            Assert.That(chunk.LoadedMedia[0].Offset, Is.EqualTo(firstElement.Offset));
-            Assert.That(chunk.LoadedMedia[0].Size, Is.EqualTo(firstElement.Size));
-        });
+            Assert.Multiple(() =>
+            {
+                Assert.That(chunk.LoadedMedia.Count, Is.EqualTo(35));
+                Assert.That(chunk.LoadedMedia[0].Id, Is.EqualTo(firstElement.Id));
+                Assert.That(chunk.LoadedMedia[0].Offset, Is.EqualTo(firstElement.Offset));
+                Assert.That(chunk.LoadedMedia[0].Size, Is.EqualTo(firstElement.Size));
+            });
+        }
     }
     
     [Test]

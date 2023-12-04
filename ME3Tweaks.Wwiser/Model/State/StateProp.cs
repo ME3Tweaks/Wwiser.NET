@@ -8,10 +8,10 @@ namespace ME3Tweaks.Wwiser.Model.State;
 public class StateProp
 {
     [FieldOrder(0)]
-    public VarCount PropertyId { get; set; }
+    public VarCount PropertyId { get; set; } = new();
     
     [FieldOrder(1)]
-    public AccumType AccumType { get; set; } 
+    public AccumType AccumType { get; set; } = new();
     
     [FieldOrder(2)]
     [SerializeAs(SerializedType.UInt1)]

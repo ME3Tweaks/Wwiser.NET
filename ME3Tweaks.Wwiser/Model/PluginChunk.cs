@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using BinarySerialization;
+﻿using BinarySerialization;
 using ME3Tweaks.Wwiser.Formats;
 using ME3Tweaks.Wwiser.Model.Plugins;
 
@@ -15,14 +13,14 @@ public class PluginChunk : Chunk
     
     [FieldOrder(1)]
     [FieldLength(nameof(PluginCount))]
-    public List<AKPLugin> AKPluginList { get; set; }
+    public List<AKPLugin> AKPluginList { get; set; } = new();
 }
 
 public class AKPLugin
 {
     [FieldOrder(0)]
-    public Plugin Plugin { get; set; }
+    public Plugin Plugin { get; set; } = new();
     
     [FieldOrder(1)]
-    public BankStringUtf8 DLLName { get; set; }
+    public BankStringUtf8 DLLName { get; set; } = new("");
 }

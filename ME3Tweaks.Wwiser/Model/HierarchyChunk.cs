@@ -13,6 +13,6 @@ public class HierarchyChunk : Chunk
     
     [FieldOrder(1)]
     [FieldCount(nameof(ItemCount))]
-    public required List<HircItemContainer> Items { get; set; }
+    public required List<HircItemContainer> Items { get; set; } = new();
 
 }

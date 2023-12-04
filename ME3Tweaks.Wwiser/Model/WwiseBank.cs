@@ -2,5 +2,5 @@
 
 public class WwiseBank
 {
-    public ChunkContainer[] Chunks { get; set; }
+    public required ChunkContainer[] Chunks { get; set; }
 }
