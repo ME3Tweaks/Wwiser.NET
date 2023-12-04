@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using BinarySerialization;
+﻿using BinarySerialization;
 
 namespace ME3Tweaks.Wwiser.Model;
 
@@ -8,9 +7,11 @@ public class StringMappingChunk : Chunk
     public override string Tag => @"STID";
     // TODO: Totally different parsing for <= v26. A different subclass?
 
-    [FieldOrder(0)] public AKBKStringType StringType { get; set; }
+    [FieldOrder(0)] 
+    public AKBKStringType StringType { get; set; }
 
-    [FieldOrder(1)] public uint StringCount { get; set; }
+    [FieldOrder(1)] 
+    public uint StringCount { get; set; }
 
     [FieldOrder(3)]
     [FieldCount(nameof(StringCount))]

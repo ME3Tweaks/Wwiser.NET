@@ -1,4 +1,5 @@
 ﻿using BinarySerialization;
+using ME3Tweaks.Wwiser.Attributes;
 using ME3Tweaks.Wwiser.Model.ParameterNode;
 
 namespace ME3Tweaks.Wwiser.Model.Hierarchy;
@@ -12,17 +13,14 @@ public class Sound : HircItem
     public NodeBaseParameters NodeBaseParameters { get; set; }
     
     [FieldOrder(2)]
-    [SerializeWhen(nameof(BankSerializationContext.Version), 56, 
-        ComparisonOperator.LessThanOrEqual, RelativeSourceMode = RelativeSourceMode.SerializationContext)]
+    [SerializeWhenVersion(56, ComparisonOperator.LessThanOrEqual)]
     public short Loop { get; set; }
     
     [FieldOrder(3)]
-    [SerializeWhen(nameof(BankSerializationContext.Version), 56, 
-        ComparisonOperator.LessThanOrEqual, RelativeSourceMode = RelativeSourceMode.SerializationContext)]
+    [SerializeWhenVersion(56, ComparisonOperator.LessThanOrEqual)]
     public short LoopModMin { get; set; }
     
     [FieldOrder(4)]
-    [SerializeWhen(nameof(BankSerializationContext.Version), 56, 
-        ComparisonOperator.LessThanOrEqual, RelativeSourceMode = RelativeSourceMode.SerializationContext)]
+    [SerializeWhenVersion(56, ComparisonOperator.LessThanOrEqual)]
     public short LoopModMax { get; set; }
 }

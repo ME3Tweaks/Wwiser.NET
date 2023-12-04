@@ -1,4 +1,5 @@
 ﻿using BinarySerialization;
+using ME3Tweaks.Wwiser.Attributes;
 using ME3Tweaks.Wwiser.Converters;
 using ME3Tweaks.Wwiser.Model.Hierarchy.Enums;
 using ME3Tweaks.Wwiser.Model.Plugins;
@@ -14,8 +15,7 @@ public class BankSourceData
     public StreamType StreamType { get; set; }
     
     [FieldOrder(2)]
-    [SerializeWhen(nameof(BankSerializationContext.Version), 46, 
-        ComparisonOperator.LessThanOrEqual, RelativeSourceMode = RelativeSourceMode.SerializationContext)]
+    [SerializeWhenVersion(46, ComparisonOperator.LessThanOrEqual)]
     public AudioFormat AudioFormat { get; set; }
     
     [FieldOrder(3)]
@@ -30,8 +30,7 @@ public class BankSourceData
 public class AudioFormat
 {
     [FieldOrder(0)]
-    [SerializeWhen(nameof(BankSerializationContext.Version), 26, 
-        ComparisonOperator.LessThanOrEqual, RelativeSourceMode = RelativeSourceMode.SerializationContext)]
+    [SerializeWhenVersion(26, ComparisonOperator.LessThanOrEqual)]
     public uint DataIndex { get; set; }
     
     [FieldOrder(1)]

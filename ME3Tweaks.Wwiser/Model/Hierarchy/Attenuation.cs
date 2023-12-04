@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.IO;
-using BinarySerialization;
+﻿using BinarySerialization;
+using ME3Tweaks.Wwiser.Attributes;
 using ME3Tweaks.Wwiser.Model.RTPC;
 
 namespace ME3Tweaks.Wwiser.Model.Hierarchy;
@@ -11,8 +8,7 @@ public class Attenuation : HircItem
 {
     [FieldOrder(0)]
     [SerializeAs(SerializedType.UInt1)]
-    [SerializeWhen(nameof(BankSerializationContext.Version), 136, 
-        ComparisonOperator.GreaterThan, RelativeSourceMode = RelativeSourceMode.SerializationContext)]
+    [SerializeWhenVersion(136, ComparisonOperator.GreaterThan)]
     public bool IsHeightSpreadEnabled { get; set; }
     
     [FieldOrder(1)]
@@ -87,7 +83,6 @@ public class ConeParams
     public float LowPass { get; set; }
     
     [FieldOrder(5)]
-    [SerializeWhen(nameof(BankSerializationContext.Version), 89, 
-        ComparisonOperator.GreaterThan, RelativeSourceMode = RelativeSourceMode.SerializationContext)]
+    [SerializeWhenVersion(89, ComparisonOperator.GreaterThan)]
     public float HighPass { get; set; }
 }

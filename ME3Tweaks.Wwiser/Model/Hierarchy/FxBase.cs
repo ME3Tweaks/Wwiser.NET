@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using BinarySerialization;
+using ME3Tweaks.Wwiser.Attributes;
 using ME3Tweaks.Wwiser.Converters;
 using ME3Tweaks.Wwiser.Formats;
 using ME3Tweaks.Wwiser.Model.Plugins;
@@ -32,29 +33,20 @@ public class FxBase : HircItem
     public RtpcCurves RtpcCurves { get; set; }
     
     [FieldOrder(6)]
-    [SerializeWhen(nameof(BankSerializationContext.Version), true, 
-        RelativeSourceMode = RelativeSourceMode.SerializationContext,
-        ConverterType = typeof(BetweenConverter), 
-        ConverterParameter = new[] {123, 126})]
+    [SerializeWhenVersionBetween(123, 126)]
     public ushort Unk1 { get; set; }
     
     [FieldOrder(7)]
-    [SerializeWhen(nameof(BankSerializationContext.Version), 126,
-        ComparisonOperator.GreaterThan,
-        RelativeSourceMode = RelativeSourceMode.SerializationContext)]
+    [SerializeWhenVersion(126, ComparisonOperator.GreaterThan)]
     public StateChunk_Aware StateChunk { get; set; }
     
     [FieldOrder(8)]
-    [SerializeWhen(nameof(BankSerializationContext.Version), 90,
-        ComparisonOperator.GreaterThan,
-        RelativeSourceMode = RelativeSourceMode.SerializationContext)]
+    [SerializeWhenVersion(90, ComparisonOperator.GreaterThan)]
     public ushort RtpcInitCount { get; set; }
     
     [FieldOrder(9)]
     [FieldCount(nameof(RtpcInitCount))]
-    [SerializeWhen(nameof(BankSerializationContext.Version), 90,
-        ComparisonOperator.GreaterThan,
-        RelativeSourceMode = RelativeSourceMode.SerializationContext)]
+    [SerializeWhenVersion(90, ComparisonOperator.GreaterThan)]
     public List<RtpcInitValue> RtpcInitValues { get; set; }
     
     
@@ -64,9 +56,7 @@ public class FxBase : HircItem
         public VarCount ParameterId { get; set; }
         
         [FieldOrder(1)]
-        [SerializeWhen(nameof(BankSerializationContext.Version), 126,
-            ComparisonOperator.GreaterThan,
-            RelativeSourceMode = RelativeSourceMode.SerializationContext)]
+        [SerializeWhenVersion(126, ComparisonOperator.GreaterThan)]
         public byte RtpcAccum { get; set; }
         
         [FieldOrder(2)]

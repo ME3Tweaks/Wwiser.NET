@@ -1,5 +1,5 @@
 ﻿using BinarySerialization;
-using ME3Tweaks.Wwiser.Converters;
+using ME3Tweaks.Wwiser.Attributes;
 
 namespace ME3Tweaks.Wwiser.Model
 {
@@ -76,7 +76,7 @@ namespace ME3Tweaks.Wwiser.Model
         /// (&lt;= v122)
         /// </summary>
         [FieldOrder(2)]
-        [SerializeWhen(nameof(BankGeneratorVersion), 122, ComparisonOperator.LessThanOrEqual)]
+        [SerializeWhenVersion(122, ComparisonOperator.LessThanOrEqual)]
         public LanguageID LanguageId { get; set; }
         
         /// <summary>
@@ -84,7 +84,7 @@ namespace ME3Tweaks.Wwiser.Model
         /// (&gt; v122)
         /// </summary>
         [FieldOrder(3)]
-        [SerializeWhen(nameof(BankGeneratorVersion), 122, ComparisonOperator.GreaterThan)]
+        [SerializeWhenVersion(122, ComparisonOperator.GreaterThan)]
         public uint LanguageIdStringHash { get; set; }
         
         /// <summary>
@@ -92,7 +92,7 @@ namespace ME3Tweaks.Wwiser.Model
         /// (&lt;= v26)
         /// </summary>
         [FieldOrder(4)]
-        [SerializeWhen(nameof(BankGeneratorVersion), 26, ComparisonOperator.LessThanOrEqual)]
+        [SerializeWhenVersion(26, ComparisonOperator.LessThanOrEqual)]
         public ulong Timestamp { get; set; }
         
         /// <summary>
@@ -101,16 +101,14 @@ namespace ME3Tweaks.Wwiser.Model
         /// </summary>
         [FieldOrder(5)]
         [SerializeAs(SerializedType.UInt4)]
-        [SerializeWhen(nameof(BankGeneratorVersion), true, 
-            ConverterType = typeof(BetweenConverter), 
-            ConverterParameter = new[] {27, 126})]
+        [SerializeWhenVersionBetween(27, 126)]
         public bool FeedbackInBank { get; set; }
 
         /// <summary>
         /// Bitpacked bools encoded in AltValues depending on version
         /// </summary>
         [FieldOrder(6)]
-        [SerializeWhen(nameof(BankGeneratorVersion), 126, ComparisonOperator.GreaterThan)]
+        [SerializeWhenVersion(126, ComparisonOperator.GreaterThan)]
         public uint AltValues { get; set; }
         
         //TODO: Implement bit packed bools in AltValues
@@ -128,7 +126,7 @@ namespace ME3Tweaks.Wwiser.Model
         /// (&gt; v76)
         /// </summary>
         [FieldOrder(7)]
-        [SerializeWhen(nameof(BankGeneratorVersion), 76, ComparisonOperator.GreaterThan)]
+        [SerializeWhenVersion(76, ComparisonOperator.GreaterThan)]
         public uint ProjectId { get; set; } = 0;
         
         /// <summary>
@@ -136,7 +134,7 @@ namespace ME3Tweaks.Wwiser.Model
         /// (&gt; v141)
         /// </summary>
         [FieldOrder(8)]
-        [SerializeWhen(nameof(BankGeneratorVersion), 141, ComparisonOperator.GreaterThan)]
+        [SerializeWhenVersion(141, ComparisonOperator.GreaterThan)]
         public AkBankType SoundBankType { get; set; }
         
         /// <summary>
@@ -145,7 +143,7 @@ namespace ME3Tweaks.Wwiser.Model
         /// </summary>
         [FieldOrder(9)]
         [FieldCount(16)]
-        [SerializeWhen(nameof(BankGeneratorVersion), 141, ComparisonOperator.GreaterThan)]
+        [SerializeWhenVersion(141, ComparisonOperator.GreaterThan)]
         public sbyte[] BankHash { get; set; }
         
         // TODO: Copy any padding over into a byte[]? Will allow proper reserialization.

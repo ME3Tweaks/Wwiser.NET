@@ -1,4 +1,5 @@
 ﻿using BinarySerialization;
+using ME3Tweaks.Wwiser.Attributes;
 using ME3Tweaks.Wwiser.Formats;
 using ME3Tweaks.Wwiser.Model.Hierarchy.Enums;
 
@@ -14,8 +15,6 @@ public class StateProp
     
     [FieldOrder(2)]
     [SerializeAs(SerializedType.UInt1)]
-    [SerializeWhen(nameof(BankSerializationContext.Version), 126,
-        ComparisonOperator.GreaterThan,
-        RelativeSourceMode = RelativeSourceMode.SerializationContext)]
+    [SerializeWhenVersion(126, ComparisonOperator.GreaterThan)]
     public bool InDb { get; set; }
 }
