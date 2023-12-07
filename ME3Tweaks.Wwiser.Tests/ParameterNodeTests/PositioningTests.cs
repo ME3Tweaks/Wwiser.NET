@@ -1,10 +1,10 @@
 ﻿using ME3Tweaks.Wwiser.Model.ParameterNode.Positioning;
 
-namespace ME3Tweaks.Wwiser.Tests.HierarchyTests;
+namespace ME3Tweaks.Wwiser.Tests.ParameterNodeTests;
 
 public class PositioningTests
 {
-    [TestCase]
+    [Test]
     public void Positioning_V134_Parses()
     {
         var byteData = new byte[] { 0x03, 0x0A };
@@ -22,15 +22,14 @@ public class PositioningTests
         
     }
     
-    [TestCase]
-    public void Positioning_V134_Reserializes()
+    [TestCase(new byte[] {0x03, 0x0A}, 134)]
+    [TestCase(new byte[] {0x00}, 44)]
+    public void Positioning_V134_Reserializes(byte[] data, int version)
     {
-        var byteData = new byte[] { 0x03, 0x0A };
-        var version = 134;
-        var (_, result) = TestHelpers.Deserialize<PositioningChunk>(byteData, version);
+        var (_, result) = TestHelpers.Deserialize<PositioningChunk>(data, version);
 
         var reserialized = TestHelpers.Serialize(result, version);
-        Assert.That(reserialized, Is.EquivalentTo(byteData));
+        Assert.That(reserialized, Is.EquivalentTo(data));
         
     }
 }

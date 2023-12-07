@@ -5,6 +5,12 @@ namespace ME3Tweaks.Wwiser.Model.ParameterNode;
 public class AuxParams : IBinarySerializable
 {
     [Ignore]
+    public bool Unk1 { get; set; }
+    
+    [Ignore]
+    public bool Unk2 { get; set; }
+    
+    [Ignore]
     public bool HasAux { get; set; }
     
     [Ignore]
@@ -91,6 +97,8 @@ public class AuxParams : IBinarySerializable
             f &= ~AuxFlags.OverrideReflections;
         }
 
+        Unk1 = f.HasFlag(AuxFlags.Unk1);
+        Unk2 = f.HasFlag(AuxFlags.Unk2);
         HasAux = f.HasFlag(AuxFlags.HasAux);
         OverrideUserAuxSends = f.HasFlag(AuxFlags.OverrideUserAuxSends);
         OverrideReflectionsAuxBus = f.HasFlag(AuxFlags.OverrideReflections);
@@ -99,7 +107,9 @@ public class AuxParams : IBinarySerializable
     private AuxFlags GetAuxFlagsFromProperties(uint version)
     {
         AuxFlags f = 0;
-        
+
+        if (Unk1) f |= AuxFlags.Unk1;
+        if (Unk2) f |= AuxFlags.Unk2;
         if (OverrideReflectionsAuxBus) f |= AuxFlags.OverrideReflections;
         if (OverrideUserAuxSends) f |= AuxFlags.OverrideUserAuxSends;
         if (HasAux) f |= (version is 122 or > 135) ? AuxFlags.OverrideReflections : AuxFlags.HasAux;
@@ -110,6 +120,8 @@ public class AuxParams : IBinarySerializable
     [Flags]
     private enum AuxFlags : byte
     {
+        Unk1 = 1 << 0,
+        Unk2 = 1 << 1,
         OverrideUserAuxSends = 1 << 2,
         HasAux = 1 << 3,
         OverrideReflections = 1 << 4
