@@ -5,7 +5,7 @@ namespace ME3Tweaks.Wwiser.Tests.HierarchyTests;
 public class PositioningTests
 {
     [TestCase]
-    public void PositioningParams_V134_Parses()
+    public void Positioning_V134_Parses()
     {
         var byteData = new byte[] { 0x03, 0x0A };
         var version = 134;
@@ -19,6 +19,18 @@ public class PositioningTests
             Assert.That(result.PositioningBits.PanningType, Is.EqualTo(BitsPositioning.SpeakerPanningType.DirectSpeakerAssignment));
             Assert.That(result.PositioningBits.PositionType, Is.EqualTo(BitsPositioning.PositionType3D.Emitter));
         });
+        
+    }
+    
+    [TestCase]
+    public void Positioning_V134_Reserializes()
+    {
+        var byteData = new byte[] { 0x03, 0x0A };
+        var version = 134;
+        var (_, result) = TestHelpers.Deserialize<PositioningChunk>(byteData, version);
+
+        var reserialized = TestHelpers.Serialize(result, version);
+        Assert.That(reserialized, Is.EquivalentTo(byteData));
         
     }
 }

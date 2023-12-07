@@ -18,13 +18,19 @@ public class BitsPositioning
         // Apply the two bool properties in case their values have changed since deserialization.
         if (parent.HasPositioning)
         {
-            Value &= BitsPositioningInner.PositioningInfoOverrideParent;
+            Value |= BitsPositioningInner.PositioningInfoOverrideParent;
         }
 
         if (parent.Has3DPositioning)
         {
-            Value &= (version > 129)
+            Value |= (version > 129)
                 ? BitsPositioningInner.HasListenerRelativeRouting : BitsPositioningInner.Is3DPositioningAvailable;
+        }
+
+        if (parent.HasAutomation && version > 129)
+        {
+            PositionType |= PositionType3D.EmitterWithAutomation;
+            // TODO: There's a second option for this
         }
         
         var write = Value;
@@ -32,10 +38,10 @@ public class BitsPositioning
         if (version is > 112 and <= 122 && write.HasFlag(BitsPositioningInner.Unknown2D2))
         {
             write &= ~BitsPositioningInner.Is3DPositioningAvailable;
-            write &= BitsPositioningInner.Unknown2D2;
+            write |= BitsPositioningInner.Unknown2D2;
         }
         
-        stream.WriteByte((byte)((byte)write & ((byte)PanningType << 2) & ((byte)PositionType) << 5));
+        stream.WriteByte((byte)((byte)write | ((byte)PanningType << 2) | (byte)PositionType << 5));
     }
 
     public void Deserialize(Stream stream, PositioningChunk parent, uint version)
@@ -46,7 +52,7 @@ public class BitsPositioning
         // Is3DPositioningAvailable is bit 3 on this version
         if (version is > 112 and <= 122 && bits.HasFlag(BitsPositioningInner.Unknown2D2))
         {
-            bits &= BitsPositioningInner.Is3DPositioningAvailable;
+            bits |= BitsPositioningInner.Is3DPositioningAvailable;
             bits &= ~BitsPositioningInner.Unknown2D2;
         }
 
@@ -58,7 +64,15 @@ public class BitsPositioning
         parent.HasPositioning = bits.HasFlag(BitsPositioningInner.PositioningInfoOverrideParent);
 
         // Also this one
-        if (version > 129) parent.Has3DPositioning = Value.HasFlag(BitsPositioningInner.HasListenerRelativeRouting);
+        if (version > 129)
+        {
+            parent.Has3DPositioning = Value.HasFlag(BitsPositioningInner.HasListenerRelativeRouting);
+            
+            // Type == 1 OR Type == 2 and Type != 1
+            parent.HasAutomation = PositionType.HasFlag(PositionType3D.EmitterWithAutomation) ||
+                                   (PositionType.HasFlag(PositionType3D.ListenerWithAutomation) &&
+                                    !PositionType.HasFlag(PositionType3D.EmitterWithAutomation));
+        }
         else parent.Has3DPositioning = Value.HasFlag(BitsPositioningInner.Is3DPositioningAvailable);
     }
     [Flags]

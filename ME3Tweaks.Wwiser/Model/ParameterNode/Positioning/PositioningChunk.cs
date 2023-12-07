@@ -24,35 +24,54 @@ public class PositioningChunk : IBinarySerializable
     
     [Ignore]
     public bool HasDynamic { get; set; }
-    
-    [Ignore]
+
     public BitsPositioning PositioningBits { get; } = new();
-
-    [Ignore]
+    
     public PositioningFlags PositioningFlags { get; }  = new();
-
-    [Ignore]
+    
     public Gen3DParams Gen3DParams { get; }  = new();
+    
+    public Automation AutomationData { get; } = new();
 
     public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
-        var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
+        var context = serializationContext.FindAncestor<BankSerializationContext>();
+        var version = context.Version;
         PositioningBits.Serialize(stream, this, version);
         PositioningFlags.Serialize(stream, this, version);
         if (Has3DPositioning)
         {
             Gen3DParams.Serialize(stream, this, version);
+            if(HasDynamic) stream.WriteBoolByte(HasDynamic);
+            
+            if (HasAutomation)
+            {
+                var ser = new BinarySerializer();
+                ser.Serialize(stream, AutomationData, context);
+            }
         }
+        
     }
 
     public void Deserialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
-        var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
+        var context = serializationContext.FindAncestor<BankSerializationContext>();
+        var version = context.Version;
         PositioningBits.Deserialize(stream, this, version);
         PositioningFlags.Deserialize(stream, this, version);
         if (Has3DPositioning)
         {
             Gen3DParams.Deserialize(stream, this, version);
+            if (HasDynamic)
+            {
+                HasDynamic = stream.ReadBoolByte();
+            }
+
+            if (HasAutomation)
+            {
+                var ser = new BinarySerializer();
+                ser.Deserialize<Automation>(stream, context);
+            }
         }
     }
 }

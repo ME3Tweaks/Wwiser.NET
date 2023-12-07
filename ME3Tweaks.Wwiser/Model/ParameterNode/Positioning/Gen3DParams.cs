@@ -55,14 +55,16 @@ public class Gen3DParams
     public void Deserialize(Stream stream, PositioningChunk parent, uint version)
     {
         var reader = new BinaryReader(stream);
-
+        byte read = 0;
+        
         if (version <= 89)
         {
             Type = (PositioningType)reader.ReadUInt32();
         }
         else
         {
-            var mode = (SpatializationMode)reader.ReadByte();
+            read = reader.ReadByte();
+            var mode = (SpatializationMode)read;
             if (version <= 132)
             {
                 // HoldListener and HoldEmitter are one flag lower on version 132 and lower
@@ -84,7 +86,7 @@ public class Gen3DParams
         if (version <= 129) AttenuationId = reader.ReadUInt32();
         if (version <= 89) IsSpatialized = reader.ReadBoolean();
         
-        SetBoolsFromProperties(parent, version);
+        SetBoolsFromProperties(parent, read, version); // use original parsed byte instead of converted Mode
     }
 
     /// <summary>
@@ -100,17 +102,17 @@ public class Gen3DParams
     /// Correctly sets the HasAutomation and HasDynamic flags based on the
     /// other properties in the class
     /// </summary>
-    private void SetBoolsFromProperties(PositioningChunk parent, uint version)
+    private void SetBoolsFromProperties(PositioningChunk parent, byte value, uint version)
     {
         // Todo: rewrite so bitwise operators use IsFlag - more readable
         parent.HasAutomation = version switch
         {
             <= 72 => Type is PositioningType.UserDef3D,
             <= 89 => Type is not PositioningType.Positioning2D,
-            <= 122 => ((byte)Mode & 3) != 1,
-            <= 126 => (((byte)Mode >> 4 ) & 1) != 1,
-            <= 129 => (((byte)Mode >> 6 ) & 1) != 1,
-            _ => (((byte)Mode >> 5 ) & 3) != 1,
+            <= 122 => (value & 3) != 1,
+            <= 126 => ((value >> 4 ) & 1) != 1,
+            <= 129 => ((value >> 6 ) & 1) != 1,
+            _ => parent.HasAutomation
         };
 
         parent.HasDynamic = version switch
