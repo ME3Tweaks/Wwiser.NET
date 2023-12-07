@@ -50,5 +50,7 @@ public class NodeBaseParameters
     [FieldOrder(11)]
     [SerializeWhenVersion(65, ComparisonOperator.GreaterThan)]
     public AuxParams AuxParams { get; set; } = new();
-    
+
+    [FieldOrder(12)] 
+    public AdvSettingsParams AdvSettingsParams { get; set; } = new();
 }

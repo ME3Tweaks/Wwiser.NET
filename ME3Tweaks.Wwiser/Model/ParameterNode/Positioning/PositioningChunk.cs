@@ -102,8 +102,8 @@ public class PositioningChunk : IBinarySerializable
     [Ignore]
     public bool IsSpatialized { get; set; }
 
-    [Ignore]
-    public Automation AutomationData { get; set; }
+    [Ignore] 
+    public Automation AutomationData { get; set; } = new();
 
     public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext context)
     {

@@ -26,14 +26,14 @@ public class Automation
 
     [FieldOrder(5)]
     [FieldCount(nameof(NumVertices))]
-    public List<PathVertex> Vertices { get; set; }
+    public List<PathVertex> Vertices { get; set; } = new();
     
     [FieldOrder(6)]
     public uint NumPathListItem { get; set; }
 
     [FieldOrder(7)]
     [FieldCount(nameof(NumPathListItem))]
-    public List<PathListItemOffset> PathList{ get; set; }
+    public List<PathListItemOffset> PathList{ get; set; } = new();
     
     [FieldOrder(8)]
     [SerializeWhenVersion(36, ComparisonOperator.GreaterThan)] // TODO: I'm not sure if this exists
@@ -42,9 +42,9 @@ public class Automation
     [FieldOrder(9)]
     [SerializeWhenVersion(36, ComparisonOperator.GreaterThan)]
     [FieldCount(nameof(NumAutomationParams))]
-    public List<AutomationParams3D> AutomationParams{ get; set; }
-    
-    
+    public List<AutomationParams3D> AutomationParams { get; set; } = new();
+
+
 }
 
 public class PathVertex
