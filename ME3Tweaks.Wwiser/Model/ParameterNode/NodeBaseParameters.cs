@@ -1,6 +1,7 @@
 ﻿using BinarySerialization;
 using ME3Tweaks.Wwiser.Attributes;
 using ME3Tweaks.Wwiser.Model.Hierarchy.Enums;
+using ME3Tweaks.Wwiser.Model.State;
 
 namespace ME3Tweaks.Wwiser.Model.ParameterNode;
 
@@ -8,6 +9,8 @@ public class NodeBaseParameters
 {
     [FieldOrder(0)]
     public InitialFxParams FxParams { get; set; } = new();
+    
+    // TODO: InitialMetadataParams on >v136 - not relevant to mass effect
     
     [FieldOrder(1)]
     [SerializeAs(SerializedType.UInt1)]
@@ -53,4 +56,20 @@ public class NodeBaseParameters
 
     [FieldOrder(12)] 
     public AdvSettingsParams AdvSettingsParams { get; set; } = new();
+
+    //TODO: Convert between the following two properties on version conversion
+    [FieldOrder(13)] 
+    [SerializeWhenVersion(52, ComparisonOperator.LessThanOrEqual)]
+    public StateGroupChunk StateGroupChunk { get; set; } = new();
+    
+    [FieldOrder(14)] 
+    [SerializeWhenVersion(52, ComparisonOperator.GreaterThan)]
+    public StateChunk StateChunk { get; set; } = new();
+
+    [FieldOrder(15)] 
+    public RtpcParameterNodeBase Rtpc { get; set; } = new();
+
+    [FieldOrder(16)] 
+    [SerializeWhenVersion(126, ComparisonOperator.GreaterThan)]
+    public FeedbackInfo FeedbackInfo { get; set; } = new();
 }

@@ -5,11 +5,11 @@ namespace ME3Tweaks.Wwiser.Tests.HierarchyTests;
 
 public class StateChunkTests
 {
-    [Test]
-    public void V134_EmptyStateChunkAware_Parses()
+    [TestCase(new byte[] {00, 00}, 134)]
+    [TestCase(new byte[] {00, 00, 00, 00}, 120)]
+    public void Empty_MultipleVersions_Parses(byte[] data, int version)
     {
-        byte[] data = { 00, 00 };
-        var (_, result) = TestHelpers.Deserialize<StateChunk_Aware>(data, 134);
+        var (_, result) = TestHelpers.Deserialize<StateChunk>(data, version);
         
         Assert.Multiple(() =>
         {

@@ -1,6 +1,7 @@
 ﻿using BinarySerialization;
 using ME3Tweaks.Wwiser.Attributes;
 using ME3Tweaks.Wwiser.Formats;
+using ME3Tweaks.Wwiser.Model.ParameterNode;
 using ME3Tweaks.Wwiser.Model.Plugins;
 using ME3Tweaks.Wwiser.Model.RTPC;
 using ME3Tweaks.Wwiser.Model.State;
@@ -29,7 +30,7 @@ public class FxBase : HircItem
     public List<MediaMapItem> Media { get; set; } = new();
     
     [FieldOrder(5)]
-    public RtpcCurves RtpcCurves { get; set; } = new();
+    public RtpcParameterNodeBase RtpcParameterNodeBase { get; set; } = new();
     
     [FieldOrder(6)]
     [SerializeWhenVersionBetween(123, 126)]
@@ -37,7 +38,7 @@ public class FxBase : HircItem
     
     [FieldOrder(7)]
     [SerializeWhenVersion(126, ComparisonOperator.GreaterThan)]
-    public StateChunk_Aware StateChunk { get; set; } = new();
+    public StateChunk StateChunk { get; set; } = new();
     
     [FieldOrder(8)]
     [SerializeWhenVersion(90, ComparisonOperator.GreaterThan)]

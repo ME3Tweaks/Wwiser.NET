@@ -9,23 +9,9 @@ public class StateGroupChunk : AkIdentifiable
     public SyncType StateSyncType { get; set; }
     
     [FieldOrder(2)]
-    public VarCount StateCount { get; set; } = new();
+    public StateCount StateCount { get; set; } = new();
     
     [FieldOrder(3)]
     [FieldCount($"{nameof(StateCount)}.{nameof(StateCount.Value)}")]
     public List<State> States { get; set; } = new();
-
-    public enum SyncType : byte
-    {
-        Immediate,
-        NextGrid,
-        NextBar,
-        NextBeat,
-        NextMarker,
-        NextUserMarker,
-        EntryMarker,
-        ExitMarker,
-        ExitNever,
-        LastExitPosition
-    }
 }

@@ -1,8 +1,9 @@
 ﻿using BinarySerialization;
+using ME3Tweaks.Wwiser.Model.RTPC;
 
-namespace ME3Tweaks.Wwiser.Model.RTPC;
+namespace ME3Tweaks.Wwiser.Model.ParameterNode;
 
-public class RtpcCurves
+public class RtpcParameterNodeBase
 {
     //TODO: <=v36 this is a uint - not relevant to mass effect
     [FieldOrder(0)] 
