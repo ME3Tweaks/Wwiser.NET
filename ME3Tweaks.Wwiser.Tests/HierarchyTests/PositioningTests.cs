@@ -15,9 +15,9 @@ public class PositioningTests
             Assert.That(result.HasPositioning, Is.True);
             Assert.That(result.Has3DPositioning, Is.True);
             
-            Assert.That(result.PositioningBits.Value, Is.EqualTo(BitsPositioning.BitsPositioningInner.PositioningInfoOverrideParent | BitsPositioning.BitsPositioningInner.HasListenerRelativeRouting));
-            Assert.That(result.PositioningBits.PanningType, Is.EqualTo(BitsPositioning.SpeakerPanningType.DirectSpeakerAssignment));
-            Assert.That(result.PositioningBits.PositionType, Is.EqualTo(BitsPositioning.PositionType3D.Emitter));
+            Assert.That(result.Flags, Is.EqualTo(PositioningChunk.PositioningFlags.PositioningInfoOverrideParent | PositioningChunk.PositioningFlags.HasListenerRelativeRouting));
+            Assert.That(result.PanningType, Is.EqualTo(PositioningChunk.SpeakerPanningType.DirectSpeakerAssignment));
+            Assert.That(result.PositionType, Is.EqualTo(PositioningChunk.PositionType3D.Emitter));
         });
         
     }
