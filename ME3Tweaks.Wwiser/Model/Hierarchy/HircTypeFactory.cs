@@ -9,9 +9,11 @@ public class HircTypeFactory : ISubtypeFactory
     private static readonly Dictionary<Type, HircType> TypeToEnum = new()
     {
         { typeof(Event), HircType.Event },
-        {typeof(Attenuation), HircType.Attenuation },
+        { typeof(Attenuation), HircType.Attenuation },
         { typeof(FxShareSet), HircType.FxShareSet },
-        { typeof(FxCustom), HircType.FxCustom}
+        { typeof(FxCustom), HircType.FxCustom },
+        { typeof(Sound), HircType.Sound },
+        { typeof(ActorMixer), HircType.ActorMixer },
     };
     
     public bool TryGetKey(Type valueType, [UnscopedRef] out object key)
@@ -40,6 +42,8 @@ public class HircTypeFactory : ISubtypeFactory
             HircType.Attenuation => typeof(Attenuation),
             HircType.FxShareSet => typeof(FxShareSet),
             HircType.FxCustom => typeof(FxCustom),
+            HircType.Sound => typeof(Sound),
+            HircType.ActorMixer => typeof(ActorMixer),
             _ => typeof(HircItem)
         };
         return true;
