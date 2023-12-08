@@ -5,7 +5,9 @@ namespace ME3Tweaks.Wwiser.Model.Hierarchy.Enums;
 
 public class ParameterId : IBinarySerializable
 {
+    [Ignore]
     public RtpcParameterId? ParamId { get; set; }
+    [Ignore]
     public ModulatorRtpcParameterId? ModParamId { get; set; }
     
     public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)

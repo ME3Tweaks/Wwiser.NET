@@ -60,7 +60,7 @@ public class NodeBaseParameters
     //TODO: Convert between the following two properties on version conversion
     [FieldOrder(13)] 
     [SerializeWhenVersion(52, ComparisonOperator.LessThanOrEqual)]
-    public StateGroupChunk StateGroupChunk { get; set; } = new();
+    public StateGroup StateGroup { get; set; } = new();
     
     [FieldOrder(14)] 
     [SerializeWhenVersion(52, ComparisonOperator.GreaterThan)]
@@ -70,6 +70,6 @@ public class NodeBaseParameters
     public RtpcParameterNodeBase Rtpc { get; set; } = new();
 
     [FieldOrder(16)] 
-    [SerializeWhenVersion(126, ComparisonOperator.GreaterThan)]
+    [SerializeWhenVersion(126, ComparisonOperator.LessThan)]
     public FeedbackInfo FeedbackInfo { get; set; } = new();
 }

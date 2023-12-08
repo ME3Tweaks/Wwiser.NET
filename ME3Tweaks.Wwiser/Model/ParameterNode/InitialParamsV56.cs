@@ -4,18 +4,18 @@ namespace ME3Tweaks.Wwiser.Model.ParameterNode;
 
 public class InitialParamsV56 : IBinarySerializable
 {
-    public float Volume { get; set; }
-    public float VolumeMin { get; set; }
-    public float VolumeMax { get; set; }
-    public float LFE { get; set; }
-    public float LFEMin { get; set; }
-    public float LFEMax { get; set; }
-    public float Pitch { get; set; }
-    public float PitchMin { get; set; }
-    public float PitchMax { get; set; }
-    public float LPF { get; set; }
-    public float LPFMin { get; set; }
-    public float LPFMax { get; set; }
+    [Ignore] public float Volume { get; set; }
+    [Ignore] public float VolumeMin { get; set; }
+    [Ignore] public float VolumeMax { get; set; }
+    [Ignore] public float LFE { get; set; }
+    [Ignore] public float LFEMin { get; set; }
+    [Ignore] public float LFEMax { get; set; }
+    [Ignore] public float Pitch { get; set; }
+    [Ignore] public float PitchMin { get; set; }
+    [Ignore] public float PitchMax { get; set; }
+    [Ignore] public float LPF { get; set; }
+    [Ignore] public float LPFMin { get; set; }
+    [Ignore] public float LPFMax { get; set; }
     public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
         var version = serializationContext.FindAncestor<BankSerializationContext>().Version;

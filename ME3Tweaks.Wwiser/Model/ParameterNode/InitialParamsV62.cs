@@ -6,14 +6,14 @@ namespace ME3Tweaks.Wwiser.Model.ParameterNode;
 public class InitialParamsV62
 {
     [FieldOrder(0)] 
-    public ushort ParamLength { get; set; }
+    public byte ParamLength { get; set; }
     
     [FieldOrder(1)]
     [FieldCount(nameof(ParamLength))]
     public List<ParameterPair> Parameters { get; set; }
     
     [FieldOrder(3)] 
-    public ushort RangeLength { get; set; }
+    public byte RangeLength { get; set; }
     
     [FieldOrder(4)]
     [FieldCount(nameof(RangeLength))]

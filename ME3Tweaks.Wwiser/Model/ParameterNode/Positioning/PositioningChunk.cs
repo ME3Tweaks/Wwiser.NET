@@ -200,7 +200,7 @@ public class PositioningChunk : IBinarySerializable
             Flags |= PositioningFlags.PositioningInfoOverrideParent;
         }
 
-        if (Has3DPositioning)
+        if (Has3DPositioning & version > 112)
         {
             Flags |= (version > 129)
                 ? PositioningFlags.HasListenerRelativeRouting
@@ -322,7 +322,7 @@ public class PositioningChunk : IBinarySerializable
         {
             CenterPct = reader.ReadInt32();
             PanRL = reader.ReadSingle();
-            PanRL = reader.ReadSingle();
+            PanFR = reader.ReadSingle();
         }
 
         if (version <= 89)
