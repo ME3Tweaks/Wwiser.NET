@@ -7,6 +7,7 @@ public class ParameterId : IBinarySerializable
 {
     [Ignore]
     public RtpcParameterId? ParamId { get; set; }
+    
     [Ignore]
     public ModulatorRtpcParameterId? ModParamId { get; set; }
     
