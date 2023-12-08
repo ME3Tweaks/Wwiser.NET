@@ -5,10 +5,36 @@ namespace ME3Tweaks.Wwiser.Model.ParameterNode;
 
 public class InitialParamsV62
 {
-    // This uint could be a uni for some prop ids. It's dumb
     [FieldOrder(0)] 
-    public PropBundle<SmartPropId, uint> Parameters { get; set; } = new();
+    public ushort ParamLength { get; set; }
     
     [FieldOrder(1)]
-    public PropBundle<SmartPropId, UnionRange> RangedModifiers { get; set; } = new();
+    [FieldCount(nameof(ParamLength))]
+    public List<ParameterPair> Parameters { get; set; }
+    
+    [FieldOrder(3)] 
+    public ushort RangeLength { get; set; }
+    
+    [FieldOrder(4)]
+    [FieldCount(nameof(RangeLength))]
+    public List<RangePair> Ranges { get; set; }
+    
+    public class ParameterPair
+    {
+        [FieldOrder(0)]
+        public SmartPropId Id { get; set; }
+        
+        // This uint could be a uni for some prop ids. It's dumb
+        [FieldOrder(1)]
+        public uint Value { get; set; }
+    }
+
+    public class RangePair
+    {
+        [FieldOrder(0)]
+        public SmartPropId Id { get; set; }
+        
+        [FieldOrder(1)]
+        public UnionRange Value { get; set; }
+    }
 }

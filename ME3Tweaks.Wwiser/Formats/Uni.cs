@@ -7,10 +7,13 @@ namespace ME3Tweaks.Wwiser.Formats;
 /// </summary>
 public class Uni : IBinarySerializable
 {
+    [Ignore]
     public float Float { get; set; }
     
+    [Ignore]
     public uint Integer { get; set; }
 
+    [Ignore]
     public float Value => Float == 0.0f ? Integer : Float;
     
     public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)

@@ -23,6 +23,19 @@ public class State : AkIdentifiable
     // Higher versions, data is inlined???? idk
     [FieldOrder(3)]
     [SerializeWhenVersion(145, ComparisonOperator.GreaterThan)]
-    public PropBundle<ushort, float> Properties { get; set; } = new();
+    public ushort PropCount { get; set; }
     
+    [FieldOrder(4)]
+    [FieldCount(nameof(PropCount))]
+    [SerializeWhenVersion(145, ComparisonOperator.GreaterThan)]
+    public List<PropertyPair> Properties { get; set; } = new();
+    
+    public class PropertyPair
+    {
+        [FieldOrder(0)]
+        public ushort Id { get; set; }
+        
+        [FieldOrder(1)]
+        public float Value { get; set; }
+    }
 }

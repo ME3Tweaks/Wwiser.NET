@@ -60,9 +60,10 @@ public class VarCount : IBinarySerializable
 
         return value;
     }
-
+    
     public static void WriteResizingUint(Stream stream, uint value)
     {
-        //TODO: This
+        // Temp for now
+        stream.WriteByte((byte)value);
     }
 }
