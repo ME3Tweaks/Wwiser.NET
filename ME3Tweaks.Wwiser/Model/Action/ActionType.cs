@@ -33,7 +33,7 @@ public class ActionType : IBinarySerializable
                 _ => (byte)Value
             };
             var shifted = (uint)(output << 12);
-            var value = shifted | Data;
+            var value = shifted | (Data & 0xFFF);
             stream.Write(BitConverter.GetBytes(value));
         }
         else
@@ -44,7 +44,8 @@ public class ActionType : IBinarySerializable
                 >= ActionTypeValue.SetLPF1 => (byte)(Value - 2),
                 _ => (byte)Value
             };
-            var value = (ushort)((ushort)(output << 8) | Data);
+            var shifted = (ushort)(output << 8);
+            var value = (ushort)(shifted | (Data & 0xFF));
             stream.Write(BitConverter.GetBytes(value));
         }
         
