@@ -12,6 +12,7 @@ public class Children : IEnumerable<uint>
     [FieldCount(nameof(ChildrenCount))]
     public List<uint> ChildrenValues { get; set; } = new();
 
+    [Ignore]
     public uint this[int i]
     {
         get => ChildrenValues[i];
