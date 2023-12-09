@@ -6,12 +6,15 @@ public class ActionType : IBinarySerializable
 {
     [Ignore]
     public ActionTypeValue Value { get; set; }
+    
+    [Ignore]
+    public uint Data { get; set; }
 
     public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
         var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
         byte output;
-        if (version <= 65)
+        if (version <= 56)
         {
             output = Value switch
             {
@@ -29,6 +32,9 @@ public class ActionType : IBinarySerializable
                 >= ActionTypeValue.SetBusVolume1 => (byte)(Value - 2),
                 _ => (byte)Value
             };
+            var shifted = (uint)(output << 12);
+            var value = shifted | Data;
+            stream.Write(BitConverter.GetBytes(value));
         }
         else
         {
@@ -38,17 +44,28 @@ public class ActionType : IBinarySerializable
                 >= ActionTypeValue.SetLPF1 => (byte)(Value - 2),
                 _ => (byte)Value
             };
+            var value = (ushort)((ushort)(output << 8) | Data);
+            stream.Write(BitConverter.GetBytes(value));
         }
-        stream.WriteByte(output);
+        
     }
 
     public void Deserialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
         var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
-        var value = (byte)stream.ReadByte();
-        if (version <= 65)
+        
+        //var value = (byte)stream.ReadByte();
+        if (version <= 56)
         {
-            Value = value switch
+            Span<byte> span = stackalloc byte[4];
+            var read = stream.Read(span);
+            if (read != 4) throw new Exception();
+            uint value = BitConverter.ToUInt32(span);
+            
+            var enumValue = value >> 12;
+            Data = value & 0xFFF;
+            
+            Value = enumValue switch
             {
                 0x20 => ActionTypeValue.Event1,
                 0x30 => ActionTypeValue.Event2,
@@ -61,17 +78,25 @@ public class ActionType : IBinarySerializable
                 0x90 => ActionTypeValue.Break,
                 0xA0 => ActionTypeValue.Trigger,
                 0xB0 => ActionTypeValue.Seek,
-                >= 0x0A => (ActionTypeValue)(value + 2),
-                _ => (ActionTypeValue)value
+                >= 0x0A => (ActionTypeValue)(enumValue + 2),
+                _ => (ActionTypeValue)enumValue
             };
         }
         else
         {
-            Value = value switch
+            Span<byte> span = stackalloc byte[2];
+            var read = stream.Read(span);
+            if (read != 2) throw new Exception();
+            ushort value = BitConverter.ToUInt16(span);
+
+            var enumValue = value >> 8;
+            Data = (uint)value & 0xFF;
+            
+            Value = enumValue switch
             {
-                >= 0x1A => (ActionTypeValue)(value + 3),
-                >= 0x0E => (ActionTypeValue)(value + 2),
-                _ => (ActionTypeValue)value
+                >= 0x1A => (ActionTypeValue)(enumValue + 3),
+                >= 0x0E => (ActionTypeValue)(enumValue + 2),
+                _ => (ActionTypeValue)enumValue
             };
         }
     }
