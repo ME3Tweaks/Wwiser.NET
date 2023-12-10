@@ -4,7 +4,7 @@ using ME3Tweaks.Wwiser.Model.Hierarchy;
 
 namespace ME3Tweaks.Wwiser.Model.Action;
 
-public class ActionParamsFactory : ISubtypeFactory
+public class ActionSpecificParamsFactory : ISubtypeFactory
 {
     public bool TryGetKey(Type valueType, [UnscopedRef] out object key)
     {
@@ -15,10 +15,7 @@ public class ActionParamsFactory : ISubtypeFactory
     {
         type = (ActionTypeValue)key switch
         {
-            ActionTypeValue.Stop => typeof(Active),
-            ActionTypeValue.Pause => typeof(Active),
-            ActionTypeValue.Resume => typeof(Active),
-            ActionTypeValue.Play => typeof(Play),
+            ActionTypeValue.Play => typeof(Specific.Action),
             _ => typeof(Play)
         };
         return true;

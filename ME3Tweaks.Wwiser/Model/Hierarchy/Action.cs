@@ -26,20 +26,16 @@ public class Action : HircItem
     public int DelayMax { get; set; }
     
     [FieldOrder(5)]
-    [SerializeWhenVersion(56, ComparisonOperator.LessThanOrEqual)]
-    public uint SubSectionSize { get; set; } // TODO: this needs to go away
-    
-    [FieldOrder(6)]
     [SerializeWhenVersion(65, ComparisonOperator.GreaterThan)]
     [SerializeAs(SerializedType.UInt1)]
     public bool IsBus { get; set; }
 
-    [FieldOrder(7)]
+    [FieldOrder(6)]
     [SerializeWhenVersion(56, ComparisonOperator.GreaterThan)]
     public InitialParamsV62 PropBundle { get; set; } = new();
 
-    [FieldOrder(8)]
-    [FieldLength(nameof(SubSectionSize))]
-    [SubtypeFactory($"{nameof(Type)}.{nameof(Type.Value)}", typeof(ActionParamsFactory))]
-    public ActionParams ActionParams { get; set; } = new();
+    [FieldOrder(7)]
+    [SubtypeFactory($"{nameof(Type)}.{nameof(Type.Value)}", typeof(ActionParamsFactory),
+        BindingMode = BindingMode.OneWay)]
+    public required IActionParams ActionParams { get; set; }
 }

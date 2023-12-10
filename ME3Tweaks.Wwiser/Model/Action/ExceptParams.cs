@@ -6,8 +6,8 @@ namespace ME3Tweaks.Wwiser.Model.Action;
 
 public class ExceptParams
 {
-    [FieldOrder(0)]
-    public VarCount ExceptionCount { get; set; }
+    [FieldOrder(0)] 
+    public VarCount ExceptionCount { get; set; } = new();
 
     [FieldOrder(1)]
     [FieldCount($"{nameof(ExceptionCount)}.{nameof(ExceptionCount.Value)}")]
