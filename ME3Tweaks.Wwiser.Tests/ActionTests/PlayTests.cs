@@ -9,7 +9,7 @@ public class PlayTests
     [Test]
     public void Play_V134_Parses()
     {
-        var data = TestData.GetTestDataBytes(@"Action",@"Play_v134.bin");
+        var data = TestData.GetTestDataBytes(@"Action",@"Play_V134.bin");
         var (_, result) = TestHelpers.Deserialize<Action>(data, 134);
         
         Assert.Multiple(() =>

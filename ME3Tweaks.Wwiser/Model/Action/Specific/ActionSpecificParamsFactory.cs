@@ -1,8 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using BinarySerialization;
-using ME3Tweaks.Wwiser.Model.Hierarchy;
 
-namespace ME3Tweaks.Wwiser.Model.Action;
+namespace ME3Tweaks.Wwiser.Model.Action.Specific;
 
 public class ActionSpecificParamsFactory : ISubtypeFactory
 {
@@ -15,8 +14,10 @@ public class ActionSpecificParamsFactory : ISubtypeFactory
     {
         type = (ActionTypeValue)key switch
         {
-            ActionTypeValue.Play => typeof(Specific.Action),
-            _ => typeof(Play)
+            ActionTypeValue.Stop => typeof(Stop),
+            ActionTypeValue.Pause => typeof(PauseResume),
+            ActionTypeValue.Resume => typeof(PauseResume),
+            _ => typeof(Action)
         };
         return true;
     }
