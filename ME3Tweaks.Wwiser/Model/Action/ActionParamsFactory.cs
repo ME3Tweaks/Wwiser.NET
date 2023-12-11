@@ -33,6 +33,12 @@ public class ActionParamsFactory : ISubtypeFactory
             ActionTypeValue.Release => typeof(Empty),
             ActionTypeValue.PlayEvent => typeof(Empty),
             ActionTypeValue.PlayEventUnknown => typeof(Play),
+            ActionTypeValue.UseState1 => typeof(UseState),
+            ActionTypeValue.UseState2 => typeof(UseState),
+            >= ActionTypeValue.Event1 and <= ActionTypeValue.Event3 => typeof(Empty),
+            ActionTypeValue.Duck => typeof(Empty),
+            ActionTypeValue.Break => typeof(Empty),
+            ActionTypeValue.Trigger => typeof(Empty),
             _ => typeof(Active)
         };
         return true;

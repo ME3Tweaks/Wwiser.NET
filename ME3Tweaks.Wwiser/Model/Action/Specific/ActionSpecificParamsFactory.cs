@@ -14,7 +14,7 @@ public class ActionSpecificParamsFactory : ISubtypeFactory
     {
         type = (ActionTypeValue)key switch
         {
-            ActionTypeValue.Stop => typeof(Stop),
+            ActionTypeValue.Stop => typeof(PauseResume), // TODO: Verify this
             ActionTypeValue.Pause => typeof(PauseResume),
             ActionTypeValue.Resume => typeof(PauseResume),
             >= ActionTypeValue.SetPitch1 and <= ActionTypeValue.SetLPF2 => typeof(SetAkProp), // TODO: Verify this is correct for <= v56
