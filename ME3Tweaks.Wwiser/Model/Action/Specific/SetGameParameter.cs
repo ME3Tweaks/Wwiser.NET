@@ -1,0 +1,19 @@
+﻿using BinarySerialization;
+using ME3Tweaks.Wwiser.Attributes;
+using ME3Tweaks.Wwiser.Formats;
+
+namespace ME3Tweaks.Wwiser.Model.Action.Specific;
+
+public class SetGameParameter
+{
+    [FieldOrder(0)]
+    [SerializeWhenVersion(89, ComparisonOperator.GreaterThan)]
+    [SerializeAs(SerializedType.UInt1)]
+    public bool BypassTransition { get; set; }
+
+    [FieldOrder(1)] 
+    public SmartValueMeaning ValueMeaning { get; set; } = new();
+
+    [FieldOrder(2)] 
+    public RangedParameterFloat RandomizerModifier { get; set; } = new();
+}

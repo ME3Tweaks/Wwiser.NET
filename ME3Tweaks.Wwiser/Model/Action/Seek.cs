@@ -1,5 +1,6 @@
 ﻿using BinarySerialization;
 using ME3Tweaks.Wwiser.Attributes;
+using ME3Tweaks.Wwiser.Formats;
 
 namespace ME3Tweaks.Wwiser.Model.Action;
 
@@ -12,20 +13,14 @@ public class Seek
     [FieldOrder(2)]
     [SerializeAs(SerializedType.UInt1)]
     public bool IsSeekRelativeToDuration{ get; set; }
-    
-    [FieldOrder(3)]
-    public float SeekValue { get; set; }
+
+    [FieldOrder(3)] 
+    public RangedParameterFloat SeekValue { get; set; } = new();
     
     [FieldOrder(4)]
-    public float SeekValueMin { get; set; }
-    
-    [FieldOrder(5)]
-    public float SeekValueMax { get; set; }
-    
-    [FieldOrder(6)]
     [SerializeAs(SerializedType.UInt1)]
     public bool SnapToNearestMarker{ get; set; }
     
-    [FieldOrder(7)]
+    [FieldOrder(5)]
     public ExceptParams ExceptParams { get; set; } = new();
 }
