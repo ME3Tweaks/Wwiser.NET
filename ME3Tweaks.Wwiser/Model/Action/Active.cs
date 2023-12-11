@@ -10,6 +10,6 @@ public class Active : IActionParams
     public uint SubSectionSize { get; set; }
 
     [FieldOrder(2)] 
-    [FieldLength(nameof(SubSectionSize))]
+    [FieldLength(nameof(SubSectionSize), BindingMode = BindingMode.OneWayToSource)]
     public required ActiveParams Params { get; set; }
 }

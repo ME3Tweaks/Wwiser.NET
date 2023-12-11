@@ -17,13 +17,11 @@ public class ActiveParams
     public CurveInterpolation CurveInterpolation { get; set; }
 
     [FieldOrder(2)]
-    [SerializeWhenVersion(56, ComparisonOperator.LessThanOrEqual)]
-    [SubtypeFactory($"{nameof(Hierarchy.Action.Type)}.{nameof(Hierarchy.Action.Type.Value)}", 
-        typeof(ActionSpecificParamsFactory), BindingMode = BindingMode.OneWay,
+    [SubtypeFactory(nameof(Hierarchy.Action.Type), 
+        typeof(ActionSpecificParamsFactory), BindingMode = BindingMode.OneWay, 
         AncestorType = typeof(Hierarchy.Action), RelativeSourceMode = RelativeSourceMode.FindAncestor)]
     public required ISpecificParams SpecificParams { get; set; }
 
     [FieldOrder(3)]
-    [SerializeWhenVersion(56, ComparisonOperator.LessThanOrEqual)]
     public ExceptParams ExceptParams { get; set; } = new();
 }

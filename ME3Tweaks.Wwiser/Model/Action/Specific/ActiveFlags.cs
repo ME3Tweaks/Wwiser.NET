@@ -28,9 +28,9 @@ public class ActiveFlags : IBinarySerializable
         var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
         if (version <= 56)
         {
-            stream.WriteBoolByte(IncludePendingResume);
-            stream.WriteBoolByte(ApplyToStateTransitions);
-            stream.WriteBoolByte(ApplyToDynamicSequence);
+            stream.Write(BitConverter.GetBytes((uint)(IncludePendingResume ? 1 : 0)));
+            stream.Write(BitConverter.GetBytes((uint)(ApplyToStateTransitions ? 1 : 0)));
+            stream.Write(BitConverter.GetBytes((uint)(ApplyToDynamicSequence ? 1 : 0)));
         }
         else if (version <= 62)
         {
@@ -49,11 +49,12 @@ public class ActiveFlags : IBinarySerializable
     public void Deserialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
         var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
+        var reader = new BinaryReader(stream);
         if (version <= 56)
         {
-            IncludePendingResume = stream.ReadBoolByte();
-            ApplyToStateTransitions = stream.ReadBoolByte();
-            ApplyToDynamicSequence = stream.ReadBoolByte();
+            IncludePendingResume = reader.ReadUInt32() == 1;
+            ApplyToStateTransitions = reader.ReadUInt32() == 1;
+            ApplyToDynamicSequence = reader.ReadUInt32() == 1;
         }
         else if (version <= 62)
         {

@@ -12,7 +12,7 @@ public class ActionSpecificParamsFactory : ISubtypeFactory
 
     public bool TryGetType(object key, [UnscopedRef] out Type type)
     {
-        type = (ActionTypeValue)key switch
+        type = ((ActionType)key).Value switch
         {
             ActionTypeValue.Stop => typeof(PauseResume), // TODO: Verify this
             ActionTypeValue.Pause => typeof(PauseResume),

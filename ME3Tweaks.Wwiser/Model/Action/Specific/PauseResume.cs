@@ -3,7 +3,7 @@ using ME3Tweaks.Wwiser.Attributes;
 
 namespace ME3Tweaks.Wwiser.Model.Action.Specific;
 
-public class PauseResume
+public class PauseResume : ISpecificParams
 {
     [FieldOrder(1)]
     [SerializeWhenVersion(56, ComparisonOperator.LessThanOrEqual)]
