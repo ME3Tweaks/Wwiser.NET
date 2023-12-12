@@ -26,10 +26,10 @@ public class PriorityOverrideFlags : IBinarySerializable
         if (version <= 89)
         {
             var overrideParent = stream.ReadByte();
-            if (overrideParent is 1) Value &= PriorityFlagsInner.PriorityOverrideParent;
+            if (overrideParent is 1) Value |= PriorityFlagsInner.PriorityOverrideParent;
             
             var applyDistFactor = stream.ReadByte();
-            if (applyDistFactor is 1) Value &= PriorityFlagsInner.PriorityApplyDistFactor;
+            if (applyDistFactor is 1) Value |= PriorityFlagsInner.PriorityApplyDistFactor;
         }
         else
         {

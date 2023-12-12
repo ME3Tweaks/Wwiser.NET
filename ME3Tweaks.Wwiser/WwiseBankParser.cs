@@ -96,7 +96,7 @@ public class WwiseBankParser
         return (version, feedback);
     }
 
-    public async void Deserialize()
+    public async Task Deserialize()
     {
         if (_stream is null or { Length : 0 })
         {
@@ -105,6 +105,16 @@ public class WwiseBankParser
         
         _stream.Position = 0;
         WwiseBank = await _serializer
-            .DeserializeAsync<WwiseBank>(_stream, new BankSerializationContext(Version, false, UseFeedback));
+            .DeserializeAsync<WwiseBank>(_stream, CreateSerializationContext());
+    }
+
+    public async Task Serialize(Stream stream)
+    {
+        await _serializer.SerializeAsync(stream,WwiseBank, CreateSerializationContext());
+    }
+
+    private BankSerializationContext CreateSerializationContext()
+    {
+        return new BankSerializationContext(Version: Version, UseModulator: false, UseFeedback: UseFeedback);
     }
 }

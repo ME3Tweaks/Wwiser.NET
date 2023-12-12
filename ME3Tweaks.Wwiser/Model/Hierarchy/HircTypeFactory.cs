@@ -8,12 +8,15 @@ public class HircTypeFactory : ISubtypeFactory
 {
     private static readonly Dictionary<Type, HircType> TypeToEnum = new()
     {
+        { typeof(Sound), HircType.Sound },
+        { typeof(Action), HircType.Action },
         { typeof(Event), HircType.Event },
+        { typeof(RandSeqContainer), HircType.RandomSequenceContainer },
+        { typeof(ActorMixer), HircType.ActorMixer },
+        { typeof(LayerContainer), HircType.LayerContainer },
         { typeof(Attenuation), HircType.Attenuation },
         { typeof(FxShareSet), HircType.FxShareSet },
         { typeof(FxCustom), HircType.FxCustom },
-        { typeof(Sound), HircType.Sound },
-        { typeof(ActorMixer), HircType.ActorMixer },
     };
     
     public bool TryGetKey(Type valueType, [UnscopedRef] out object key)
@@ -38,12 +41,30 @@ public class HircTypeFactory : ISubtypeFactory
         
         type = (HircType)key switch
         {
+            //HircType.State => 
+            HircType.Sound => typeof(Sound),
+            HircType.Action => typeof(Action),
             HircType.Event => typeof(Event),
+            HircType.RandomSequenceContainer => typeof(RandSeqContainer),
+            //HircType.SwitchContainer =>
+            HircType.ActorMixer => typeof(ActorMixer),
+            //HircType.Bus =>
+            HircType.LayerContainer => typeof(LayerContainer),
+            //HircType.MusicSegment =>
+            //HircType.MusicTrack =>
+            //HircType.MusicSwitch =>
+            //HircType.MusicRandomSequence =>
             HircType.Attenuation => typeof(Attenuation),
+            //HircType.DialogueEvent =>
+            //HircType.FeedbackBus =>
+            //HircType.FeedbackNode =>
             HircType.FxShareSet => typeof(FxShareSet),
             HircType.FxCustom => typeof(FxCustom),
-            HircType.Sound => typeof(Sound),
-            HircType.ActorMixer => typeof(ActorMixer),
+            //HircType.AuxiliaryBus =>
+            //HircType.LFO =>
+            //HircType.Envelope =>
+            //HircType.AudioDevice =>
+            //HircType.TimeMod =>
             _ => typeof(HircItem)
         };
         return true;

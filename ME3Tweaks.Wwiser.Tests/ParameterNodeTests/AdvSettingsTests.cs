@@ -14,4 +14,14 @@ public class AdvSettingsTests
         var reserialized = TestHelpers.Serialize(result, version);
         Assert.That(reserialized, Is.EquivalentTo(data));
     }
+    
+    [TestCase("AdvSettings_V56.bin", 56)]
+    public void AdvSettings_Reserializes(string file, int version)
+    {
+        var data = TestData.GetTestDataBytes(@"ParameterNode",@"AdvSettings", file);
+        var (_, result) = TestHelpers.Deserialize<AdvSettingsParams>(data, version);
+
+        var reserialized = TestHelpers.Serialize(result, version);
+        Assert.That(reserialized, Is.EquivalentTo(data));
+    }
 }

@@ -1,9 +1,9 @@
 ﻿using BinarySerialization;
 using ME3Tweaks.Wwiser.Attributes;
-using ME3Tweaks.Wwiser.Model.Hierarchy;
+using ME3Tweaks.Wwiser.Formats;
 using ME3Tweaks.Wwiser.Model.ParameterNode;
 
-namespace ME3Tweaks.Wwiser.Model;
+namespace ME3Tweaks.Wwiser.Model.Hierarchy;
 
 public class RandSeqContainer : HircItem
 {
@@ -20,38 +20,32 @@ public class RandSeqContainer : HircItem
     [FieldOrder(3)]
     [SerializeWhenVersion(72, ComparisonOperator.GreaterThan)]
     public ushort LoopModMax { get; set; }
-    
-    [FieldOrder(4)]
-    public float TransitionTime { get; set; }
+
+    [FieldOrder(4)] 
+    public RangedParameterFloat TransitionTime { get; set; } = new();
     
     [FieldOrder(5)]
-    public float TransitionTimeModMin { get; set; }
-    
-    [FieldOrder(6)]
-    public float TransitionTimeModMax { get; set; }
-    
-    [FieldOrder(7)]
     public ushort AvoidRepeatCount { get; set; }
     
-    [FieldOrder(8)]
+    [FieldOrder(6)]
     [SerializeWhenVersion(36)]
     public ushort Unknown { get; set; }
     
     //TODO: There's some bullshit on V44 and V45 here - relevant for ME2!
     
-    [FieldOrder(10)]
+    [FieldOrder(7)]
     public TransitionMode TransitionMode { get; set; }
     
-    [FieldOrder(11)]
+    [FieldOrder(8)]
     public RandomMode RandomMode { get; set; }
     
-    [FieldOrder(12)]
+    [FieldOrder(9)]
     public ContainerMode Mode { get; set; }
 
-    [FieldOrder(13)] 
+    [FieldOrder(10)] 
     public RanSeqFlags RanSeqFlags { get; set; } = new();
     
-    [FieldOrder(14)] 
+    [FieldOrder(11)] 
     public Children Children { get; set; } = new();
 }
 

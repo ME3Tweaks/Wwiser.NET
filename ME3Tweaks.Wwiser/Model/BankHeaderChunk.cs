@@ -3,56 +3,6 @@ using ME3Tweaks.Wwiser.Attributes;
 
 namespace ME3Tweaks.Wwiser.Model
 {
-    public enum LanguageId : uint
-    {
-        SFX,
-        Arabic,
-        Bulgarian,
-        Chinese_HK,
-        Chinese_PRC,
-        Chinese_Taiwan,
-        Czech,
-        Danish,
-        Dutch,
-        English_Australia,
-        English_India,
-        English_UK,
-        English_US,
-        Finnish,
-        French_Canada,
-        French_France,
-        German,
-        Greek,
-        Hebrew,
-        Hungarian,
-        Indonesian,
-        Italian,
-        Japanese,
-        Korean,
-        Latin,
-        Norwegian,
-        Polish,
-        Portuguese_Brazil,
-        Portuguese_Portugal,
-        Romanian,
-        Russian,
-        Slovenian,
-        Spanish_Mexico,
-        Spanish_Spain,
-        Spanish_US,
-        Swedish,
-        Turkish,
-        Ukrainian,
-        Vietnamese
-    }
-
-    public enum AkBankType : uint
-    {
-        User = 0x00,
-        Event = 0x1E,
-        Bus = 0x1F
-    }
-    
     public class BankHeaderChunk : Chunk
     {
         public override string Tag => @"BKHD";
@@ -135,7 +85,7 @@ namespace ME3Tweaks.Wwiser.Model
         /// </summary>
         [FieldOrder(8)]
         [SerializeWhenVersion(141, ComparisonOperator.GreaterThan)]
-        public AkBankType SoundBankType { get; set; }
+        public BankType SoundBankType { get; set; }
         
         /// <summary>
         /// Unknown hash of bank?
@@ -147,5 +97,32 @@ namespace ME3Tweaks.Wwiser.Model
         public sbyte[]? BankHash { get; set; }
         
         // TODO: Copy any padding over into a byte[]? Will allow proper reserialization.
+        [FieldOrder(10)]
+        public BankHeaderPadding Padding { get; set; } = new();
+    }
+
+    public class BankHeaderPadding : IBinarySerializable
+    {
+        public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
+        {
+            var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
+            var chunkSize = serializationContext.FindAncestor<ChunkContainer>().ChunkSize;
+            stream.Write(new byte[GetPaddingSize(version, chunkSize)]);
+        }
+
+        public void Deserialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
+        {
+            var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
+            var chunkSize = serializationContext.FindAncestor<ChunkContainer>().ChunkSize;
+            stream.Seek(GetPaddingSize(version, chunkSize), SeekOrigin.Current);
+        }
+
+        private uint GetPaddingSize(uint version, uint chunkSize) => version switch
+        {
+            <= 26 => chunkSize - 0x18,
+            <= 76 => chunkSize - 0x10,
+            <= 141 => chunkSize - 0x14,
+            _ => chunkSize - 0x14 - 0x04 - 0x10
+        };
     }
 }

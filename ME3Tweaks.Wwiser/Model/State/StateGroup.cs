@@ -4,8 +4,8 @@ namespace ME3Tweaks.Wwiser.Model.State;
 
 public class StateGroup
 {
-    [FieldOrder(1)]
-    public SyncType StateSyncType { get; set; }
+    [FieldOrder(1)] 
+    public SyncType StateSyncType { get; set; } = new();
 
     [FieldOrder(2)]
     public StateCount StateCount { get; set; } = new();

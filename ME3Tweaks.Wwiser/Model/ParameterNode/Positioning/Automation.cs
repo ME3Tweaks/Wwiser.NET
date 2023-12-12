@@ -33,18 +33,12 @@ public class Automation
 
     [FieldOrder(7)]
     [FieldCount(nameof(NumPathListItem))]
-    public List<PathListItemOffset> PathList{ get; set; } = new();
-    
+    public List<PathListItemOffset> PathList { get; set; } = new();
+
     [FieldOrder(8)]
-    [SerializeWhenVersion(36, ComparisonOperator.GreaterThan)] // TODO: I'm not sure if this exists
-    public uint NumAutomationParams { get; set; }
-
-    [FieldOrder(9)]
     [SerializeWhenVersion(36, ComparisonOperator.GreaterThan)]
-    [FieldCount(nameof(NumAutomationParams))]
+    [FieldCount(nameof(NumPathListItem), BindingMode = BindingMode.OneWay)]
     public List<AutomationParams3D> AutomationParams { get; set; } = new();
-
-
 }
 
 public class PathVertex

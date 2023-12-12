@@ -32,4 +32,15 @@ public class PositioningTests
         Assert.That(reserialized, Is.EquivalentTo(data));
         
     }
+    
+    [Test]
+    public void Positioning_V56_Reserializes()
+    {
+        var data = TestData.GetTestDataBytes(@"ParameterNode", "Positioning_V56.bin");
+        var (_, result) = TestHelpers.Deserialize<PositioningChunk>(data, 56);
+
+        var reserialized = TestHelpers.Serialize(result, 56);
+        Assert.That(reserialized, Is.EquivalentTo(data));
+        
+    }
 }

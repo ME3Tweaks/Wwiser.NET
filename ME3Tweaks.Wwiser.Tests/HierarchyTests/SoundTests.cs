@@ -20,6 +20,7 @@ public class SoundTests
     }*/
     
     [TestCase("Sound_V134.bin", 134)]
+    [TestCase("Sound_V56.bin", 56)]
     [TestCase("Sound_V44.bin", 44)]
     public void Sound_Reserializes(string filename, int version)
     {

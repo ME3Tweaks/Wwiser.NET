@@ -21,10 +21,10 @@ public class BankSourceData
     [FieldOrder(3)] 
     public MediaInformation MediaInformation { get; set; } = new();
     
-    [FieldOrder(4)]
+    /*[FieldOrder(4)]
     [SerializeWhen(nameof(Plugin), true,
         ConverterType = typeof(HasPluginParamConverter))]
-    public PluginParameters PluginParameters { get; set; } = new();
+    public PluginParameters PluginParameters { get; set; } = new();*/
 }
 
 public class AudioFormat
@@ -68,12 +68,12 @@ public class MediaInformation : IBinarySerializable
             stream.Write(BitConverter.GetBytes(FileId));
         }
 
-        if (version is > 26 and <= 86 && streamType != StreamType.StreamTypeInner.PrefetchStreaming)
+        if (version is > 26 and <= 86 && streamType != StreamType.StreamTypeInner.Streaming)
         {
             stream.Write(BitConverter.GetBytes(FileOffset));
         }
 
-        if (version is > 26 and <= 88 && streamType != StreamType.StreamTypeInner.PrefetchStreaming)
+        if (version is > 26 and <= 88 && streamType != StreamType.StreamTypeInner.Streaming)
         {
             stream.Write(BitConverter.GetBytes(InMemoryMediaSize));
         }
@@ -121,12 +121,12 @@ public class MediaInformation : IBinarySerializable
             FileId = reader.ReadUInt32();
         }
 
-        if (version is > 26 and <= 86 && streamType != StreamType.StreamTypeInner.PrefetchStreaming)
+        if (version is > 26 and <= 86 && streamType != StreamType.StreamTypeInner.Streaming)
         {
             FileOffset = reader.ReadUInt32();
         }
 
-        if (version is > 26 and <= 88 && streamType != StreamType.StreamTypeInner.PrefetchStreaming)
+        if (version is > 26 and <= 88 && streamType != StreamType.StreamTypeInner.Streaming)
         {
             InMemoryMediaSize = reader.ReadUInt32();
         }
