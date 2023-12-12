@@ -15,6 +15,7 @@ public class AdvSettingsTests
         Assert.That(reserialized, Is.EquivalentTo(data));
     }
     
+    [TestCase("AdvSettings_V134.bin", 134)]
     [TestCase("AdvSettings_V56.bin", 56)]
     public void AdvSettings_Reserializes(string file, int version)
     {

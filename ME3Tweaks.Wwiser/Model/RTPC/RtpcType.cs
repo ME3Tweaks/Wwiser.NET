@@ -21,6 +21,10 @@ public class RtpcType : IBinarySerializable
             {
                 stream.WriteByte(0x02);
             }
+            else
+            {
+                stream.WriteByte((byte)Value);
+            }
         }
         else
         {

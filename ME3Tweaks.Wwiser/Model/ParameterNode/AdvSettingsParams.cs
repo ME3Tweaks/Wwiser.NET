@@ -16,6 +16,8 @@ public class AdvSettingsParams : IBinarySerializable
     
     [Ignore] public BelowThresholdBehavior ThresholdBehavior { get; set; }
     
+    [Ignore] public bool Unk1 { get; set; }
+    
     [Ignore] public bool IsMaxNumInstOverrideParent { get; set; }
     
     [Ignore] public bool IsVVoicesOptOverrideParent { get; set; }
@@ -50,6 +52,7 @@ public class AdvSettingsParams : IBinarySerializable
     {
         KillNewest = 1 << 0,
         UseVirtualBehavior = 1 << 1,
+        Unk1 = 1 << 2,
         IgnoreParentMaxNumInst = 1 << 3,
         IsVVoicesOptOverrideParent = 1 << 4
     }
@@ -149,6 +152,7 @@ public class AdvSettingsParams : IBinarySerializable
         AdvFlags adv = 0;
         if (KillNewest) adv |= AdvFlags.KillNewest;
         if (UseVirtualBehavior) adv |= AdvFlags.UseVirtualBehavior;
+        if (Unk1) adv |= AdvFlags.Unk1;
         if (IsMaxNumInstOverrideParent) adv |= AdvFlags.IgnoreParentMaxNumInst;
         if (IsVVoicesOptOverrideParent) adv |= AdvFlags.IsVVoicesOptOverrideParent;
         return adv;
@@ -158,6 +162,7 @@ public class AdvSettingsParams : IBinarySerializable
     {
         KillNewest = adv.HasFlag(AdvFlags.KillNewest);
         UseVirtualBehavior = adv.HasFlag(AdvFlags.UseVirtualBehavior);
+        Unk1 = adv.HasFlag(AdvFlags.Unk1);
         IsMaxNumInstOverrideParent = adv.HasFlag(AdvFlags.IgnoreParentMaxNumInst); // ??
         IsVVoicesOptOverrideParent = adv.HasFlag(AdvFlags.IsVVoicesOptOverrideParent);
     }
