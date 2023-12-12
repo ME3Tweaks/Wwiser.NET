@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using BinarySerialization;
+using ME3Tweaks.Wwiser.Model.Action;
 using ME3Tweaks.Wwiser.Model.Hierarchy.Enums;
 
 namespace ME3Tweaks.Wwiser.Model.Hierarchy;
@@ -65,7 +66,7 @@ public class HircTypeFactory : ISubtypeFactory
             //HircType.Envelope =>
             //HircType.AudioDevice =>
             //HircType.TimeMod =>
-            _ => typeof(HircItem)
+            _ => typeof(EmptyHircItem)
         };
         return true;
     }

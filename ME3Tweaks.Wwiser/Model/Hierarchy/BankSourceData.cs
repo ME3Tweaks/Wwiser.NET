@@ -21,10 +21,10 @@ public class BankSourceData
     [FieldOrder(3)] 
     public MediaInformation MediaInformation { get; set; } = new();
     
-    /*[FieldOrder(4)]
+    [FieldOrder(4)]
     [SerializeWhen(nameof(Plugin), true,
         ConverterType = typeof(HasPluginParamConverter))]
-    public PluginParameters PluginParameters { get; set; } = new();*/
+    public PluginParameters PluginParameters { get; set; } = new();
 }
 
 public class AudioFormat

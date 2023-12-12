@@ -43,7 +43,7 @@ public static class TestHelpers
         return Serialize(data, (uint)version, useModulator);
     }
 
-    private static void WriteStreamToFile(Stream stream, string filepath)
+    public static void WriteStreamToFile(Stream stream, string filepath)
     {
         stream.Seek(0, SeekOrigin.Begin);
 

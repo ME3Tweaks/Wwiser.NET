@@ -47,6 +47,9 @@ public class RandSeqContainer : HircItem
     
     [FieldOrder(11)] 
     public Children Children { get; set; } = new();
+
+    [FieldOrder(12)] 
+    public Playlist Playlist { get; set; } = new();
 }
 
 public class RanSeqFlags : IBinarySerializable
@@ -157,14 +160,18 @@ public class PlaylistItem : IBinarySerializable, IAkIdentifiable
     public void Deserialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
         var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
+        Span<byte> span = stackalloc byte[4];
+        var read = stream.Read(span);
+        if (read != 4) throw new Exception();
+        Id = BitConverter.ToUInt32(span);
+        
         if (version <= 56)
         {
             Weight = stream.ReadByte();
         }
         else
         {
-            Span<byte> span = stackalloc byte[4];
-            var read = stream.Read(span);
+            read = stream.Read(span);
             if (read != 4) throw new Exception();
             Weight = BitConverter.ToInt32(span);
         }

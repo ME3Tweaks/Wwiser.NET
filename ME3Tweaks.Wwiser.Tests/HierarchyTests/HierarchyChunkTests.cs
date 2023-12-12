@@ -82,4 +82,15 @@ public class HierarchyChunkTests
             });
         }
     }
+
+    [Test]
+    public void BigChunkTest()
+    {
+        var data = TestData.GetTestDataBytes(@"Hierarchy", @"LargeFullChunks", @"HIRC_V56.bin");
+        var (serializer, result) = TestHelpers.Deserialize<ChunkContainer>(data, 56);
+        
+        var reserialized = TestHelpers.Serialize(result, 56);
+        TestHelpers.WriteStreamToFile(new MemoryStream(reserialized), TestData.GetTestDataFilePath(@"Hierarchy", @"LargeFullChunks", @"Out56.bin"));
+        Assert.That(reserialized, Is.EqualTo(data));
+    }
 }
