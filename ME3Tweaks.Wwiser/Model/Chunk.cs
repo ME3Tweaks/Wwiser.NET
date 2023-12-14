@@ -6,5 +6,10 @@ namespace ME3Tweaks.Wwiser.Model
     {
         [Ignore]
         public abstract string Tag { get; }
+
+        public static bool IsAllowedInVersion(Chunk chunk, uint version)
+        {
+            return true;
+        }
     }
 }

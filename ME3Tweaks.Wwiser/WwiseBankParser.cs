@@ -8,26 +8,51 @@ namespace ME3Tweaks.Wwiser;
 
 public class WwiseBankParser
 {
-    public uint Version { get; set; }
-    public bool UseFeedback { get; set; }
+    public uint Version { get; private set; }
+    public bool UseFeedback { get; private set; }
     public WwiseBank? WwiseBank { get; private set; }
     
     private BinarySerializer _serializer;
-    private string _fileName;
     private Stream _stream;
     
     public WwiseBankParser(string fileName)
     {
         _serializer = new BinarySerializer();
-        _fileName = fileName;
         if (!File.Exists(fileName))
         {
             throw new FileNotFoundException("Bank file does not exist", fileName);
         }
 
-        _stream = File.OpenRead(_fileName);
+        _stream = File.OpenRead(fileName);
         (Version, UseFeedback) = ReadWwiseHeaderInfo(_stream);
         _stream.Position = 0;
+    }
+
+    public WwiseBankParser(Stream stream)
+    {
+        _serializer = new BinarySerializer();
+        _stream = stream;
+        (Version, UseFeedback) = ReadWwiseHeaderInfo(_stream);
+        _stream.Position = 0;
+    }
+
+    public void ConvertVersion(uint version)
+    {
+        ConvertWithHeader(CreateSerializationContext() with { Version = version });
+    }
+
+    public void ConvertWithHeader(BankSerializationContext context)
+    {
+        if (WwiseBank is null)
+        {
+            throw new InvalidOperationException("Cannot set header data with no bank.");
+        }
+        
+        var converter = new WwiseBankConverter(CreateSerializationContext(), context);
+        converter.ConvertBank(WwiseBank);
+        
+        Version = context.Version;
+        UseFeedback = context.UseFeedback;
     }
     
     /// <summary>
@@ -43,6 +68,7 @@ public class WwiseBankParser
     /// <returns></returns>
     private (uint, bool) ReadWwiseHeaderInfo(Stream stream)
     {
+        var initialPosition = stream.Position;
         var reader = new BinaryReader(stream, Encoding.UTF8);
         var firstHeader = new string(reader.ReadChars(4));
 
@@ -92,7 +118,7 @@ public class WwiseBankParser
         //TODO: Handle custom versions and strange variations
         //TODO: Handle slightly encrypted headers in LIMBO demo and World of Tanks
 
-        stream.Position = 0;
+        stream.Position = initialPosition;
         return (version, feedback);
     }
 
@@ -104,13 +130,18 @@ public class WwiseBankParser
         }
         
         _stream.Position = 0;
-        WwiseBank = await _serializer
-            .DeserializeAsync<WwiseBank>(_stream, CreateSerializationContext());
+        var root = await _serializer
+            .DeserializeAsync<WwiseBankRoot>(_stream, CreateSerializationContext());
+        WwiseBank = new WwiseBank(root);
     }
 
     public async Task Serialize(Stream stream)
     {
-        await _serializer.SerializeAsync(stream,WwiseBank, CreateSerializationContext());
+        if (WwiseBank is null)
+        {
+            throw new InvalidOperationException("Cannot serialize a null WwiseBank");
+        }
+        await _serializer.SerializeAsync(stream,WwiseBank.ToModel(), CreateSerializationContext());
     }
 
     private BankSerializationContext CreateSerializationContext()

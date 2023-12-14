@@ -103,11 +103,15 @@ namespace ME3Tweaks.Wwiser.Model
 
     public class BankHeaderPadding : IBinarySerializable
     {
+        [Ignore]
+        public byte[] Padding;
+        
         public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
         {
-            var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
+            /*var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
             var chunkSize = serializationContext.FindAncestor<ChunkContainer>().ChunkSize;
-            stream.Write(new byte[GetPaddingSize(version, chunkSize)]);
+            stream.Write(new byte[GetPaddingSize(version, chunkSize)]);*/
+            stream.Write(Padding);
         }
 
         public void Deserialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
@@ -115,6 +119,7 @@ namespace ME3Tweaks.Wwiser.Model
             var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
             var chunkSize = serializationContext.FindAncestor<ChunkContainer>().ChunkSize;
             stream.Seek(GetPaddingSize(version, chunkSize), SeekOrigin.Current);
+            Padding = new byte[GetPaddingSize(version, chunkSize)];
         }
 
         private uint GetPaddingSize(uint version, uint chunkSize) => version switch

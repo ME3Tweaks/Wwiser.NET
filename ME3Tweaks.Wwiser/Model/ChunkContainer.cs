@@ -6,7 +6,7 @@ namespace ME3Tweaks.Wwiser.Model
     {
         [FieldOrder(0)]
         [FieldLength(4)]
-        public required string Tag { get; init; } = chunk.Tag;
+        public string Tag { get; init; } = chunk.Tag;
 
         [FieldOrder(1)]
         public uint ChunkSize { get; set; }
@@ -23,6 +23,6 @@ namespace ME3Tweaks.Wwiser.Model
         [Subtype(nameof(Tag), "DIDX", typeof(MediaIndexChunk))] // >= v34
         [Subtype(nameof(Tag), "PLAT", typeof(PlatformChunk))] // >= v113
         [Subtype(nameof(Tag), "INIT", typeof(PluginChunk))] // >= v118
-        public required Chunk Chunk { get; set; } = chunk;
+        public Chunk Chunk { get; set; } = chunk;
     }
 }
