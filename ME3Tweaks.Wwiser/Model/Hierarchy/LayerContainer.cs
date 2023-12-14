@@ -5,7 +5,7 @@ using ME3Tweaks.Wwiser.Model.RTPC;
 
 namespace ME3Tweaks.Wwiser.Model.Hierarchy;
 
-public class LayerContainer : HircItem
+public class LayerContainer : HircItem, IHasNode
 {
     [FieldOrder(0)]
     public NodeBaseParameters NodeBaseParameters { get; set; } = new();

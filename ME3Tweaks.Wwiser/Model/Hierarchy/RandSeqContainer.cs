@@ -5,7 +5,7 @@ using ME3Tweaks.Wwiser.Model.ParameterNode;
 
 namespace ME3Tweaks.Wwiser.Model.Hierarchy;
 
-public class RandSeqContainer : HircItem
+public class RandSeqContainer : HircItem, IHasNode
 {
     [FieldOrder(0)]
     public NodeBaseParameters NodeBaseParameters { get; set; } = new();

@@ -8,5 +8,5 @@ public class Action : ISpecificParams
     [FieldOrder(0)]
     [FieldLength(0x10)]
     [SerializeWhenVersion(56, ComparisonOperator.LessThanOrEqual)]
-    public byte[] Data { get; set; }
+    public byte[] Data { get; set; } = Array.Empty<byte>();
 }

@@ -96,7 +96,6 @@ namespace ME3Tweaks.Wwiser.Model
         [SerializeWhenVersion(141, ComparisonOperator.GreaterThan)]
         public sbyte[]? BankHash { get; set; }
         
-        // TODO: Copy any padding over into a byte[]? Will allow proper reserialization.
         [FieldOrder(10)]
         public BankHeaderPadding Padding { get; set; } = new();
     }
@@ -104,7 +103,7 @@ namespace ME3Tweaks.Wwiser.Model
     public class BankHeaderPadding : IBinarySerializable
     {
         [Ignore]
-        public byte[] Padding;
+        public byte[] Padding = Array.Empty<byte>();
         
         public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
         {

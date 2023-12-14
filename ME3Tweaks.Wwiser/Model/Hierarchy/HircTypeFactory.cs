@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using BinarySerialization;
-using ME3Tweaks.Wwiser.Model.Action;
 using ME3Tweaks.Wwiser.Model.Hierarchy.Enums;
 
 namespace ME3Tweaks.Wwiser.Model.Hierarchy;
@@ -29,7 +28,7 @@ public class HircTypeFactory : ISubtypeFactory
         }
 
         // fallback
-        key = HircType.Action;
+        throw new ArgumentException($"Cannot parse Hirc type ${valueType}");
         return false;
     }
 
@@ -66,7 +65,7 @@ public class HircTypeFactory : ISubtypeFactory
             //HircType.Envelope =>
             //HircType.AudioDevice =>
             //HircType.TimeMod =>
-            _ => typeof(EmptyHircItem)
+            _ => throw new ArgumentException($"Cannot parse Hirc type ${(HircType)key} yet")
         };
         return true;
     }

@@ -4,7 +4,7 @@ using ME3Tweaks.Wwiser.Model.ParameterNode;
 
 namespace ME3Tweaks.Wwiser.Model.Hierarchy;
 
-public class Sound : HircItem
+public class Sound : HircItem, IHasNode
 {
     [FieldOrder(0)]
     public BankSourceData BankSourceData { get; set; } = new();

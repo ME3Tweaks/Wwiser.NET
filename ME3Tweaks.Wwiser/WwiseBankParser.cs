@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using BinarySerialization;
+using ME3Tweaks.Wwiser.BankConversion;
 using ME3Tweaks.Wwiser.Model;
 
 namespace ME3Tweaks.Wwiser;
@@ -48,8 +49,7 @@ public class WwiseBankParser
             throw new InvalidOperationException("Cannot set header data with no bank.");
         }
         
-        var converter = new WwiseBankConverter(CreateSerializationContext(), context);
-        converter.ConvertBank(WwiseBank);
+        BankConverter.ConvertBank(WwiseBank, CreateSerializationContext(), context);
         
         Version = context.Version;
         UseFeedback = context.UseFeedback;
