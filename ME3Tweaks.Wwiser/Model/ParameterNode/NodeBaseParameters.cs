@@ -34,7 +34,6 @@ public class NodeBaseParameters
     [SerializeWhenVersion(56, ComparisonOperator.LessThanOrEqual)]
     public sbyte DistOffset { get; set; }
     
-    // TODO: Convert between these two variants when changing version
     [FieldOrder(7)]
     [SerializeWhenVersion(56, ComparisonOperator.LessThanOrEqual)]
     public InitialParamsV56 InitialParams56 { get; set; } = new();
@@ -56,8 +55,7 @@ public class NodeBaseParameters
 
     [FieldOrder(12)] 
     public AdvSettingsParams AdvSettingsParams { get; set; } = new();
-
-    //TODO: Convert between the following two properties on version conversion
+    
     [FieldOrder(13)] 
     [SerializeWhenVersion(52, ComparisonOperator.LessThanOrEqual)]
     public StateGroup StateGroup { get; set; } = new();
