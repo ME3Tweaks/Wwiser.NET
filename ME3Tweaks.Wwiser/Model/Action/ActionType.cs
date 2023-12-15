@@ -8,7 +8,7 @@ public class ActionType : IBinarySerializable
     public ActionTypeValue Value { get; set; }
     
     [Ignore]
-    public uint Data { get; set; }
+    public ActionFlagsUnk Data { get; set; }
 
     public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
@@ -33,7 +33,8 @@ public class ActionType : IBinarySerializable
                 _ => (byte)Value
             };
             var shifted = (uint)(output << 12);
-            var value = shifted | (Data & 0xFFF);
+            
+            var value = shifted | ((uint)Data & 0xFFF);
             stream.Write(BitConverter.GetBytes(value));
         }
         else
@@ -45,7 +46,14 @@ public class ActionType : IBinarySerializable
                 _ => (byte)Value
             };
             var shifted = (ushort)(output << 8);
-            var value = (ushort)(shifted | (Data & 0xFF));
+            
+            var flags = Data;
+            if (flags.HasFlag(ActionFlagsUnk.Unk4))
+            {
+                flags &= ~ActionFlagsUnk.Unk4;
+                flags |= ActionFlagsUnk.Unk1;
+            }
+            var value = (ushort)(shifted | ((ushort)flags & 0xFF));
             stream.Write(BitConverter.GetBytes(value));
         }
         
@@ -55,7 +63,6 @@ public class ActionType : IBinarySerializable
     {
         var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
         
-        //var value = (byte)stream.ReadByte();
         if (version <= 56)
         {
             Span<byte> span = stackalloc byte[4];
@@ -64,7 +71,7 @@ public class ActionType : IBinarySerializable
             uint value = BitConverter.ToUInt32(span);
             
             var enumValue = value >> 12;
-            Data = value & 0xFFF;
+            Data = (ActionFlagsUnk)(byte)(value & 0xFFF);
             
             Value = enumValue switch
             {
@@ -91,7 +98,12 @@ public class ActionType : IBinarySerializable
             ushort value = BitConverter.ToUInt16(span);
 
             var enumValue = value >> 8;
-            Data = (uint)value & 0xFF;
+            Data = (ActionFlagsUnk)(byte)(value & 0xFF);
+            if (Data.HasFlag(ActionFlagsUnk.Unk1))
+            {
+                Data &= ~ActionFlagsUnk.Unk1;
+                Data |= ActionFlagsUnk.Unk4;
+            }
             
             Value = enumValue switch
             {
@@ -152,4 +164,13 @@ public enum ActionTypeValue : byte
     BypassFX5,
     BypassFX6,
     BypassFX7
+}
+
+// TODO: Are these really flags?
+[Flags]
+public enum ActionFlagsUnk : byte
+{
+    Unk0 = 1 << 0,
+    Unk1 = 1 << 1, 
+    Unk4 = 1 << 4 // Means the same thing as Unk1 on 56 and below?
 }

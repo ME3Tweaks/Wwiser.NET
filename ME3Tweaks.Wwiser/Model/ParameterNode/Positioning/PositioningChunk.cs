@@ -167,13 +167,13 @@ public class PositioningChunk : IBinarySerializable
                 // HoldListener and HoldEmitter are one flag lower on version 132 and lower
                 if (mode.HasFlag(SpatializationMode.HoldEmitterPosAndOrient))
                 {
-                    mode &= SpatializationMode.EnableAttenuation;
+                    mode |= SpatializationMode.EnableAttenuation;
                     mode &= ~SpatializationMode.HoldEmitterPosAndOrient;
                 }
 
                 if (mode.HasFlag(SpatializationMode.HoldListenerOrient))
                 {
-                    mode &= SpatializationMode.HoldEmitterPosAndOrient;
+                    mode |= SpatializationMode.HoldEmitterPosAndOrient;
                     mode &= ~SpatializationMode.HoldListenerOrient;
                 }
 

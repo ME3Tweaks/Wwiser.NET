@@ -25,13 +25,13 @@ public class ParameterNodeConvertTests
     [Test]
     public void Convert134to56_Works()
     {
-        var from = new BankSerializationContext(134);
-        var to = new BankSerializationContext(56);
         
         var data = TestData.GetTestDataBytes(@"Convert", @"ParameterNode", @"134.bin");
         var (_, result) = TestHelpers.Deserialize<NodeBaseParameters>(data, 134);
 
         var c = new InitialParamsConverter(result);
+        var from = new BankSerializationContext(134);
+        var to = new BankSerializationContext(56);
         Assert.That(c.ShouldConvert(from, to), Is.True);
         c.Convert(from, to);
 
