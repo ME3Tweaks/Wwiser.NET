@@ -2,11 +2,13 @@
 
 namespace ME3Tweaks.Wwiser.Formats;
 
-public class UnionRange
+public class UnionRange(Uni low, Uni high)
 {
     [FieldOrder(0)]
-    public required Uni Low { get; set; }
-    
+    public Uni Low { get; set; } = low;
+
     [FieldOrder(1)]
-    public required Uni High { get; set; }
+    public Uni High { get; set; } = high;
+
+    public UnionRange() : this(new Uni(0f), new Uni(0f)) { }
 }

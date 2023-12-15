@@ -29,7 +29,7 @@ public class HircTypeFactory : ISubtypeFactory
 
         // fallback
         throw new ArgumentException($"Cannot parse Hirc type ${valueType}");
-        return false;
+        //return false;
     }
 
     public bool TryGetType(object key, [UnscopedRef] out Type type)

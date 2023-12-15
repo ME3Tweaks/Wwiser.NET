@@ -41,4 +41,16 @@ public class Uni : IBinarySerializable
         }
         else Integer = value;
     }
+    
+    public Uni() { }
+
+    public Uni(float f)
+    {
+        Float = f;
+    }
+
+    public Uni(uint i)
+    {
+        Integer = i;
+    }
 }

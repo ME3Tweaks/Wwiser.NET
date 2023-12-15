@@ -28,14 +28,10 @@ public class State : AkIdentifiable
     [FieldOrder(4)]
     [FieldCount(nameof(PropCount))]
     [SerializeWhenVersion(145, ComparisonOperator.GreaterThan)]
-    public List<PropertyPair> Properties { get; set; } = new();
+    public List<ushort> PropertyIds { get; set; } = new();
     
-    public class PropertyPair
-    {
-        [FieldOrder(0)]
-        public ushort Id { get; set; }
-        
-        [FieldOrder(1)]
-        public float Value { get; set; }
-    }
+    [FieldOrder(4)]
+    [FieldCount(nameof(PropCount), BindingMode = BindingMode.OneWay)]
+    [SerializeWhenVersion(145, ComparisonOperator.GreaterThan)]
+    public List<float> PropertyValues { get; set; } = new();
 }
