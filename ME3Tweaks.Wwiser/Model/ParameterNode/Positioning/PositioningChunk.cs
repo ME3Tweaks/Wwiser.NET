@@ -37,8 +37,9 @@ public class PositioningChunk : IBinarySerializable
     public enum SpatializationMode : byte
     {
         None = 0,
-        PositionOnly = 1 << 1,
-        PositionAndOrientation = 1 << 2,
+        PositionOnly = 1 << 0,
+        PositionAndOrientation = 1 << 1,
+        Unknown = 1 << 2,
         EnableAttenuation = 1 << 3,
         HoldEmitterPosAndOrient = 1 << 4,
         HoldListenerOrient = 1 << 5,
@@ -160,8 +161,7 @@ public class PositioningChunk : IBinarySerializable
         }
         else
         {
-            Mode = GetModeFromHasAutomation(HasAutomation, version);
-            var mode = Mode;
+            var mode  = GetModeFromHasAutomation(HasAutomation, Mode, version);
             if (version <= 132)
             {
                 // HoldListener and HoldEmitter are one flag lower on version 132 and lower
@@ -247,8 +247,6 @@ public class PositioningChunk : IBinarySerializable
 
     private void Read3DParams(Stream stream, uint version, BinaryReader reader)
     {
-        byte read = 0;
-
         if (version <= 89)
         {
             Type = (PositioningType)reader.ReadUInt32();
@@ -257,8 +255,7 @@ public class PositioningChunk : IBinarySerializable
         }
         else
         {
-            read = reader.ReadByte();
-            var mode = (SpatializationMode)read;
+            var mode = (SpatializationMode)reader.ReadByte();
             if (version <= 132)
             {
                 // HoldListener and HoldEmitter are one flag lower on version 132 and lower
@@ -277,7 +274,7 @@ public class PositioningChunk : IBinarySerializable
 
             Mode = mode;
             // use original parsed byte instead of converted Mode
-            HasAutomation = GetModeHasAutomation(read, HasAutomation, version);
+            HasAutomation = GetHasAutomationFromMode(Mode, HasAutomation, version);
         }
 
         if (version <= 129) AttenuationId = reader.ReadUInt32();
@@ -368,10 +365,33 @@ public class PositioningChunk : IBinarySerializable
     /// Gets a SpatializationMode based on version and
     /// the HasAutomation flag
     /// </summary>
-    public static SpatializationMode GetModeFromHasAutomation(bool hasAutomation, uint version)
+    private static SpatializationMode GetModeFromHasAutomation(bool hasAutomation, SpatializationMode modeIn, uint version)
     {
-        // TODO: Crossversion - this will need to be implemented
-        return SpatializationMode.None;
+        // This code is super weird and may not be correct for all cases?
+        if (hasAutomation)
+        {
+            modeIn = version switch
+            {
+                <= 122 => modeIn.HasFlag(SpatializationMode.PositionOnly)
+                    ? modeIn : modeIn & ~SpatializationMode.PositionAndOrientation,
+                <= 126 => modeIn & ~SpatializationMode.HoldListenerOrient,
+                <= 129 => modeIn & ~SpatializationMode.EnableDiffraction,
+                _ => modeIn
+            };
+        }
+        else
+        {
+            modeIn = version switch
+            {
+                <= 122 => modeIn.HasFlag(SpatializationMode.PositionAndOrientation) 
+                    ? modeIn : modeIn | SpatializationMode.PositionOnly,
+                <= 126 => modeIn | SpatializationMode.HoldListenerOrient,
+                <= 129 => modeIn | SpatializationMode.EnableDiffraction,
+                _ => modeIn
+            };
+        }
+
+        return modeIn;
     }
     
     /// <summary>
@@ -380,17 +400,14 @@ public class PositioningChunk : IBinarySerializable
     private static (bool, bool) GetBoolFlagsFromType(PositioningType type, bool initialAutomation,
         uint version)
     {
-        bool hasAutomation = initialAutomation;
-        bool hasDynamic;
-        // Todo: rewrite so bitwise operators use IsFlag - more readable
-        hasAutomation = version switch
+        bool hasAutomation = version switch
         {
             <= 72 => type is PositioningType.UserDef3D,
             <= 89 => type is not PositioningType.Positioning2D,
-            _ => hasAutomation
+            _ => initialAutomation
         };
 
-        hasDynamic = version switch
+        var hasDynamic = version switch
         {
             <= 72 => type is PositioningType.GameDef3D,
             <= 89 => !hasAutomation,
@@ -402,16 +419,15 @@ public class PositioningChunk : IBinarySerializable
     /// <summary>
     /// Returns the proper HasAutomation flag based on the SpatializationMode
     /// </summary>
-    public static bool GetModeHasAutomation(byte value, bool initialAutomation,
+    private static bool GetHasAutomationFromMode(SpatializationMode mode, bool initialAutomation,
         uint version)
     {
         bool hasAutomation = initialAutomation;
-        // Todo: rewrite so bitwise operators use IsFlag - more readable
         hasAutomation = version switch
         {
-            <= 122 => (value & 3) != 1,
-            <= 126 => ((value >> 4 ) & 1) != 1,
-            <= 129 => ((value >> 6 ) & 1) != 1,
+            <= 122 => !(mode.HasFlag(SpatializationMode.PositionOnly) && !mode.HasFlag(SpatializationMode.PositionAndOrientation)),
+            <= 126 => !mode.HasFlag(SpatializationMode.HoldListenerOrient),
+            <= 129 => !mode.HasFlag(SpatializationMode.EnableDiffraction),
             _ => hasAutomation
         };
         return hasAutomation;
