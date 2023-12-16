@@ -32,18 +32,23 @@ public static class SpatializationHelpers
         var mode = (SpatializationMode)value;
         if (version <= 132)
         {
+            
+            // Wipe out any extraneous flags?
+            if(version <= 126) mode &= (SpatializationMode)0b0001_1111;
+            
             // HoldListener and HoldEmitter are one flag lower on version 132 and lower
             if (mode.HasFlag(SpatializationMode.HoldEmitterPosAndOrient))
             {
-                mode &= SpatializationMode.HoldListenerOrient;
+                mode |= SpatializationMode.HoldListenerOrient;
                 mode &= ~SpatializationMode.HoldEmitterPosAndOrient;
             }
 
             if (mode.HasFlag(SpatializationMode.EnableAttenuation))
             {
-                mode &= SpatializationMode.HoldEmitterPosAndOrient;
+                mode |= SpatializationMode.HoldEmitterPosAndOrient;
                 mode &= ~SpatializationMode.EnableAttenuation;
             }
+
         }
 
         return mode;
@@ -79,13 +84,11 @@ public static class SpatializationHelpers
     /// </summary>
     public static SpatializationMode GetModeFromHasAutomation(bool hasAutomation, SpatializationMode modeIn, uint version)
     {
-        // This code is super weird and may not be correct for all cases?
         if (hasAutomation)
         {
-            modeIn = version switch
+            return version switch
             {
-                <= 122 => modeIn.HasFlag(SpatializationMode.PositionOnly)
-                    ? modeIn : modeIn & ~SpatializationMode.PositionAndOrientation,
+                <= 122 => modeIn & ~SpatializationMode.PositionOnly,
                 <= 126 => modeIn & ~SpatializationMode.HoldListenerOrient,
                 <= 129 => modeIn & ~SpatializationMode.EnableDiffraction,
                 _ => modeIn
@@ -93,17 +96,14 @@ public static class SpatializationHelpers
         }
         else
         {
-            modeIn = version switch
+            return version switch
             {
-                <= 122 => modeIn.HasFlag(SpatializationMode.PositionAndOrientation) 
-                    ? modeIn : modeIn | SpatializationMode.PositionOnly,
+                <= 122 => (modeIn | SpatializationMode.PositionOnly) & ~SpatializationMode.PositionAndOrientation,
                 <= 126 => modeIn | SpatializationMode.HoldListenerOrient,
                 <= 129 => modeIn | SpatializationMode.EnableDiffraction,
                 _ => modeIn
             };
         }
-
-        return modeIn;
     }
 
     /// <summary>

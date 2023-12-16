@@ -7,7 +7,7 @@ namespace ME3Tweaks.Wwiser.Model.ParameterNode;
 public class RtpcParameterNodeBase
 {
     [FieldOrder(0)] 
-    public V36Count RTPCCount { get; set; } = new();
+    public V36ShortCount RTPCCount { get; set; } = new();
 
     [FieldOrder(1)]
     [FieldCount($"{nameof(RTPCCount)}.{nameof(RTPCCount.Value)}")]

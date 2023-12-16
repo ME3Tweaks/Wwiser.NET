@@ -139,8 +139,8 @@ public class PositioningChunk : IBinarySerializable
         }
         else
         {
-            var mode  = SpatializationHelpers.GetModeFromHasAutomation(HasAutomation, Mode, version);
-            stream.WriteByte(SpatializationHelpers.GetByteFromMode(mode, version));
+            Mode = SpatializationHelpers.GetModeFromHasAutomation(HasAutomation, Mode, version);
+            stream.WriteByte(SpatializationHelpers.GetByteFromMode(Mode, version));
         }
 
         if (version <= 129) stream.Write(BitConverter.GetBytes(AttenuationId));
