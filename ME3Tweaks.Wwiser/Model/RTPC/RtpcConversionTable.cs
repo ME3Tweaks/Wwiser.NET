@@ -11,7 +11,7 @@ public class RtpcConversionTable
     public CurveScaling Scaling { get; set; } = new();
     
     [FieldOrder(9)] 
-    public V36Count GraphPointCount { get; set; } = new();
+    public V36ShortCount GraphPointCount { get; set; } = new();
 
     [FieldOrder(10)]
     [FieldCount($"{nameof(GraphPointCount)}.{nameof(GraphPointCount.Value)}")]

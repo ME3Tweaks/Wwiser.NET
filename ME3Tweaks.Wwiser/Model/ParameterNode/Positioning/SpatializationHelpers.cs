@@ -23,7 +23,7 @@ public static class SpatializationHelpers
             mode &= ~SpatializationMode.IsNotLooping;
         }
         
-        if (version <= 134) mode &= ~SpatializationMode.EnableDiffraction;
+        if (version <= 126) mode &= ~SpatializationMode.EnableDiffraction;
         return (byte)mode;
     }
 

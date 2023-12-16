@@ -1,5 +1,6 @@
 ﻿namespace ME3Tweaks.Wwiser.Model.ParameterNode.Positioning;
 
+// TODO: V122, 126, and 129 of this enum is not certain
 [Flags]
 public enum SpatializationMode : byte
 {

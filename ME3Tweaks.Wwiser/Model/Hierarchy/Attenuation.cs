@@ -25,7 +25,7 @@ public class Attenuation : HircItem
     public CurveToUse CurveToUse { get; set; } = new();
     
     [FieldOrder(4)] 
-    public V36Count NumCurves { get; set; } = new();
+    public V36ByteCount NumCurves { get; set; } = new();
 
     [FieldOrder(5)]
     [FieldCount($"{nameof(NumCurves)}.{nameof(NumCurves.Value)}")]
