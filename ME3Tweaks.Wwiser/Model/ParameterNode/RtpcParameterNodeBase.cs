@@ -1,15 +1,15 @@
 ﻿using BinarySerialization;
+using ME3Tweaks.Wwiser.Formats;
 using ME3Tweaks.Wwiser.Model.RTPC;
 
 namespace ME3Tweaks.Wwiser.Model.ParameterNode;
 
 public class RtpcParameterNodeBase
 {
-    //TODO: <=v36 this is a uint - not relevant to mass effect
     [FieldOrder(0)] 
-    public ushort RtpcCount { get; set; }
-    
+    public V36Count RTPCCount { get; set; } = new();
+
     [FieldOrder(1)]
-    [FieldCount(nameof(RtpcCount))]
+    [FieldCount($"{nameof(RTPCCount)}.{nameof(RTPCCount.Value)}")]
     public List<Rtpc> Rtpcs { get; set; } = new();
 }

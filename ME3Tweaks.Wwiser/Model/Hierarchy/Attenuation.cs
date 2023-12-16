@@ -1,5 +1,6 @@
 ﻿using BinarySerialization;
 using ME3Tweaks.Wwiser.Attributes;
+using ME3Tweaks.Wwiser.Formats;
 using ME3Tweaks.Wwiser.Model.ParameterNode;
 using ME3Tweaks.Wwiser.Model.RTPC;
 
@@ -23,12 +24,11 @@ public class Attenuation : HircItem
     [FieldOrder(3)] 
     public CurveToUse CurveToUse { get; set; } = new();
     
-    //TODO: <=v36 this is a uint - not relevant to mass effect
-    [FieldOrder(4)]
-    public byte NumCurves { get; set; }
+    [FieldOrder(4)] 
+    public V36Count NumCurves { get; set; } = new();
 
     [FieldOrder(5)]
-    [FieldCount(nameof(NumCurves))]
+    [FieldCount($"{nameof(NumCurves)}.{nameof(NumCurves.Value)}")]
     public List<RtpcConversionTable> Curves { get; set; } = new();
 
     [FieldOrder(6)] 

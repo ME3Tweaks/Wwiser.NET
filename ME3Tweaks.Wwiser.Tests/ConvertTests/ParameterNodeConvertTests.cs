@@ -36,7 +36,6 @@ public class ParameterNodeConvertTests
         c.Convert(from, to);
 
         var newData = TestHelpers.Serialize(result, 56);
-        TestHelpers.WriteStreamToFile(new MemoryStream(newData), TestData.GetTestDataFilePath("Convert", "ParameterNode", "Out56"));
         Assert.That(newData, Is.EquivalentTo(TestData.GetTestDataBytes(@"Convert", @"ParameterNode", @"56.bin")));
     }
 }
