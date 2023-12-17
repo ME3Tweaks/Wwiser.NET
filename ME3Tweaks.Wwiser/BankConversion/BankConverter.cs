@@ -1,20 +1,27 @@
-﻿using System.Collections;
+﻿using ME3Tweaks.Wwiser.Model;
 
 namespace ME3Tweaks.Wwiser.BankConversion;
 
 public static class BankConverter{
     public static void ConvertBank(WwiseBank bank, BankSerializationContext from, BankSerializationContext to)
     {
-        var converters = new List<IWwiseConverter>
-        {
-            new BankHeaderConverter(bank.BKHD),
-            new HircConverter(bank.HIRC)
-            
-        }.Where(c => c.ShouldConvert(from, to));
+        ConvertBankHeader(bank.BKHD, from, to);
 
-        foreach (var c in converters)
+        if (bank.HIRC is not null)
         {
-            c.Convert(from, to);
+            HircConverter.ConvertHircChunk(bank.HIRC, from, to);
+        }
+    }
+
+    private static void ConvertBankHeader(BankHeaderChunk bkhd, BankSerializationContext from, BankSerializationContext to)
+    {
+        bkhd.BankGeneratorVersion = to.Version;
+        bkhd.FeedbackInBank = to.UseFeedback;
+
+        // TODO: Better way to convert padding?
+        if (to.Version > 76)
+        {
+            bkhd.Padding.Padding = Array.Empty<byte>();
         }
     }
 }

@@ -13,12 +13,12 @@ public class HircChunkConvertTests
         var to = new BankSerializationContext(134);
         
         var data = TestData.GetTestDataBytes(@"Convert", @"HIRC", @"56.bin");
-        var (_, result) = TestHelpers.Deserialize<ChunkContainer>(data, 56);
+        var (_, result) = TestHelpers.Deserialize<ChunkContainer>(data, from);
 
-        var c = new HircConverter(result.Chunk as HierarchyChunk);
-        c.Convert(from, to);
+        if (result.Chunk is not HierarchyChunk hirc) throw new Exception();
+        HircConverter.ConvertHircChunk(hirc, from, to);
 
-        var newData = TestHelpers.Serialize(result, 134);
+        var newData = TestHelpers.Serialize(result, to);
         TestHelpers.WriteStreamToFile(new MemoryStream(newData), TestData.GetTestDataFilePath("Convert", "HIRC", "Out134"));
         Assert.That(newData, Is.EquivalentTo(TestData.GetTestDataBytes(@"Convert", @"HIRC", @"134.bin")));
     }

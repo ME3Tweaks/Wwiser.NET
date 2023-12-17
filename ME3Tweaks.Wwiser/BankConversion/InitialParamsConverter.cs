@@ -3,15 +3,15 @@ using ME3Tweaks.Wwiser.Model.ParameterNode;
 
 namespace ME3Tweaks.Wwiser.BankConversion;
 
-public class InitialParamsConverter(NodeBaseParameters node) : IWwiseConverter
+public class InitialParamsConverter(BankSerializationContext from, BankSerializationContext to)
 {
-    public bool ShouldConvert(BankSerializationContext from, BankSerializationContext to)
+    public bool ShouldConvert()
     {
         return (from.Version <= 56 && to.Version > 56)
                || (from.Version > 56 && to.Version <= 56);
     }
 
-    public void Convert(BankSerializationContext from, BankSerializationContext to)
+    public void Convert(NodeBaseParameters node)
     {
         if (from.Version <= 56)
         {

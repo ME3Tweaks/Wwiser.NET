@@ -59,17 +59,7 @@ namespace ME3Tweaks.Wwiser.Model
         /// </summary>
         [FieldOrder(6)]
         [SerializeWhenVersion(126, ComparisonOperator.GreaterThan)]
-        public uint AltValues { get; set; }
-        
-        //TODO: Implement bit packed bools in AltValues
-        // elif version <= 134:
-        //    obj.U32('uAltValues') \
-        //    .bit('bUnused', obj.lastval, 0, 0xFFFF) \
-        //    .bit('bDeviceAllocated', obj.lastval, 16, 0xFFFF)
-        // else:
-        //    obj.U32('uAltValues') \
-        //    .bit('uAlignment', obj.lastval, 0, 0xFFFF) \
-        //    .bit('bDeviceAllocated', obj.lastval, 16, 0xFFFF)
+        public AltValues AltValues { get; set; }
 
         /// <summary>
         /// ID of project
@@ -128,5 +118,12 @@ namespace ME3Tweaks.Wwiser.Model
             <= 141 => chunkSize - 0x14,
             _ => chunkSize - 0x14 - 0x04 - 0x10
         };
+    }
+
+    [Flags]
+    public enum AltValues : uint
+    {
+        Alignment = 1 << 0,
+        DeviceAllocated = 1 << 15
     }
 }
