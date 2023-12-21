@@ -14,4 +14,9 @@ public class RtpcGraphItem
     
     [FieldOrder(3)]
     public CurveInterpolation Interp { get; set; }
+
+    public RtpcGraphItem Clone()
+    {
+        return (RtpcGraphItem)MemberwiseClone();
+    }
 }

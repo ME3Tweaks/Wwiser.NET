@@ -4,6 +4,7 @@ namespace ME3Tweaks.Wwiser.Model.ParameterNode;
 
 public class AuxParams : IBinarySerializable
 {
+    // TODO: What do these mean?
     [Ignore]
     public bool Unk1 { get; set; }
     

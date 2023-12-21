@@ -16,4 +16,14 @@ public class RtpcConversionTable
     [FieldOrder(10)]
     [FieldCount($"{nameof(GraphPointCount)}.{nameof(GraphPointCount.Value)}")]
     public List<RtpcGraphItem> Graph { get; set; } = new();
+
+    public RtpcConversionTable Clone()
+    {
+        return new RtpcConversionTable()
+        {
+            Scaling = new CurveScaling() { Value = Scaling.Value },
+            GraphPointCount = new V36ShortCount() { Value = GraphPointCount.Value },
+            Graph = Graph.Select(i => i.Clone()).ToList()
+        };
+    }
 }

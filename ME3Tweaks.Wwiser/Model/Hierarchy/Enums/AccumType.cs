@@ -29,6 +29,13 @@ public class AccumType : IBinarySerializable
         }
         Value = (AccumTypeInner)initialValue;
     }
+
+    public AccumType() { }
+
+    public AccumType(AccumTypeInner type)
+    {
+        Value = type;
+    }
     
     public enum AccumTypeInner : byte 
     {

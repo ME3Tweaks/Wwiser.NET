@@ -105,7 +105,7 @@ public class InitialParamsConverter(BankSerializationContext from, BankSerializa
         {
             if (low != 0f || high != 0f)
             {
-                i.AddRange(id, new Uni(high), new Uni(low));
+                i.AddRange(id, new Uni(low), new Uni(high));
             }
         }
     }

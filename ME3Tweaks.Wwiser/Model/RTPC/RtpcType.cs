@@ -42,6 +42,13 @@ public class RtpcType : IBinarySerializable
         }
         Value = (RtpcTypeInner)initialValue;
     }
+
+    public RtpcType() { }
+
+    public RtpcType(RtpcTypeInner type)
+    {
+        Value = type;
+    }
     
     public enum RtpcTypeInner : byte 
     {
