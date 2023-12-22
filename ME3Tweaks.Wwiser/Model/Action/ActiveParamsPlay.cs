@@ -10,7 +10,7 @@ public class ActiveParamsPlay
 {
     [FieldOrder(0)]
     [SerializeWhenVersion(56, ComparisonOperator.LessThanOrEqual)]
-    public RangedParameterInt Time { get; set; } = new();
+    public RangedParameterInt TransitionTime { get; set; } = new();
 
     [FieldOrder(1)]
     [SerializeAs(SerializedType.UInt1)]

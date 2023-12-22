@@ -1,6 +1,4 @@
-﻿using ME3Tweaks.Wwiser.BankConversion;
-using ME3Tweaks.Wwiser.Model.ParameterNode;
-using Action = ME3Tweaks.Wwiser.Model.Hierarchy.Action;
+﻿using Action = ME3Tweaks.Wwiser.Model.Hierarchy.Action;
 
 namespace ME3Tweaks.Wwiser.Tests.ConvertTests;
 

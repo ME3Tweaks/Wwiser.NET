@@ -69,12 +69,13 @@ public class SmartPropIdTests
     [TestCase(0x3A, PropId.Loop)]
     [TestCase(0x3B, PropId.InitialDelay)]
     [TestCase(0x39, PropId.AttachedPluginFXID)]
-    public void PropsIdParsesAndReserializes_V125(byte hex, PropId expected)
+    [TestCase(0x3C, PropId.UserAuxSendLPF0)]
+    public void PropsIdParsesAndReserializes_V128(byte hex, PropId expected)
     {
-        var (_, result) = TestHelpers.Deserialize<SmartPropId>(hex, 125);
+        var (_, result) = TestHelpers.Deserialize<SmartPropId>(hex, 128);
         Assert.That(result.PropValue, Is.EqualTo(expected));
         
-        var reserialized = TestHelpers.Serialize(result, 125);
+        var reserialized = TestHelpers.Serialize(result, 128);
         Assert.That(reserialized[0], Is.EqualTo(hex));
     }
     

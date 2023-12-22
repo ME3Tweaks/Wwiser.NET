@@ -12,15 +12,30 @@ public class RtpcConverter(BankSerializationContext from, BankSerializationConte
                || (from.Version > 89 && to.Version <= 89);
     }
 
-    public void Convert(NodeBaseParameters node)
+    public void Convert(RtpcParameterNodeBase node)
     {
         if (from.Version <= 89)
         {
             // Convert up versions
-            foreach (var rtpc in node.Rtpc.Rtpcs)
+            foreach (var rtpc in node.Rtpcs)
             {
                 rtpc.RtpcType = new RtpcType(RtpcType.RtpcTypeInner.GameParameter);
                 rtpc.RtpcAccum = new AccumType(AccumType.AccumTypeInner.Additive);
+
+                ConvertRtpcFloatLt0(rtpc.RtpcConversionTable);
+            }
+        }
+    }
+
+    public static void ConvertRtpcFloatLt0(RtpcConversionTable rct)
+    {
+        foreach (var g in rct.Graph)
+        {
+            if (g.To < 0)
+            {
+                // Something close to this - not exactly
+                g.To /= 100;
+                //g.To = -0.999984681606293f;
             }
         }
     }

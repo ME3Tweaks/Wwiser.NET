@@ -32,7 +32,7 @@ public class Attenuation : HircItem
     public List<RtpcConversionTable> Curves { get; set; } = new();
 
     [FieldOrder(6)] 
-    public RtpcParameterNodeBase RtpcParameterNodeBase { get; set; } = new();
+    public RtpcParameterNodeBase Rtcp { get; set; } = new();
 }
 
 public class CurveToUse : IBinarySerializable

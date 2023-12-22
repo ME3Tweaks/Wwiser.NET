@@ -16,10 +16,16 @@ public class InitialParamsConverter(BankSerializationContext from, BankSerializa
         if (from.Version <= 56)
         {
             node.InitialParams62 = ConvertUpVersion(node.InitialParams56);
+            if (node.PositioningChunk.AttenuationId != 0)
+            {
+                node.InitialParams62.AddParameter(PropId.AttenuationID, 
+                    new InitialParamsV62.ParameterValue(new Uni(node.PositioningChunk.AttenuationId)));
+            }
         }
         else
         {
             node.InitialParams56 = ConvertDownVersion(node.InitialParams62);
+            // TODO: Convert down version for attenuation id
             
             // Potentially mass effect only - set these values that don't exist on higher versions
             node.Priority = 50;

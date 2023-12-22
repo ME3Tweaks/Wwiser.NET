@@ -15,14 +15,7 @@ public class AttenuationConverter(BankSerializationContext from, BankSerializati
         
         foreach (var c in item.Curves)
         {
-            foreach (var g in c.Graph)
-            {
-                if (g.To < 0.0f)
-                {
-                    // Probably a rounding error converting to -1f;
-                    g.To = -1f;  //-0.999984681606293f;
-                }
-            }
+            RtpcConverter.ConvertRtpcFloatLt0(c);
         }
     }
 }

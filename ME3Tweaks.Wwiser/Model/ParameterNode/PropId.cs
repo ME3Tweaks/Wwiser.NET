@@ -116,6 +116,7 @@ public class SmartPropId : IBinarySerializable
     {
         return input switch
         {
+            >= PropId.UserAuxSendLPF0 => input,
             (PropId)0x3A => PropId.Loop,
             (PropId)0x3B => PropId.InitialDelay,
             (PropId)0x06 => PropId.MakeUpGain,
@@ -134,6 +135,7 @@ public class SmartPropId : IBinarySerializable
             PropId.Loop => (PropId)0x3A,
             PropId.InitialDelay => (PropId)0x3B,
             PropId.MakeUpGain => (PropId)0x06,
+            > PropId.AttachedPluginFXID => input,
             > PropId.MakeUpGain => input - 2,
             > PropId.InitialDelay => input - 1,
             > PropId.Loop => input,
@@ -309,4 +311,10 @@ public enum PropId : byte
     UserAuxSendHPF1,
     UserAuxSendHPF2,
     UserAuxSendHPF3,
+    GameAuxSendLPF,
+    GameAuxSendHPF,
+    AttenuationID,
+    PositioningTypeBlend,
+    ReflectionBusVolume,
+    PAN_UD
 }
