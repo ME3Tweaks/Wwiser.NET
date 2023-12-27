@@ -1,4 +1,5 @@
 ﻿using BinarySerialization;
+using ME3Tweaks.Wwiser.Model.Hierarchy;
 
 namespace ME3Tweaks.Wwiser.Model.Action.Specific;
 
@@ -27,6 +28,8 @@ public class ActiveFlags : IBinarySerializable
     {
         // TODO: IncludePendingResume on stop?
         var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
+        var action = serializationContext.FindAncestor<HircItem>() as Hierarchy.Action;
+        var notStop = action?.Type.Value != ActionTypeValue.Stop;
         if (version <= 56)
         {
             stream.Write(BitConverter.GetBytes((uint)(IncludePendingResume ? 0 : 1)));
@@ -40,7 +43,7 @@ public class ActiveFlags : IBinarySerializable
         else
         {
             ActiveFlagsInner flags = 0;
-            if (IncludePendingResume) flags |= ActiveFlagsInner.IncludePendingResume;
+            if (IncludePendingResume && notStop) flags |= ActiveFlagsInner.IncludePendingResume;
             if (ApplyToStateTransitions) flags |= ActiveFlagsInner.ApplyToStateTransitions;
             if (ApplyToDynamicSequence) flags |= ActiveFlagsInner.ApplyToDynamicSequence;
             stream.WriteByte((byte)flags);
