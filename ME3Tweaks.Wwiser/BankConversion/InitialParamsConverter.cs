@@ -1,5 +1,6 @@
 ﻿using ME3Tweaks.Wwiser.Formats;
 using ME3Tweaks.Wwiser.Model.ParameterNode;
+using ME3Tweaks.Wwiser.Model.ParameterNode.Positioning;
 
 namespace ME3Tweaks.Wwiser.BankConversion;
 
@@ -20,6 +21,8 @@ public class InitialParamsConverter(BankSerializationContext from, BankSerializa
             {
                 node.InitialParams62.AddParameter(PropId.AttenuationID, 
                     new InitialParamsV62.ParameterValue(new Uni(node.PositioningChunk.AttenuationId)));
+                node.PositioningChunk.Mode |= SpatializationMode.PositionAndOrientation;
+                node.PositioningChunk.Mode |= SpatializationMode.EnableAttenuation;
             }
         }
         else
@@ -31,6 +34,16 @@ public class InitialParamsConverter(BankSerializationContext from, BankSerializa
             node.Priority = 50;
             node.DistOffset = -10;
         }
+
+        if (from.Version <= 89)
+        {
+            node.AdvSettingsParams.Unk1 = node.AdvSettingsParams.IsMaxNumInstOverrideParent;
+        }
+        
+        // Set boolean behavior flags that may have changed
+        (node.PositioningChunk.HasAutomation, node.PositioningChunk.HasDynamic) = 
+            SpatializationHelpers.GetBoolFlagsFromType(node.PositioningChunk.Type, 
+                node.PositioningChunk.HasAutomation, to.Version);
     }
 
     private static InitialParamsV56 ConvertDownVersion(InitialParamsV62 from)

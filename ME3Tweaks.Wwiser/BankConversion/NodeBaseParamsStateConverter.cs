@@ -13,7 +13,7 @@ public class NodeBaseParamsStateConverter(BankSerializationContext from, BankSer
 
     public void Convert(NodeBaseParameters node)
     {
-        if (from.Version <= 52)
+        if (from.Version <= 52 && to.Version > 52)
         {
             // Convert up versions
             node.StateChunk = new StateChunk
@@ -24,7 +24,7 @@ public class NodeBaseParamsStateConverter(BankSerializationContext from, BankSer
                 }
             };
         }
-        else
+        else if (from.Version > 52 && to.Version <= 52)
         {
             // Convert down versions
             node.StateGroup = node.StateChunk.GroupChunks.FirstOrDefault()?.StateGroup

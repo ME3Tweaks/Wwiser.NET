@@ -25,12 +25,13 @@ public class ActiveFlags : IBinarySerializable
 
     public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
+        // TODO: IncludePendingResume on stop?
         var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
         if (version <= 56)
         {
             stream.Write(BitConverter.GetBytes((uint)(IncludePendingResume ? 0 : 1)));
             stream.Write(BitConverter.GetBytes((uint)(ApplyToStateTransitions ? 0 : 1)));
-            stream.Write(BitConverter.GetBytes((uint)(ApplyToDynamicSequence ? 1 : 0)));
+            stream.Write(BitConverter.GetBytes((uint)(ApplyToDynamicSequence ? 0 : 1)));
         }
         else if (version <= 62)
         {
