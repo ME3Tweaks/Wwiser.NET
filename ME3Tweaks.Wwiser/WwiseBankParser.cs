@@ -122,7 +122,7 @@ public class WwiseBankParser
         return (version, feedback);
     }
 
-    public async Task Deserialize()
+    public async Task DeserializeAsync()
     {
         if (_stream is null or { Length : 0 })
         {
@@ -134,14 +134,35 @@ public class WwiseBankParser
             .DeserializeAsync<WwiseBankRoot>(_stream, CreateSerializationContext());
         WwiseBank = new WwiseBank(root);
     }
+    
+    public void Deserialize()
+    {
+        if (_stream is null or { Length : 0 })
+        {
+            throw new Exception("Inner stream is null or empty, cannot deserialize.");
+        }
+        
+        _stream.Position = 0;
+        var root = _serializer.Deserialize<WwiseBankRoot>(_stream, CreateSerializationContext());
+        WwiseBank = new WwiseBank(root);
+    }
 
-    public async Task Serialize(Stream stream)
+    public async Task SerializeToAsync(Stream stream)
     {
         if (WwiseBank is null)
         {
             throw new InvalidOperationException("Cannot serialize a null WwiseBank");
         }
         await _serializer.SerializeAsync(stream,WwiseBank.ToModel(), CreateSerializationContext());
+    }
+    
+    public void SerializeTo(Stream stream)
+    {
+        if (WwiseBank is null)
+        {
+            throw new InvalidOperationException("Cannot serialize a null WwiseBank");
+        }
+        _serializer.Serialize(stream,WwiseBank.ToModel(), CreateSerializationContext());
     }
 
     private BankSerializationContext CreateSerializationContext()
