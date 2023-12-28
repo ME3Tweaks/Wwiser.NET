@@ -37,7 +37,7 @@ public class WwiseBankParser
         _stream.Position = 0;
     }
 
-    public void ConvertVersion(uint version)
+    public void ConvertToVersion(uint version)
     {
         ConvertWithHeader(CreateSerializationContext() with { Version = version });
     }

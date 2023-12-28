@@ -45,21 +45,15 @@ public class InitialParamsV62
 
         public ParameterValue(Uni i)
         {
-            Float = i.Float;
-            Integer = i.Integer;
-        }
-        
-        public new void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
-        {
-            var initialParams = serializationContext.FindAncestor<InitialParamsV62>();
-            var id = initialParams.ParameterIds[initialParams.ParameterValues.Count + 1];
-            if (id.PropValue is PropId.AttachedPluginFXID /*or PropId.AttenuationID*/)
+            if (i.Float != 0f)
             {
-                stream.Write(BitConverter.GetBytes(Integer));
+                Float = i.Float;
+                StoredAsFloat = true;
             }
-            else
+            else if (Integer != 0)
             {
-                base.Serialize(stream, endianness, serializationContext);
+                Integer = i.Integer;
+                StoredAsFloat = false;
             }
         }
 
@@ -68,12 +62,14 @@ public class InitialParamsV62
         {
             var initialParams = serializationContext.FindAncestor<InitialParamsV62>();
             var id = initialParams.ParameterIds[initialParams.ParameterValues.Count + 1];
-            if (id.PropValue is PropId.AttachedPluginFXID /*or PropId.AttenuationID*/)
+            if (id.PropValue is PropId.AttachedPluginFXID or PropId.AttenuationID)
             {
                 Span<byte> span = stackalloc byte[4];
                 var read = stream.Read(span);
                 if (read != 4) throw new Exception();
                 Integer = BitConverter.ToUInt32(span);
+                Float = 0f;
+                StoredAsFloat = false;
             }
             else
             {
