@@ -6,7 +6,7 @@ namespace ME3Tweaks.Wwiser.Tests.ConvertTests;
 public class ParameterNodeConvertTests
 {
     [Test]
-    public void Convert56to134_Works()
+    public void ConvertParameterNode_56to134_Works()
     {
         var from = new BankSerializationContext(56);
         var to = new BankSerializationContext(134);
@@ -23,7 +23,7 @@ public class ParameterNodeConvertTests
     }
     
     [Test]
-    public void Convert134to56_Works()
+    public void ConvertParameterNode_134to56_Works()
     {
         var from = new BankSerializationContext(134);
         var to = new BankSerializationContext(56);

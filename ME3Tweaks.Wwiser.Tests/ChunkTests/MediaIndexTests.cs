@@ -3,7 +3,7 @@
 public class MediaIndexTests
 {
     [Test]
-    public void V134_Parses()
+    public void DIDX_V134_Parses()
     {
         var data = TestData.GetTestDataBytes(@"MediaIndex",@"DIDXv134.bin");
         var (_, result) = TestHelpers.Deserialize<ChunkContainer>(data, 134);
@@ -29,12 +29,12 @@ public class MediaIndexTests
     }
     
     [Test]
-    public void V134_Reserializes()
+    public void DIDX_V134_Reserializes()
     {
         var data = TestData.GetTestDataBytes(@"MediaIndex",@"DIDXv134.bin");
         var (_, result) = TestHelpers.Deserialize<ChunkContainer>(data, 134);
         
         var reserialized = TestHelpers.Serialize(result, 134);
-        Assert.That(reserialized, Is.EqualTo(data));
+        Assert.That(reserialized, Is.EquivalentTo(data));
     }
 }

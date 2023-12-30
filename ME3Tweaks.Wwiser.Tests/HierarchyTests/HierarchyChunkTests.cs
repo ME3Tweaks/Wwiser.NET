@@ -5,8 +5,20 @@ namespace ME3Tweaks.Wwiser.Tests.HierarchyTests;
 
 public class HierarchyChunkTests
 {
+    [TestCase("HIRCv44.bin", 44)]
+    [TestCase("HIRCv56.bin", 56)]
+    [TestCase("HIRCv134.bin", 134)]
+    public void SimpleHircChunk_Reserializes(string fileName, int version)
+    {
+        var data = TestData.GetTestDataBytes(@"Hierarchy", @"SmallFullChunks", fileName);
+        var (serializer, result) = TestHelpers.Deserialize<ChunkContainer>(data, version);
+        
+        var reserialized = TestHelpers.Serialize(result, version);
+        Assert.That(reserialized, Is.EquivalentTo(data));
+    }
+    
     [Test]
-    public void SimpleChunk_v44_Parses()
+    public void SimpleHircChunk_v44_Parses()
     {
         var data = TestData.GetTestDataBytes(@"Hierarchy", @"SmallFullChunks", @"HIRCv44.bin");
         var (serializer, result) = TestHelpers.Deserialize<ChunkContainer>(data, 44);
@@ -32,7 +44,7 @@ public class HierarchyChunkTests
     }
     
     [Test]
-    public void SimpleChunk_v56_Parses()
+    public void SimpleHircChunk_v56_Parses()
     {
         var data = TestData.GetTestDataBytes(@"Hierarchy", @"SmallFullChunks", @"HIRCv56.bin");
         var (serializer, result) = TestHelpers.Deserialize<ChunkContainer>(data, 56);
@@ -58,7 +70,7 @@ public class HierarchyChunkTests
     }
     
     [Test]
-    public void SimpleChunk_v134_Parses()
+    public void SimpleHircChunk_v134_Parses()
     {
         var data = TestData.GetTestDataBytes(@"Hierarchy", @"SmallFullChunks", @"HIRCv134.bin");
         var (serializer, result) = TestHelpers.Deserialize<ChunkContainer>(data, 134);
@@ -84,7 +96,7 @@ public class HierarchyChunkTests
     }
 
     [Test]
-    public void BigChunkTest()
+    public void BigHircChunk_Reserializes()
     {
         var data = TestData.GetTestDataBytes(@"Hierarchy", @"LargeFullChunks", @"HIRC_V56.bin");
         var (serializer, result) = TestHelpers.Deserialize<ChunkContainer>(data, 56);

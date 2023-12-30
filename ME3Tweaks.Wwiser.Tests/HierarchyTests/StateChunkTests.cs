@@ -7,7 +7,7 @@ public class StateChunkTests
 {
     [TestCase(new byte[] {00, 00}, 134)]
     [TestCase(new byte[] {00, 00, 00, 00}, 120)]
-    public void Empty_MultipleVersions_Parses(byte[] data, int version)
+    public void EmptyStateChunk_MultipleVersions_Parses(byte[] data, int version)
     {
         var (_, result) = TestHelpers.Deserialize<StateChunk>(data, version);
         

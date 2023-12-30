@@ -6,7 +6,7 @@ namespace ME3Tweaks.Wwiser.Tests.ConvertTests;
 public class ActorMixerConvertTests
 {
     [Test]
-    public void Convert56to134_Works()
+    public void ConvertActorMixer_56to134_Works()
     {
         var from = new BankSerializationContext(56);
         var to = new BankSerializationContext(134);
