@@ -13,6 +13,6 @@ public class HircItemContainer
 
     [FieldOrder(3)]
     [FieldLength(nameof(Size))]
-    [SubtypeFactory($"{nameof(Type)}.{nameof(Type.Value)}", typeof(HircTypeFactory))]
+    [SubtypeFactory($"{nameof(Type)}.{nameof(Type.Value)}", typeof(HircItemSubtypeFactory))]
     public required HircItem Item { get; set; }
 }

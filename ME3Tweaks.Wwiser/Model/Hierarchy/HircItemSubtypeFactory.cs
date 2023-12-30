@@ -4,7 +4,7 @@ using ME3Tweaks.Wwiser.Model.Hierarchy.Enums;
 
 namespace ME3Tweaks.Wwiser.Model.Hierarchy;
 
-public class HircTypeFactory : ISubtypeFactory
+public class HircItemSubtypeFactory : ISubtypeFactory
 {
     private static readonly Dictionary<Type, HircType> TypeToEnum = new()
     {
@@ -12,6 +12,7 @@ public class HircTypeFactory : ISubtypeFactory
         { typeof(Action), HircType.Action },
         { typeof(Event), HircType.Event },
         { typeof(RandSeqContainer), HircType.RandomSequenceContainer },
+        { typeof(SwitchContainer), HircType.SwitchContainer },
         { typeof(ActorMixer), HircType.ActorMixer },
         { typeof(LayerContainer), HircType.LayerContainer },
         { typeof(Attenuation), HircType.Attenuation },
@@ -46,7 +47,7 @@ public class HircTypeFactory : ISubtypeFactory
             HircType.Action => typeof(Action),
             HircType.Event => typeof(Event),
             HircType.RandomSequenceContainer => typeof(RandSeqContainer),
-            //HircType.SwitchContainer =>
+            HircType.SwitchContainer => typeof(SwitchContainer),
             HircType.ActorMixer => typeof(ActorMixer),
             //HircType.Bus =>
             HircType.LayerContainer => typeof(LayerContainer),
