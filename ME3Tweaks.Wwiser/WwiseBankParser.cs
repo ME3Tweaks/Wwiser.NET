@@ -174,10 +174,13 @@ public class WwiseBankParser
         if (WwiseBank?.DATA is not null)
         {
             var context = CreateSerializationContext();
-            var bkhdSize= _serializer.SizeOf(WwiseBank.BKHD, context);
-            var didxSize = _serializer.SizeOf(WwiseBank.DIDX, context);
-            var dataOffset = bkhdSize + didxSize;
+            WwiseBank.BKHD.Padding = new BankHeaderPadding();
+            
+            var bkhdSize= _serializer.SizeOf(new ChunkContainer(WwiseBank.BKHD), context);
+            var didxSize = (WwiseBank.DIDX != null) ? 
+                _serializer.SizeOf(new ChunkContainer(WwiseBank.DIDX), context) : 0;
 
+            var dataOffset = bkhdSize + didxSize;
             WwiseBank.BKHD.Padding.SetPadding(dataOffset);
         }
     }

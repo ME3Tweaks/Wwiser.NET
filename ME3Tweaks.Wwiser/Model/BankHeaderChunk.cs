@@ -97,9 +97,6 @@ namespace ME3Tweaks.Wwiser.Model
         
         public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
         {
-            /*var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
-            var chunkSize = serializationContext.FindAncestor<ChunkContainer>().ChunkSize;
-            stream.Write(new byte[GetPaddingSize(version, chunkSize)]);*/
             stream.Write(Padding);
         }
 
@@ -132,6 +129,7 @@ namespace ME3Tweaks.Wwiser.Model
                 > 8 => new byte[8 + (16 - initAlignment)],
                 _ => Array.Empty<byte>()
             };
+            Array.Fill(Padding, (byte)0);
         }
     }
 
