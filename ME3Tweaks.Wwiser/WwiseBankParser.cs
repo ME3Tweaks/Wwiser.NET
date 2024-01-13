@@ -153,6 +153,8 @@ public class WwiseBankParser
         {
             throw new InvalidOperationException("Cannot serialize a null WwiseBank");
         }
+        
+        SetBankHeaderPadding();
         await _serializer.SerializeAsync(stream,WwiseBank.ToModel(), CreateSerializationContext());
     }
     
@@ -162,7 +164,22 @@ public class WwiseBankParser
         {
             throw new InvalidOperationException("Cannot serialize a null WwiseBank");
         }
+
+        SetBankHeaderPadding();
         _serializer.Serialize(stream,WwiseBank.ToModel(), CreateSerializationContext());
+    }
+
+    private void SetBankHeaderPadding()
+    {
+        if (WwiseBank?.DATA is not null)
+        {
+            var context = CreateSerializationContext();
+            var bkhdSize= _serializer.SizeOf(WwiseBank.BKHD, context);
+            var didxSize = _serializer.SizeOf(WwiseBank.DIDX, context);
+            var dataOffset = bkhdSize + didxSize;
+
+            WwiseBank.BKHD.Padding.SetPadding(dataOffset);
+        }
     }
 
     private BankSerializationContext CreateSerializationContext()
