@@ -7,7 +7,7 @@ namespace ME3Tweaks.Wwiser.Tests.ConvertTests;
 public class HircChunkConvertTests
 {
     [Test]
-    public void Convert56to134_Works()
+    public void ConvertHircChunk_56to134_ReturnsCorrectDataLength()
     {
         var from = new BankSerializationContext(56);
         var to = new BankSerializationContext(134);
@@ -22,8 +22,8 @@ public class HircChunkConvertTests
         var data134 = TestData.GetTestDataBytes(@"Convert", @"HIRC", @"134.bin");
         Assert.That(newData.Length, Is.EqualTo(data134.Length));
         
-        var outfile = TestData.GetTestDataFilePath("Convert", "HIRC", "Out134");
+        /*var outfile = TestData.GetTestDataFilePath("Convert", "HIRC", "Out134");
         File.WriteAllText(outfile, string.Empty); // Wipe out file
-        TestHelpers.WriteStreamToFile(new MemoryStream(newData), outfile);
+        TestHelpers.WriteStreamToFile(new MemoryStream(newData), outfile);*/
     }
 }

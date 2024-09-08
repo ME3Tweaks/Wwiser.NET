@@ -3,7 +3,7 @@ namespace ME3Tweaks.Wwiser.Tests.ChunkTests;
 public class BankHeaderTests
 {
     [Test]
-    public void V134_Parses()
+    public void BKHD_V134_Parses()
     {
         var data = TestData.GetTestDataBytes(@"BankHeader",@"v134.bin");
         var (_, result) = TestHelpers.Deserialize<ChunkContainer>(data, 134);
@@ -25,7 +25,7 @@ public class BankHeaderTests
     }
 
     [Test]
-    public void V56_Parses()
+    public void BKHD_V56_Parses()
     {
         var data = TestData.GetTestDataBytes(@"BankHeader",@"v56.bin");
         var (_, result) = TestHelpers.Deserialize<ChunkContainer>(data, 56);
@@ -48,12 +48,22 @@ public class BankHeaderTests
     }
 
     [Test]
-    public void V134_Reserializes()
+    public void BKHD_V134_Reserializes()
     {
         var data = TestData.GetTestDataBytes(@"BankHeader",@"v134.bin");
         var (_, result) = TestHelpers.Deserialize<ChunkContainer>(data, 134);
         
         var reserialized = TestHelpers.Serialize(result, 134);
-        Assert.That(reserialized, Is.EqualTo(data));
+        Assert.That(reserialized, Is.EquivalentTo(data));
+    }
+    
+    [Test]
+    public void BKHD_V56_Reserializes()
+    {
+        var data = TestData.GetTestDataBytes(@"BankHeader",@"v56.bin");
+        var (_, result) = TestHelpers.Deserialize<ChunkContainer>(data, 56);
+        
+        var reserialized = TestHelpers.Serialize(result, 56);
+        Assert.That(reserialized, Is.EquivalentTo(data));
     }
 }

@@ -97,9 +97,6 @@ namespace ME3Tweaks.Wwiser.Model
         
         public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
         {
-            /*var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
-            var chunkSize = serializationContext.FindAncestor<ChunkContainer>().ChunkSize;
-            stream.Write(new byte[GetPaddingSize(version, chunkSize)]);*/
             stream.Write(Padding);
         }
 
@@ -118,6 +115,22 @@ namespace ME3Tweaks.Wwiser.Model
             <= 141 => chunkSize - 0x14,
             _ => chunkSize - 0x14 - 0x04 - 0x10
         };
+        
+        /// <summary>
+        /// Sets the necessary padding for the DATA chunk. DATA must start at a multiple of 16 bytes + 8. IE 8, 24, 40, etc
+        /// </summary>
+        /// <param name="dataChunkOffset">Initial offset of the DATA chunk</param>
+        public void SetPadding(long dataChunkOffset)
+        {
+            var initAlignment = dataChunkOffset % 16;
+            Padding = initAlignment switch
+            {
+                < 8 => new byte[8 - initAlignment],
+                > 8 => new byte[8 + (16 - initAlignment)],
+                _ => Array.Empty<byte>()
+            };
+            Array.Fill(Padding, (byte)0);
+        }
     }
 
     [Flags]

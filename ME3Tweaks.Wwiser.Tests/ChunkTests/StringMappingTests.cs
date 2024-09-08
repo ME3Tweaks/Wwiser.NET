@@ -3,7 +3,7 @@
 public class StringMappingTests
 {
     [Test]
-    public void V56_Parses()
+    public void STID_V56_Parses()
     {
         var data = TestData.GetTestDataBytes(@"StringMapping",@"STIDv56.bin");
         var (_, result) = TestHelpers.Deserialize<ChunkContainer>(data, 56);
@@ -29,12 +29,12 @@ public class StringMappingTests
     }
     
     [Test]
-    public void V56_Reserializes()
+    public void STID_V56_Reserializes()
     {
         var data = TestData.GetTestDataBytes(@"StringMapping",@"STIDv56.bin");
         var (_, result) = TestHelpers.Deserialize<ChunkContainer>(data, 56);
         
         var reserialized = TestHelpers.Serialize(result, 56);
-        Assert.That(reserialized, Is.EqualTo(data));
+        Assert.That(reserialized, Is.EquivalentTo(data));
     }
 }

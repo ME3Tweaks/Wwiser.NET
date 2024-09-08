@@ -4,7 +4,7 @@ using ME3Tweaks.Wwiser.Formats;
 
 namespace ME3Tweaks.Wwiser.Model.Action.Specific;
 
-public class SetGameParameter
+public class SetGameParameter : ISpecificParams
 {
     [FieldOrder(0)]
     [SerializeWhenVersion(89, ComparisonOperator.GreaterThan)]

@@ -6,7 +6,7 @@ public class AdvSettingsTests
 {
     [TestCase("Empty_V134.bin", 134)]
     [TestCase("Empty_V44.bin", 44)]
-    public void Empty_MultipleVersions_Reserializes(string file, int version)
+    public void EmptyAdvSettings_MultipleVersions_Reserializes(string file, int version)
     {
         var data = TestData.GetTestDataBytes(@"ParameterNode",@"AdvSettings", file);
         var (_, result) = TestHelpers.Deserialize<AdvSettingsParams>(data, version);

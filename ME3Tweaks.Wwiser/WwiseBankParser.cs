@@ -122,7 +122,7 @@ public class WwiseBankParser
         return (version, feedback);
     }
 
-    public async Task Deserialize()
+    public async Task DeserializeAsync()
     {
         if (_stream is null or { Length : 0 })
         {
@@ -134,14 +134,55 @@ public class WwiseBankParser
             .DeserializeAsync<WwiseBankRoot>(_stream, CreateSerializationContext());
         WwiseBank = new WwiseBank(root);
     }
+    
+    public void Deserialize()
+    {
+        if (_stream is null or { Length : 0 })
+        {
+            throw new Exception("Inner stream is null or empty, cannot deserialize.");
+        }
+        
+        _stream.Position = 0;
+        var root = _serializer.Deserialize<WwiseBankRoot>(_stream, CreateSerializationContext());
+        WwiseBank = new WwiseBank(root);
+    }
 
-    public async Task Serialize(Stream stream)
+    public async Task SerializeToAsync(Stream stream)
     {
         if (WwiseBank is null)
         {
             throw new InvalidOperationException("Cannot serialize a null WwiseBank");
         }
+        
+        SetBankHeaderPadding();
         await _serializer.SerializeAsync(stream,WwiseBank.ToModel(), CreateSerializationContext());
+    }
+    
+    public void SerializeTo(Stream stream)
+    {
+        if (WwiseBank is null)
+        {
+            throw new InvalidOperationException("Cannot serialize a null WwiseBank");
+        }
+
+        SetBankHeaderPadding();
+        _serializer.Serialize(stream,WwiseBank.ToModel(), CreateSerializationContext());
+    }
+
+    private void SetBankHeaderPadding()
+    {
+        if (WwiseBank?.DATA is not null)
+        {
+            var context = CreateSerializationContext();
+            WwiseBank.BKHD.Padding = new BankHeaderPadding();
+            
+            var bkhdSize= _serializer.SizeOf(new ChunkContainer(WwiseBank.BKHD), context);
+            var didxSize = (WwiseBank.DIDX != null) ? 
+                _serializer.SizeOf(new ChunkContainer(WwiseBank.DIDX), context) : 0;
+
+            var dataOffset = bkhdSize + didxSize;
+            WwiseBank.BKHD.Padding.SetPadding(dataOffset);
+        }
     }
 
     private BankSerializationContext CreateSerializationContext()
