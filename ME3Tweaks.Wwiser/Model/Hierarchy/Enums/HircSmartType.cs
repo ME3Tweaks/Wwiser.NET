@@ -44,11 +44,15 @@ public class HircSmartType : IBinarySerializable
     public void Deserialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
         var context = serializationContext.FindAncestor<BankSerializationContext>();
+        Value = DeserializeStatic(stream, context.Version);
+    }
 
+    public static HircType DeserializeStatic(Stream stream, uint version)
+    {
         uint initialValue;
-        
+
         // Uint <= 48, byte otherwise
-        if (context.Version <= 48)
+        if (version <= 48)
         {
             Span<byte> span = stackalloc byte[4];
             var read = stream.Read(span);
@@ -58,14 +62,14 @@ public class HircSmartType : IBinarySerializable
         {
             initialValue = (uint)stream.ReadByte();
         }
-        
+
         // Handle the two removed type values on higher versions
-        if (context.Version > 126 && initialValue > 0x0f)
+        if (version > 126 && initialValue > 0x0f)
         {
             initialValue += 2;
         }
-        
-        Value = (HircType)initialValue;
+
+        return (HircType)initialValue;
     }
 }
 
