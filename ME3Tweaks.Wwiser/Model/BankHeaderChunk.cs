@@ -111,7 +111,7 @@ namespace ME3Tweaks.Wwiser.Model
             Padding = new byte[GetPaddingSize(version, chunkSize)];
         }
 
-        private uint GetPaddingSize(uint version, uint chunkSize) => version switch
+        public static uint GetPaddingSize(uint version, uint chunkSize) => version switch
         {
             <= 26 => chunkSize - 0x18,
             <= 76 => chunkSize - 0x10,
