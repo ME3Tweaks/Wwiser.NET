@@ -36,8 +36,13 @@ public class StreamType : IBinarySerializable
     public void Deserialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
         var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
+
+        Value = DeserializeStatic(stream, version);
+    }
+
+    public static StreamTypeInner DeserializeStatic(Stream stream, uint version)
+    {
         byte value;
-        
         if (version <= 89)
         {
             Span<byte> span = stackalloc byte[4];
@@ -63,9 +68,9 @@ public class StreamType : IBinarySerializable
             }
         }
 
-        Value = (StreamTypeInner)value;
+        return (StreamTypeInner)value;
     }
-    
+
     public enum StreamTypeInner : byte
     {
         DataBnk,

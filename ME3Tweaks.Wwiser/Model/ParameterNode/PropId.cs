@@ -50,14 +50,21 @@ public class SmartPropId : IBinarySerializable
     {
         var context = serializationContext.FindAncestor<BankSerializationContext>();
         var version = context.Version;
-        if (context.UseModulator)
+        (PropValue, ModulatorValue) = DeserializeStatic(stream, context.UseModulator, version);
+    }
+
+    public static (PropId, ModulatorPropId) DeserializeStatic(Stream stream, bool useModulator, uint version)
+    {
+        ModulatorPropId modId = 0;
+        PropId propId = 0;
+        if (useModulator)
         {
             var id = (ModulatorPropId)stream.ReadByte();
             if (version < 150 && id >= ModulatorPropId.Lfo_Retrigger)
             {
                 id++;
             }
-            ModulatorValue = id;
+            modId = id;
         }
         else
         {
@@ -79,8 +86,9 @@ public class SmartPropId : IBinarySerializable
                 id = DeserializeVersionLte150(id);
             }
 
-            PropValue = id;
+            propId = id;
         }
+        return (propId, modId);
     }
 
     private static PropId SerializeVersion113(PropId input, uint version)
@@ -179,7 +187,7 @@ public class SmartPropId : IBinarySerializable
         return id;
     }
 
-    protected virtual PropId DeserializeVersionLte65(PropId input)
+    private static PropId DeserializeVersionLte65(PropId input)
     {
         return input switch
         {

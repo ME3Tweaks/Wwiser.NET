@@ -119,7 +119,7 @@ public class AuxParams : IBinarySerializable
     }
 
     [Flags]
-    private enum AuxFlags : byte
+    public enum AuxFlags : byte
     {
         Unk1 = 1 << 0,
         Unk2 = 1 << 1,
