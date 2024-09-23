@@ -48,7 +48,7 @@ public class AdvSettingsParams : IBinarySerializable
     }
 
     [Flags]
-    private enum AdvFlags : byte
+    public enum AdvFlags : byte
     {
         KillNewest = 1 << 0,
         UseVirtualBehavior = 1 << 1,
@@ -58,7 +58,7 @@ public class AdvSettingsParams : IBinarySerializable
     }
     
     [Flags]
-    private enum AdvOverrides : byte
+    public enum AdvOverrides : byte
     {
         OverrideHdrEnvelope = 1 << 0,
         OverrideAnalysis = 1 << 1,
