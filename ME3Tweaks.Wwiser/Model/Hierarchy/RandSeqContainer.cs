@@ -115,7 +115,7 @@ public class RanSeqFlags : IBinarySerializable
     }
 
     [Flags]
-    private enum RanSeqInner : byte
+    public enum RanSeqInner : byte
     {
         IsUsingWeight = 1 << 0,
         ResetPlayListAtEachEnd = 1 << 1,

@@ -40,7 +40,7 @@ public class CurveToUse : IBinarySerializable
     [Ignore]
     public sbyte[] CurveMap { get; set; } = new sbyte[19];
 
-    private static int GetCurveCount(uint version) => version switch
+    public static int GetCurveCount(uint version) => version switch
     {
         <= 62 => 5,
         <= 72 => 4,
