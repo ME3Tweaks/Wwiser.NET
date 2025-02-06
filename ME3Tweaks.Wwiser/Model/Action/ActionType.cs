@@ -62,7 +62,14 @@ public class ActionType : IBinarySerializable
     public void Deserialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
         var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
-        
+
+        (Value, Data) = DeserializeStatic(stream, version);
+    }
+
+    public static (ActionTypeValue type, ActionFlagsUnk flags) DeserializeStatic(Stream stream, uint version)
+    {
+        ActionTypeValue type;
+        ActionFlagsUnk flags;
         if (version <= 56)
         {
             Span<byte> span = stackalloc byte[4];
@@ -71,9 +78,9 @@ public class ActionType : IBinarySerializable
             uint value = BitConverter.ToUInt32(span);
             
             var enumValue = value >> 12;
-            Data = (ActionFlagsUnk)(byte)(value & 0xFFF);
+            flags = (ActionFlagsUnk)(byte)(value & 0xFFF);
             
-            Value = enumValue switch
+            type = enumValue switch
             {
                 0x20 => ActionTypeValue.Event1,
                 0x30 => ActionTypeValue.Event2,
@@ -98,20 +105,21 @@ public class ActionType : IBinarySerializable
             ushort value = BitConverter.ToUInt16(span);
 
             var enumValue = value >> 8;
-            Data = (ActionFlagsUnk)(byte)(value & 0xFF);
-            if (Data.HasFlag(ActionFlagsUnk.Unk1))
+            flags = (ActionFlagsUnk)(byte)(value & 0xFF);
+            if (flags.HasFlag(ActionFlagsUnk.Unk1))
             {
-                Data &= ~ActionFlagsUnk.Unk1;
-                Data |= ActionFlagsUnk.Unk4;
+                flags &= ~ActionFlagsUnk.Unk1;
+                flags |= ActionFlagsUnk.Unk4;
             }
             
-            Value = enumValue switch
+            type = enumValue switch
             {
                 >= 0x1A => (ActionTypeValue)(enumValue + 3),
                 >= 0x0E => (ActionTypeValue)(enumValue + 2),
                 _ => (ActionTypeValue)enumValue
             };
         }
+        return (type, flags);
     }
 }
 
