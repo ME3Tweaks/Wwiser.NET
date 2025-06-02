@@ -6,7 +6,7 @@ namespace ME3Tweaks.Wwiser.Model;
 
 public class HierarchyChunk : Chunk
 {
-    public override string Tag => "HIRC";
+    public override string Tag => @"HIRC";
     
     [FieldOrder(0)]
     public uint ItemCount { get; set; }

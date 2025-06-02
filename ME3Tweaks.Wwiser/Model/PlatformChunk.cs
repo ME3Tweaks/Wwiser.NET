@@ -9,4 +9,6 @@ public class PlatformChunk : Chunk
     
     [FieldOrder(0)]
     public BankStringUtf8 CustomPlatformName { get; set; } = new("");
+
+    public override bool IsAllowedInVersion(uint version) => version >= 113;
 }

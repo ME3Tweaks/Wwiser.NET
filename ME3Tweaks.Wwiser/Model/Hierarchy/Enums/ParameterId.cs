@@ -3,6 +3,7 @@ using ME3Tweaks.Wwiser.Formats;
 
 namespace ME3Tweaks.Wwiser.Model.Hierarchy.Enums;
 
+//TODO: Parse this properly. This will suck a lot.
 public class ParameterId : IBinarySerializable
 {
     [Ignore]
@@ -82,7 +83,7 @@ public class ParameterId : IBinarySerializable
         MidiTransposition,
         MidiVelocityOffset,
         PlaybackSpeed,
-        MuteRation,
+        MuteRatio,
         PlayMechanismSpecialTransitionsValue,
         MaxNumInstances,
         // Overridable params

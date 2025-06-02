@@ -15,6 +15,8 @@ public class WwiseBank
     
     public StringMappingChunk? STID { get; set; }
     
+    public GlobalSettingsChunk? STMG { get; set; }
+    
     public PlatformChunk? PLAT { get; set; }
     
     public PluginChunk? INIT { get; set; }
@@ -40,6 +42,9 @@ public class WwiseBank
                 case "STID":
                     STID = chunk.Chunk as StringMappingChunk;
                     break;
+                case "STMG":
+                    STMG = chunk.Chunk as GlobalSettingsChunk;
+                    break;
                 case "PLAT":
                     PLAT = chunk.Chunk as PlatformChunk;
                     break;
@@ -55,10 +60,11 @@ public class WwiseBank
     {
         var chunks = new List<Chunk?> 
             {
-                BKHD, DIDX, DATA, HIRC, STID, PLAT, INIT
-            }.Where(x => x != null)
-            .Where(x => Chunk.IsAllowedInVersion(x!, BKHD.BankGeneratorVersion))
-            .Select(x => new ChunkContainer(x!))
+                BKHD, DIDX, DATA, HIRC, STID, STMG, PLAT, INIT
+            }.Where(x => x is not null)
+            .Select(x => x!)
+            .Where(x => x.IsAllowedInVersion(BKHD.BankGeneratorVersion))
+            .Select(x => new ChunkContainer(x))
             .ToArray();
 
         return new WwiseBankRoot()

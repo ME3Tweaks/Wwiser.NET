@@ -8,6 +8,7 @@ public class HircItemSubtypeFactory : ISubtypeFactory
 {
     private static readonly Dictionary<Type, HircType> TypeToEnum = new()
     {
+        { typeof(State), HircType.State },
         { typeof(Sound), HircType.Sound },
         { typeof(Action), HircType.Action },
         { typeof(Event), HircType.Event },
@@ -42,7 +43,7 @@ public class HircItemSubtypeFactory : ISubtypeFactory
         
         type = (HircType)key switch
         {
-            //HircType.State => 
+            HircType.State => typeof(State),
             HircType.Sound => typeof(Sound),
             HircType.Action => typeof(Action),
             HircType.Event => typeof(Event),
