@@ -15,6 +15,8 @@ public class HircItemSubtypeFactory : ISubtypeFactory
         { typeof(SwitchContainer), HircType.SwitchContainer },
         { typeof(ActorMixer), HircType.ActorMixer },
         { typeof(LayerContainer), HircType.LayerContainer },
+        { typeof(MusicSegment), HircType.MusicSegment },
+        { typeof(MusicTrack), HircType.MusicTrack },
         { typeof(Attenuation), HircType.Attenuation },
         { typeof(FxShareSet), HircType.FxShareSet },
         { typeof(FxCustom), HircType.FxCustom },
@@ -51,8 +53,8 @@ public class HircItemSubtypeFactory : ISubtypeFactory
             HircType.ActorMixer => typeof(ActorMixer),
             //HircType.Bus =>
             HircType.LayerContainer => typeof(LayerContainer),
-            //HircType.MusicSegment =>
-            //HircType.MusicTrack =>
+            HircType.MusicSegment => typeof(MusicSegment),
+            HircType.MusicTrack => typeof(MusicTrack),
             //HircType.MusicSwitch =>
             //HircType.MusicRandomSequence =>
             HircType.Attenuation => typeof(Attenuation),
