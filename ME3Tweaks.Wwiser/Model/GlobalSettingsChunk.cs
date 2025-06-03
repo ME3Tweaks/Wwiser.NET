@@ -45,22 +45,16 @@ public class GlobalSettingsChunk : Chunk
     [FieldCount(nameof(ParamCount))]
     [SerializeWhenVersion(38, ComparisonOperator.GreaterThan)]
     public List<STMGParam> Params { get; set; } = new();
-    
+
     [FieldOrder(11)]
     [SerializeWhenVersion(118, ComparisonOperator.GreaterThan)]
-    public uint TextureCount { get; set; }
+    public STMGAcousticTextures Textures { get; set; } = new();
     
     [FieldOrder(12)]
-    [SerializeWhenVersion(118, ComparisonOperator.GreaterThan)]
-    [Subtype(nameof(BankSerializationContext.Version), 122, typeof(AcousticTextureV122), RelativeSourceMode = RelativeSourceMode.SerializationContext)]
-    [SubtypeDefault(typeof(AcousticTextureV126))]
-    public List<AcousticTexture> Textures { get; set; } = new();
-    
-    [FieldOrder(13)]
     [SerializeWhenVersionBetween(119, 122)]
     public uint ReverberatorCount { get; set; }
     
-    [FieldOrder(14)]
+    [FieldOrder(13)]
     [FieldCount(nameof(ReverberatorCount))]
     [SerializeWhenVersionBetween(119, 122)]
     public List<STMGReverberator> Reverberators { get; set; } = new();

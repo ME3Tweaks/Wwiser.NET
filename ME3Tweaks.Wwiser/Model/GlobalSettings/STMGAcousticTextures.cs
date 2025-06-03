@@ -1,6 +1,23 @@
 ﻿using BinarySerialization;
+using ME3Tweaks.Wwiser.Attributes;
 
 namespace ME3Tweaks.Wwiser.Model.GlobalSettings;
+
+public class STMGAcousticTextures
+{
+    [FieldOrder(1)]
+    public uint TextureCount { get; set; }
+    
+    [FieldOrder(2)]
+    [FieldCount(nameof(TextureCount))]
+    [SerializeWhenVersion(122, ComparisonOperator.LessThanOrEqual)]
+    public List<AcousticTextureV122> TexturesV122 { get; set; } = new();
+    
+    [FieldOrder(3)]
+    [FieldCount(nameof(TextureCount))]
+    [SerializeWhenVersion(122, ComparisonOperator.GreaterThan)]
+    public List<AcousticTextureV126> TexturesV126 { get; set; } = new();
+}
 
 public abstract class AcousticTexture : AkIdentifiable;
 

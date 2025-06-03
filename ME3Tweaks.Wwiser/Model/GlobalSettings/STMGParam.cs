@@ -35,7 +35,7 @@ public enum TransitionRampingType : uint
     FilteringOverTime
 }
 
-public enum BuiltInParam : uint
+public enum BuiltInParam : byte
 {
     None,
     StartDistance,
