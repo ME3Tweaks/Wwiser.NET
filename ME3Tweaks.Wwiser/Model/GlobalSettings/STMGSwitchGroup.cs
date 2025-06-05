@@ -11,7 +11,7 @@ public class STMGSwitchGroup : AkIdentifiable
 
     [FieldOrder(1)]
     [SerializeWhenVersion(89, ComparisonOperator.GreaterThan)]
-    public RtpcType RtpcType { get; set; } = new();
+    public RtpcType? RtpcType { get; set; }
     
     [FieldOrder(2)]
     public uint GraphCount { get; set; }
