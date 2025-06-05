@@ -8,8 +8,7 @@ public class PositioningTests
     public void Positioning_V134_Parses()
     {
         var byteData = new byte[] { 0x03, 0x0A };
-        var version = 134;
-        var (_, result) = TestHelpers.Deserialize<PositioningChunk>(byteData, version);
+        var (_, result) = TestHelpers.Deserialize<PositioningChunk>(byteData, 134);
         Assert.Multiple(() =>
         {
             Assert.That(result.HasPositioning, Is.True);

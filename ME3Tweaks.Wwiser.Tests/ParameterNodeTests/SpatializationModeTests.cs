@@ -4,7 +4,7 @@ namespace ME3Tweaks.Wwiser.Tests.ParameterNodeTests;
 
 public class SpatializationModeTests
 {
-    private static readonly byte[] Data = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 32, 64, 128 };
+    private static readonly byte[] Data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 32, 64, 128];
 
     [TestCase(122)]
     [TestCase(126)]
@@ -48,7 +48,7 @@ public class SpatializationModeTests
     }
 
 
-/// <summary>
+    /// <summary>
     /// Original implementation from Wwiser python code
     /// </summary>
     /// <param name="uBits3D"></param>

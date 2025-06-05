@@ -1,5 +1,4 @@
 ﻿using ME3Tweaks.Wwiser.Model.Hierarchy;
-using ME3Tweaks.Wwiser.Model.Hierarchy.Enums;
 
 namespace ME3Tweaks.Wwiser.Tests.HierarchyTests;
 

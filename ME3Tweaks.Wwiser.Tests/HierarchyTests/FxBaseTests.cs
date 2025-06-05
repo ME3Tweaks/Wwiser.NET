@@ -8,7 +8,7 @@ public class FxBaseTests
     public void FxCustom_ParsesCorrectly(string filename, int version, int pluginId, int dataSize)
     {
         var data = TestData.GetTestDataBytes(@"Hierarchy",@"FxCustom", filename);
-        var (serializer, result) = TestHelpers.Deserialize<FxCustom>(data, (uint)version);
+        var (serializer, result) = TestHelpers.Deserialize<FxCustom>(data, version);
         
         Assert.Multiple(() =>
         {

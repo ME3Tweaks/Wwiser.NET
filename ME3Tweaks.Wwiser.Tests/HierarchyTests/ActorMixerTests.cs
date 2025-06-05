@@ -1,5 +1,4 @@
 ﻿using ME3Tweaks.Wwiser.Model.Hierarchy;
-using ME3Tweaks.Wwiser.Model.Hierarchy.Enums;
 
 namespace ME3Tweaks.Wwiser.Tests.HierarchyTests;
 
@@ -10,7 +9,7 @@ public class ActorMixerTests
     public void ActorMixer_ParsesCorrectly(string filename, int version, int firstChild)
     {
         var data = TestData.GetTestDataBytes(@"Hierarchy",@"ActorMixer", filename);
-        var (serializer, result) = TestHelpers.Deserialize<ActorMixer>(data, (uint)version);
+        var (_, result) = TestHelpers.Deserialize<ActorMixer>(data, (uint)version);
         Assert.That(result.Children[0], Is.EqualTo(firstChild));
     }
     

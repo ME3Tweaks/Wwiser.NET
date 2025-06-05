@@ -11,7 +11,7 @@ public class HierarchyChunkTests
     public void SimpleHircChunk_Reserializes(string fileName, int version)
     {
         var data = TestData.GetTestDataBytes(@"Hierarchy", @"SmallFullChunks", fileName);
-        var (serializer, result) = TestHelpers.Deserialize<ChunkContainer>(data, version);
+        var (_, result) = TestHelpers.Deserialize<ChunkContainer>(data, version);
         
         var reserialized = TestHelpers.Serialize(result, version);
         Assert.That(reserialized, Is.EquivalentTo(data));
@@ -21,7 +21,7 @@ public class HierarchyChunkTests
     public void SimpleHircChunk_v44_Parses()
     {
         var data = TestData.GetTestDataBytes(@"Hierarchy", @"SmallFullChunks", @"HIRCv44.bin");
-        var (serializer, result) = TestHelpers.Deserialize<ChunkContainer>(data, 44);
+        var (_, result) = TestHelpers.Deserialize<ChunkContainer>(data, 44);
         
         Assert.Multiple(() =>
         {
@@ -36,7 +36,7 @@ public class HierarchyChunkTests
                 Assert.That(hirc.ItemCount, Is.EqualTo(1));
                 Assert.That(hirc.Items[0], Is.InstanceOf<HircItemContainer>());
 
-                var hircItemContainer = hirc.Items[0] as HircItemContainer;
+                var hircItemContainer = hirc.Items[0];
                 Assert.That(hircItemContainer.Type.Value, Is.EqualTo(HircType.Event));
                 Assert.That(hircItemContainer.Item, Is.InstanceOf<Event>());
             });
@@ -47,7 +47,7 @@ public class HierarchyChunkTests
     public void SimpleHircChunk_v56_Parses()
     {
         var data = TestData.GetTestDataBytes(@"Hierarchy", @"SmallFullChunks", @"HIRCv56.bin");
-        var (serializer, result) = TestHelpers.Deserialize<ChunkContainer>(data, 56);
+        var (_, result) = TestHelpers.Deserialize<ChunkContainer>(data, 56);
         
         Assert.Multiple(() =>
         {
@@ -62,9 +62,9 @@ public class HierarchyChunkTests
                 Assert.That(hirc.ItemCount, Is.EqualTo(1));
                 Assert.That(hirc.Items[0], Is.InstanceOf<HircItemContainer>());
 
-                var hircItemContainer = hirc.Items[0] as HircItemContainer;
-                //Assert.That(hircItemContainer.Type, Is.EqualTo(HircType.Event as byte));
-                //Assert.That(hircItemContainer.Item, Is.InstanceOf<HircEventItem>());
+                var hircItemContainer = hirc.Items[0];
+                Assert.That(hircItemContainer.Type.Value, Is.EqualTo(HircType.Event));
+                Assert.That(hircItemContainer.Item, Is.InstanceOf<Event>());
             });
         }
     }
@@ -73,7 +73,7 @@ public class HierarchyChunkTests
     public void SimpleHircChunk_v134_Parses()
     {
         var data = TestData.GetTestDataBytes(@"Hierarchy", @"SmallFullChunks", @"HIRCv134.bin");
-        var (serializer, result) = TestHelpers.Deserialize<ChunkContainer>(data, 134);
+        var (_, result) = TestHelpers.Deserialize<ChunkContainer>(data, 134);
         
         Assert.Multiple(() =>
         {
@@ -88,7 +88,7 @@ public class HierarchyChunkTests
                 Assert.That(hirc.ItemCount, Is.EqualTo(1));
                 Assert.That(hirc.Items[0], Is.InstanceOf<HircItemContainer>());
 
-                var hircItemContainer = hirc.Items[0] as HircItemContainer;
+                var hircItemContainer = hirc.Items[0];
                 Assert.That(hircItemContainer.Type.Value, Is.EqualTo(HircType.Event));
                 Assert.That(hircItemContainer.Item, Is.InstanceOf<Event>());
             });
@@ -99,7 +99,7 @@ public class HierarchyChunkTests
     public void BigHircChunk_Reserializes()
     {
         var data = TestData.GetTestDataBytes(@"Hierarchy", @"LargeFullChunks", @"HIRC_V56.bin");
-        var (serializer, result) = TestHelpers.Deserialize<ChunkContainer>(data, 56);
+        var (_, result) = TestHelpers.Deserialize<ChunkContainer>(data, 56);
         
         var reserialized = TestHelpers.Serialize(result, 56);
         TestHelpers.WriteStreamToFile(new MemoryStream(reserialized), TestData.GetTestDataFilePath(@"Hierarchy", @"LargeFullChunks", @"Out56.bin"));

@@ -10,7 +10,7 @@ public class AttenuationTests
     public void Attenuation_ParsesCorrectly(string filename, int version, byte firstScaling, float firstTo)
     {
         var data = TestData.GetTestDataBytes(@"Hierarchy",@"Attenuation", filename);
-        var (serializer, result) = TestHelpers.Deserialize<Attenuation>(data, (uint)version);
+        var (_, result) = TestHelpers.Deserialize<Attenuation>(data, version);
         
         Assert.Multiple(() =>
         {

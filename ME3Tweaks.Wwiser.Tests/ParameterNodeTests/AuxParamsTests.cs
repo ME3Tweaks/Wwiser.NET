@@ -8,11 +8,10 @@ public class AuxParamsTests
     [TestCase(0x03)]
     public void AuxParams_V134_Reserializes(byte value)
     {
-        var byteData = new byte[] { value };
-        var version = 134;
-        var (_, result) = TestHelpers.Deserialize<AuxParams>(byteData, version);
+        var byteData = new [] { value };
+        var (_, result) = TestHelpers.Deserialize<AuxParams>(byteData, 134);
 
-        var reserialized = TestHelpers.Serialize(result, version);
+        var reserialized = TestHelpers.Serialize(result, 134);
         Assert.That(reserialized, Is.EquivalentTo(byteData));
     }
 

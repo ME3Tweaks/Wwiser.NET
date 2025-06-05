@@ -1,5 +1,4 @@
-﻿using ME3Tweaks.Wwiser.Model.Hierarchy;
-using ME3Tweaks.Wwiser.Model.Hierarchy.Enums;
+﻿using ME3Tweaks.Wwiser.Model.Hierarchy.Enums;
 
 namespace ME3Tweaks.Wwiser.Tests.HierarchyTests;
 
@@ -63,7 +62,7 @@ public class HircTypeTests
     public void LowerVersions_SerializesUint()
     {
         var result = TestHelpers.Serialize(
-            new HircSmartType() { Value = HircType.AudioDevice }, 48);
+            new HircSmartType { Value = HircType.AudioDevice }, 48);
         
         Assert.That(result.Length, Is.EqualTo(4));
 
@@ -75,7 +74,7 @@ public class HircTypeTests
     public void HigherVersions_SerializesByte()
     {
         var result = TestHelpers.Serialize(
-            new HircSmartType() { Value = HircType.AudioDevice }, 49);
+            new HircSmartType { Value = HircType.AudioDevice }, 49);
         
         Assert.That(result.Length, Is.EqualTo(1));
         Assert.That(result[0], Is.EqualTo((byte)HircType.AudioDevice));

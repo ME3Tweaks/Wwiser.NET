@@ -1,9 +1,7 @@
 ﻿using ME3Tweaks.Wwiser.BankConversion;
-using Ignore = NUnit.Framework.IgnoreAttribute;
 
 namespace ME3Tweaks.Wwiser.Tests.ConvertTests;
 
-//[Ignore("Can't properly convert whole HIRC chunk yet")]
 public class HircChunkConvertTests
 {
     [Test]
