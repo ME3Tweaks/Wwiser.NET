@@ -1,10 +1,56 @@
 ﻿using ME3Tweaks.Wwiser.Model.Hierarchy.Enums;
 using RtpcParameterId = ME3Tweaks.Wwiser.Model.Hierarchy.Enums.ParameterId.RtpcParameterId;
+using ModulatorRtpcParameterId = ME3Tweaks.Wwiser.Model.Hierarchy.Enums.ParameterId.ModulatorRtpcParameterId;
 
 namespace ME3Tweaks.Wwiser.Tests.HierarchyTests;
 
 public class ParameterIdTest
 {
+    [TestCase(0x0,  RtpcParameterId.Volume)]
+    [TestCase(0xA,  RtpcParameterId.Positioning_Radius_LPF)]
+    [TestCase(0x1F,  RtpcParameterId.FeedbackPitch)]
+    public void ParameterID_ParsesAndReserializes_V65(int hex, RtpcParameterId expected)
+    {
+        byte[] bytes = BitConverter.GetBytes((uint)hex);
+    
+        var (_, result) = TestHelpers.Deserialize<ParameterId>(bytes, 65);
+        Assert.That(result.ParamId, Is.EqualTo(expected));
+        Assert.That(result.ModParamId, Is.Null);
+    
+        var reserialized = TestHelpers.Serialize(result, 65);
+        Assert.That(reserialized, Is.EquivalentTo(bytes));
+    }
+    
+    [TestCase(0x2A,  ModulatorRtpcParameterId.ModulatorLfoDepth)]
+    [TestCase(0x2F,  ModulatorRtpcParameterId.ModulatorLfoPWM)]
+    [TestCase(0x37,  ModulatorRtpcParameterId.ModulatorEnvelopeReleaseTime)]
+    public void ModulatorParameterID_ParsesAndReserializes_V112(int hex, ModulatorRtpcParameterId expected)
+    {
+        byte[] bytes = [(byte)hex];
+    
+        var (_, result) = TestHelpers.Deserialize<ParameterId>(bytes, 112);
+        Assert.That(result.ModParamId, Is.EqualTo(expected));
+        Assert.That(result.ParamId, Is.Null);
+    
+        var reserialized = TestHelpers.Serialize(result, 112);
+        Assert.That(reserialized, Is.EquivalentTo(bytes));
+    }
+    
+    [TestCase(0x0,  RtpcParameterId.Volume)]
+    [TestCase(0xA,  RtpcParameterId.PositioningTypeBlend)]
+    [TestCase(0x38,  RtpcParameterId.UserAuxSendVolume0)]
+    [TestCase(0x29,  RtpcParameterId.PlaybackSpeed)]
+    public void ParameterID_ParsesAndReserializes_V112(int hex, RtpcParameterId expected)
+    {
+        byte[] bytes = [(byte)hex];
+    
+        var (_, result) = TestHelpers.Deserialize<ParameterId>(bytes, 112);
+        Assert.That(result.ParamId, Is.EqualTo(expected));
+        Assert.That(result.ModParamId, Is.Null);
+    
+        var reserialized = TestHelpers.Serialize(result, 112);
+        Assert.That(reserialized, Is.EquivalentTo(bytes));
+    }
 
     [TestCase(RtpcParameterId.UserAuxSendLPF0)]
     public void ParameterID_ThrowsErrorOnBadEnum_V120(RtpcParameterId id)
