@@ -61,7 +61,7 @@ public class PropBundleFloat
     
     [FieldOrder(1)]
     [FieldCount($"{nameof(PropCount)}.{nameof(PropCount.Value)}")]
-    public List<ParameterId> PropIds { get; set; } = new();
+    public List<StateParameterId> PropIds { get; set; } = new();
     
     [FieldOrder(2)]
     [FieldCount($"{nameof(PropCount)}.{nameof(PropCount.Value)}")]

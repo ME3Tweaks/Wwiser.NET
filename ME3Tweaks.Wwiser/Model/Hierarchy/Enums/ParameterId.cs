@@ -30,7 +30,7 @@ public class ParameterId : IBinarySerializable
         }
     }
 
-    public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
+    public virtual void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
         var context = serializationContext.FindAncestor<BankSerializationContext>();
         var value = GetSerializableValue(context.Version, context.UseModulator);
@@ -58,7 +58,7 @@ public class ParameterId : IBinarySerializable
         }
     }
 
-    public void Deserialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
+    public virtual void Deserialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
         var context = serializationContext.FindAncestor<BankSerializationContext>();
         var res = DeserializeStatic(stream, context.Version, context.UseModulator);
@@ -78,16 +78,35 @@ public class ParameterId : IBinarySerializable
         }
     }
     
-    public static (RtpcParameterId?, ModulatorRtpcParameterId?) DeserializeStatic(Stream stream, uint version, bool useModulator)
+    /// <summary>
+    /// Deserializes a parameter id from a stream based on the version and whether the bank uses modulator parameters
+    /// </summary>
+    /// <param name="stream">Stream to read from, length read may be different per version</param>
+    /// <param name="version">Version of WwiseBank</param>
+    /// <param name="useModulator">Whether the bank uses modulator parameters</param>
+    /// <param name="isState">True if parameter being read is from HIRC State object, which uses different serialization</param>
+    /// <returns>Rtpc or Modulator parameter ID, one will always be null</returns>
+    /// <exception cref="Exception">Unable to read data length</exception>
+    /// <exception cref="ArgumentException">No parameter ID mapping is known for given Wwise version</exception>
+    public static (RtpcParameterId?, ModulatorRtpcParameterId?) DeserializeStatic(Stream stream, uint version, bool useModulator, bool isState = false)
     {
         byte value;
         switch (version)
         {
+            case >= 72 and <= 126 when isState:
+                value = (byte)stream.ReadByte();
+                break;
+            case > 126 when isState:
+                Span<byte> spanUshort = stackalloc byte[2];
+                var readUshort = stream.Read(spanUshort);
+                if (readUshort != 2) throw new Exception();
+                value = (byte)BitConverter.ToUInt16(spanUshort);
+                break;
             case <= 89:
-                Span<byte> span = stackalloc byte[4];
-                var read = stream.Read(span);
-                if (read != 4) throw new Exception();
-                value = (byte)BitConverter.ToUInt32(span);
+                Span<byte> spanUint = stackalloc byte[4];
+                var readUint = stream.Read(spanUint);
+                if (readUint != 4) throw new Exception();
+                value = (byte)BitConverter.ToUInt32(spanUint);
                 break;
             case <= 113:
                 value = (byte)stream.ReadByte();
@@ -111,8 +130,8 @@ public class ParameterId : IBinarySerializable
             _ => throw new ArgumentException($"No known parameter id mapping for version {version}", nameof(version))
         };
     }
-    
-    private byte GetSerializableValue(uint version, bool useModulator)
+
+    protected byte GetSerializableValue(uint version, bool useModulator)
     {
         var paramId = ParamId ?? 0;
         return version switch
@@ -326,4 +345,33 @@ public class ParameterId : IBinarySerializable
         ModulatorTimeInitialDelay
     }
     // ReSharper restore InconsistentNaming
+}
+
+/// <summary>
+/// Slightly different version of ParameterId used for State HIRC objects
+/// </summary>
+public class StateParameterId : ParameterId
+{
+    public override void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
+    {
+        var context = serializationContext.FindAncestor<BankSerializationContext>();
+        var value = GetSerializableValue(context.Version, false); // TODO: This variant should never use modulator, right?
+        
+        switch (context.Version)
+        {
+            case <= 126:
+                stream.WriteByte(value);
+                break;
+            default:
+                stream.Write(BitConverter.GetBytes((ushort)value));
+                break;
+        }
+    }
+    
+    public override void Deserialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
+    {
+        var context = serializationContext.FindAncestor<BankSerializationContext>();
+        var res = DeserializeStatic(stream, context.Version, false, true);
+        (ParamId, ModParamId) = res;
+    }
 }
