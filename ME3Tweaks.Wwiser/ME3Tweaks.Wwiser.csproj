@@ -14,5 +14,9 @@
   <ItemGroup>
     <Folder Include="Model\Bus\" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <InternalsVisibleTo Include="ME3Tweaks.Wwiser.Tests" />
+  </ItemGroup>
 
 </Project>

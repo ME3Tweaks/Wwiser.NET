@@ -4,51 +4,41 @@ public class WwiseBankParserTests
 {
     [TestCase("LE3_v134_1.bnk", 134)]
     [TestCase("ME3_v56_1.bnk", 56)]
-    public void OnInstantiation_WithFullBank_ParsesVersionCorrectly(string bankFileName, int correctVersion)
+    public void ReadHeaderInfo_OnFullBank_ParsesVersionCorrectly(string bankFileName, int correctVersion)
     {
-        var parser = new WwiseBankParser(TestData.GetTestDataFilePath("WholeBanks", bankFileName));
-        Assert.That(parser.Version, Is.EqualTo(correctVersion));
+        var stream = TestData.GetTestDataStream("WholeBanks", bankFileName);
+        var (version, _) = WwiseBankParser.ReadWwiseHeaderInfo(stream);
+        Assert.That(version, Is.EqualTo(correctVersion));
+        Assert.That(stream.Position, Is.EqualTo(0));
     }
 
     [Test]
-    public void FullBank_Reserializes_Synchronous()
+    public void FullBank_V56_Reserializes_Synchronous()
     {
-        var parser = new WwiseBankParser(TestData.GetTestDataFilePath("WholeBanks", "ME3_v56_1.bnk"));
-        parser.Deserialize();
-
-        var stream = new MemoryStream();
-        parser.SerializeTo(stream);
-        //TestHelpers.WriteStreamToFile(stream, TestData.GetTestDataFilePath("WholeBanks", "Out1.bnk"));
         var data = TestData.GetTestDataBytes("WholeBanks", "ME3_v56_1.bnk");
-        Assert.That(stream.ToArray(), Is.EquivalentTo(data));
+        var inputStream = new MemoryStream(data);
+        var outputStream = new MemoryStream();
+        
+        var bank = WwiseBankParser.Deserialize(inputStream);
+        WwiseBankParser.Serialize(bank, outputStream);
+        
+        Assert.That(outputStream.ToArray(), Is.EquivalentTo(data));
     }
 
     [TestCase("ME3_v56_1.bnk")]
     [TestCase("ME3_v56_2.bnk")]
     [TestCase("ME3_v56_3.bnk")]
-    public async Task FullBank_V56_Reserializes_Async(string filename)
-    {
-        var parser = new WwiseBankParser(TestData.GetTestDataFilePath("WholeBanks", filename));
-        await parser.DeserializeAsync();
-
-        var stream = new MemoryStream();
-        await parser.SerializeToAsync(stream);
-        //TestHelpers.WriteStreamToFile(stream, TestData.GetTestDataFilePath("WholeBanks", "Out1.bnk"));
-        var data = TestData.GetTestDataBytes("WholeBanks", filename);
-        Assert.That(stream.ToArray(), Is.EquivalentTo(data));
-    }
-    
     [TestCase("LE3_v134_1.bnk")] // TODO: What is at the end of this file?
-    public async Task FullBank_V134_Reserializes_Async(string filename)
+    public async Task FullBank_Reserializes_Async(string filename)
     {
-        var parser = new WwiseBankParser(TestData.GetTestDataFilePath("WholeBanks", filename));
-        await parser.DeserializeAsync();
-
-        var stream = new MemoryStream();
-        await parser.SerializeToAsync(stream);
-        //TestHelpers.WriteStreamToFile(stream, TestData.GetTestDataFilePath("WholeBanks", "Out1.bnk"));
         var data = TestData.GetTestDataBytes("WholeBanks", filename);
-        var outData = stream.ToArray();
-        Assert.That(outData, Is.EquivalentTo(data.Take(outData.Length)));
+        var inputStream = new MemoryStream(data);
+        var outputStream = new MemoryStream();
+        
+        var bank = await WwiseBankParser.DeserializeAsync(inputStream);
+        await WwiseBankParser.SerializeAsync(bank, outputStream);
+        
+        //TestHelpers.WriteStreamToFile(stream, TestData.GetTestDataFilePath("WholeBanks", "Out1.bnk"));
+        Assert.That(outputStream.ToArray(), Is.EquivalentTo(data));
     }
 }
