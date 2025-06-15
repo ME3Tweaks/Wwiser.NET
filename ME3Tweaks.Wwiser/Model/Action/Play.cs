@@ -1,7 +1,7 @@
 ﻿using BinarySerialization;
-using ME3Tweaks.Wwiser.Attributes;
 using ME3Tweaks.Wwiser.Model.Action.Specific;
 using ME3Tweaks.Wwiser.Model.RTPC;
+using ME3Tweaks.Wwiser.SerializationHelpers;
 
 namespace ME3Tweaks.Wwiser.Model.Action;
 

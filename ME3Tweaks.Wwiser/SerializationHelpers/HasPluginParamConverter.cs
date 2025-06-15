@@ -1,9 +1,7 @@
-﻿using System;
-using BinarySerialization;
-using ME3Tweaks.Wwiser.Model.Hierarchy.Enums;
+﻿using BinarySerialization;
 using ME3Tweaks.Wwiser.Model.Plugins;
 
-namespace ME3Tweaks.Wwiser.Converters;
+namespace ME3Tweaks.Wwiser.SerializationHelpers;
 
 public class HasPluginParamConverter : IValueConverter
 {

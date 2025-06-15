@@ -1,5 +1,5 @@
 ﻿using BinarySerialization;
-using ME3Tweaks.Wwiser.Attributes;
+using ME3Tweaks.Wwiser.SerializationHelpers;
 
 namespace ME3Tweaks.Wwiser.Model
 {
@@ -104,8 +104,10 @@ namespace ME3Tweaks.Wwiser.Model
         {
             var version = serializationContext.FindAncestor<BankSerializationContext>().Version;
             var chunkSize = serializationContext.FindAncestor<ChunkContainer>().ChunkSize;
-            stream.Seek(GetPaddingSize(version, chunkSize), SeekOrigin.Current);
-            Padding = new byte[GetPaddingSize(version, chunkSize)];
+            var paddingSize = GetPaddingSize(version, chunkSize);
+            
+            stream.Seek(paddingSize, SeekOrigin.Current);
+            Padding = new byte[paddingSize];
         }
 
         public static uint GetPaddingSize(uint version, uint chunkSize) => version switch

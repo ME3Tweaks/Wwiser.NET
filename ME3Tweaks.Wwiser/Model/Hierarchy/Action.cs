@@ -1,8 +1,8 @@
 ﻿using BinarySerialization;
-using ME3Tweaks.Wwiser.Attributes;
 using ME3Tweaks.Wwiser.Formats;
 using ME3Tweaks.Wwiser.Model.Action;
 using ME3Tweaks.Wwiser.Model.ParameterNode;
+using ME3Tweaks.Wwiser.SerializationHelpers;
 
 namespace ME3Tweaks.Wwiser.Model.Hierarchy;
 

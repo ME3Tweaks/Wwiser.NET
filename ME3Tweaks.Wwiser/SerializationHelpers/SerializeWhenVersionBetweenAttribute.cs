@@ -1,7 +1,6 @@
 ﻿using BinarySerialization;
-using ME3Tweaks.Wwiser.Converters;
 
-namespace ME3Tweaks.Wwiser.Attributes;
+namespace ME3Tweaks.Wwiser.SerializationHelpers;
 
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
 public class SerializeWhenVersionBetweenAttribute : SerializeWhenVersionAttribute

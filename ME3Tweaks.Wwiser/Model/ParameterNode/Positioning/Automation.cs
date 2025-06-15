@@ -1,5 +1,5 @@
 ﻿using BinarySerialization;
-using ME3Tweaks.Wwiser.Attributes;
+using ME3Tweaks.Wwiser.SerializationHelpers;
 
 namespace ME3Tweaks.Wwiser.Model.ParameterNode.Positioning;
 

@@ -1,7 +1,6 @@
-﻿using System;
-using BinarySerialization;
+﻿using BinarySerialization;
 
-namespace ME3Tweaks.Wwiser.Converters;
+namespace ME3Tweaks.Wwiser.SerializationHelpers;
 
 public class BetweenConverter : IValueConverter
 {

@@ -16,9 +16,10 @@ public static class WwiseBankParser
         var serializer = new BinarySerializer();
         var (version, useFeedback) = ReadWwiseHeaderInfo(stream);
         var context = new BankSerializationContext(version, false, useFeedback);
+        var mapper = new WwiseBankMapper();
         
         var root = serializer.Deserialize<WwiseBankRoot>(stream, context);
-        return root.ToBank();
+        return mapper.MapToBank(root);
     }
 
     public static Task<WwiseBank> DeserializeAsync(Stream stream)
@@ -31,9 +32,10 @@ public static class WwiseBankParser
         var serializer = new BinarySerializer();
         var (version, useFeedback) = ReadWwiseHeaderInfo(stream);
         var context = new BankSerializationContext(version, false, useFeedback);
+        var mapper = new WwiseBankMapper();
         
         return serializer.DeserializeAsync<WwiseBankRoot>(stream, context)
-            .ContinueWith(t => t.Result.ToBank());
+            .ContinueWith(t => mapper.MapToBank(t.Result));
     }
 
     public static void Serialize(WwiseBank bank, Stream stream)
@@ -41,7 +43,9 @@ public static class WwiseBankParser
         SetBankHeaderPadding(bank);
         
         var serializer = new BinarySerializer();
-        serializer.Serialize(stream, WwiseBankRoot.FromBank(bank), BankSerializationContext.FromBank(bank));
+        var mapper = new WwiseBankMapper();
+        
+        serializer.Serialize(stream, mapper.MapToRoot(bank), BankSerializationContext.FromBank(bank));
     }
 
     public static Task SerializeAsync(WwiseBank bank, Stream stream, CancellationToken cancellationToken = default)
@@ -49,21 +53,24 @@ public static class WwiseBankParser
         SetBankHeaderPadding(bank);
         
         var serializer = new BinarySerializer();
-        return serializer.SerializeAsync(stream, WwiseBankRoot.FromBank(bank), BankSerializationContext.FromBank(bank), cancellationToken);
+        var mapper = new WwiseBankMapper();
+        
+        return serializer.SerializeAsync(stream, mapper.MapToRoot(bank), BankSerializationContext.FromBank(bank), cancellationToken);
     }
-    
+
     /// <summary>
     /// Determines the wwise build version of a bank
     /// </summary>
     /// <remarks>
     /// We do this ahead of full deserialization so that we can pass the
     /// version in to the serializer as a globally available parameter.
-    ///
+    /// 
     /// Ported from _check_header() in wwiser
     /// </remarks>
     /// <param name="stream">Stream of a complete Wwise bank</param>
+    /// <param name="resetStreamPosition">If true, resets the stream back to the initial position after reading header. Default: True</param>
     /// <returns>Tuple of (WwiseVersion, UseFeedback)</returns>
-    internal static (uint, bool) ReadWwiseHeaderInfo(Stream stream)
+    public static (uint, bool) ReadWwiseHeaderInfo(Stream stream, bool resetStreamPosition = true)
     {
         var initialPosition = stream.Position;
         var reader = new BinaryReader(stream, Encoding.UTF8);
@@ -106,7 +113,7 @@ public static class WwiseBankParser
         }
 
         bool feedback = false;
-        if (version >= 27 && version <= 126)
+        if (version is >= 27 and <= 126)
         {
             var value = reader.ReadUInt32();
             feedback = value != 0;
@@ -115,24 +122,23 @@ public static class WwiseBankParser
         //TODO: Handle custom versions and strange variations
         //TODO: Handle slightly encrypted headers in LIMBO demo and World of Tanks
 
-        stream.Seek(initialPosition, SeekOrigin.Begin);
+        if(resetStreamPosition) stream.Seek(initialPosition, SeekOrigin.Begin);
         return (version, feedback);
     }
     
     internal static void SetBankHeaderPadding(WwiseBank bank)
     {
-        if (bank.DATA is not null)
-        {
-            var serializer = new BinarySerializer();
-            var context = new BankSerializationContext(bank.BKHD.BankGeneratorVersion, false, bank.BKHD.FeedbackInBank);
-            bank.BKHD.Padding = new BankHeaderPadding();
+        if (bank.DATA is null) return;
+        
+        var serializer = new BinarySerializer();
+        var context = new BankSerializationContext(bank.BKHD.BankGeneratorVersion, false, bank.BKHD.FeedbackInBank);
+        bank.BKHD.Padding = new BankHeaderPadding();
             
-            var bkhdSize= serializer.SizeOf(new ChunkContainer(bank.BKHD), context);
-            var didxSize = (bank.DIDX != null) ? 
-                serializer.SizeOf(new ChunkContainer(bank.DIDX), context) : 0;
+        var bkhdSize= serializer.SizeOf(new ChunkContainer(bank.BKHD), context);
+        var didxSize = (bank.DIDX != null) ? 
+            serializer.SizeOf(new ChunkContainer(bank.DIDX), context) : 0;
 
-            var dataOffset = bkhdSize + didxSize;
-            bank.BKHD.Padding.SetPadding(dataOffset);
-        }
+        var dataOffset = bkhdSize + didxSize;
+        bank.BKHD.Padding.SetPadding(dataOffset);
     }
 }
