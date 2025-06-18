@@ -40,8 +40,6 @@ public static class WwiseBankParser
 
     public static void Serialize(WwiseBank bank, Stream stream)
     {
-        SetBankHeaderPadding(bank);
-        
         var serializer = new BinarySerializer();
         var mapper = new WwiseBankMapper();
         
@@ -50,8 +48,6 @@ public static class WwiseBankParser
 
     public static Task SerializeAsync(WwiseBank bank, Stream stream, CancellationToken cancellationToken = default)
     {
-        SetBankHeaderPadding(bank);
-        
         var serializer = new BinarySerializer();
         var mapper = new WwiseBankMapper();
         
@@ -124,21 +120,5 @@ public static class WwiseBankParser
 
         if(resetStreamPosition) stream.Seek(initialPosition, SeekOrigin.Begin);
         return (version, feedback);
-    }
-    
-    internal static void SetBankHeaderPadding(WwiseBank bank)
-    {
-        if (bank.DATA is null) return;
-        
-        var serializer = new BinarySerializer();
-        var context = new BankSerializationContext(bank.BKHD.BankGeneratorVersion, false, bank.BKHD.FeedbackInBank);
-        bank.BKHD.Padding = new BankHeaderPadding();
-            
-        var bkhdSize= serializer.SizeOf(new ChunkContainer(bank.BKHD), context);
-        var didxSize = (bank.DIDX != null) ? 
-            serializer.SizeOf(new ChunkContainer(bank.DIDX), context) : 0;
-
-        var dataOffset = bkhdSize + didxSize;
-        bank.BKHD.Padding.SetPadding(dataOffset);
     }
 }

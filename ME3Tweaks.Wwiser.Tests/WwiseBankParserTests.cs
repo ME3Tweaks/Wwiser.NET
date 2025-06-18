@@ -38,7 +38,7 @@ public class WwiseBankParserTests
         var bank = await WwiseBankParser.DeserializeAsync(inputStream);
         await WwiseBankParser.SerializeAsync(bank, outputStream);
         
-        //TestHelpers.WriteStreamToFile(stream, TestData.GetTestDataFilePath("WholeBanks", "Out1.bnk"));
+        TestHelpers.WriteStreamToFile(outputStream, TestData.GetTestDataFilePath("WholeBanks", "Out1.bnk"));
         Assert.That(outputStream.ToArray(), Is.EquivalentTo(data));
     }
 }
