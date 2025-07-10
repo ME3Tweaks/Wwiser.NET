@@ -1,4 +1,5 @@
 ﻿using BinarySerialization;
+using ME3Tweaks.Wwiser.Model.Hierarchy.Enums;
 using ME3Tweaks.Wwiser.Model.ParameterNode;
 
 namespace ME3Tweaks.Wwiser.Model.Hierarchy;
@@ -10,4 +11,7 @@ public class ActorMixer : HircItem, IHasNode
 
     [FieldOrder(1)] 
     public Children Children { get; set; } = new();
+    
+    [Ignore]
+    public override HircType HircType =>  HircType.ActorMixer;
 }

@@ -14,6 +14,9 @@ public class State : HircItem
     [FieldOrder(1)]
     [SerializeWhenVersionBetween(57, 126)]
     public PropBundleFloat Prop { get; set; } = new PropBundleFloat();
+    
+    [Ignore] 
+    public override HircType HircType => HircType.State;
 }
 
 public class StateParametersV56

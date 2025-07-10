@@ -38,6 +38,9 @@ public class SwitchContainer : HircItem, IHasNode
     [FieldOrder(9)]
     [FieldCount(nameof(SwitchParamsCount))]
     public List<SwitchParams> SwitchParams { get; set; } = new();
+    
+    [Ignore] 
+    public override HircType HircType => HircType.SwitchContainer;
 }
 
 public class SwitchParams : IAkIdentifiable, IBinarySerializable

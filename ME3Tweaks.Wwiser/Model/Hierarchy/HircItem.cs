@@ -1,3 +1,10 @@
-﻿namespace ME3Tweaks.Wwiser.Model.Hierarchy;
+﻿using BinarySerialization;
+using ME3Tweaks.Wwiser.Model.Hierarchy.Enums;
 
-public abstract class HircItem : AkIdentifiable;
+namespace ME3Tweaks.Wwiser.Model.Hierarchy;
+
+public abstract class HircItem : AkIdentifiable
+{
+    [Ignore]
+    public abstract HircType HircType { get; }
+}

@@ -1,4 +1,5 @@
 ﻿using BinarySerialization;
+using ME3Tweaks.Wwiser.Model.Hierarchy.Enums;
 using ME3Tweaks.Wwiser.Model.ParameterNode;
 using ME3Tweaks.Wwiser.Model.RTPC;
 using ME3Tweaks.Wwiser.SerializationHelpers;
@@ -24,6 +25,9 @@ public class LayerContainer : HircItem, IHasNode
     [SerializeAs(SerializedType.UInt1)]
     [SerializeWhenVersion(118, ComparisonOperator.GreaterThan)]
     public bool IsContinuousValidation { get; set; }
+    
+    [Ignore] 
+    public override HircType HircType => HircType.LayerContainer;
 }
 
 public class Layer : AkIdentifiable

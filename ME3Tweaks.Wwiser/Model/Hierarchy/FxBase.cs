@@ -1,5 +1,6 @@
 ﻿using BinarySerialization;
 using ME3Tweaks.Wwiser.Formats;
+using ME3Tweaks.Wwiser.Model.Hierarchy.Enums;
 using ME3Tweaks.Wwiser.Model.ParameterNode;
 using ME3Tweaks.Wwiser.Model.Plugins;
 using ME3Tweaks.Wwiser.Model.RTPC;
@@ -9,9 +10,17 @@ using ME3Tweaks.Wwiser.SerializationHelpers;
 namespace ME3Tweaks.Wwiser.Model.Hierarchy;
 
 // These are exactly the same
-public class FxShareSet : FxBase;
+public class FxShareSet : FxBase
+{
+    [Ignore] 
+    public override HircType HircType => HircType.FxShareSet;
+}
 
-public class FxCustom : FxBase;
+public class FxCustom : FxBase
+{
+    [Ignore] 
+    public override HircType HircType => HircType.FxCustom;
+}
 
 public class FxBase : HircItem
 {
@@ -48,7 +57,9 @@ public class FxBase : HircItem
     [FieldCount(nameof(RtpcInitCount))]
     [SerializeWhenVersion(90, ComparisonOperator.GreaterThan)]
     public List<RtpcInitValue> RtpcInitValues { get; set; } = new();
-    
+
+    [Ignore] 
+    public override HircType HircType => HircType.FxShareSet;
     
     public class RtpcInitValue
     {

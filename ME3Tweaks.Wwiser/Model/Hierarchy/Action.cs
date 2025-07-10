@@ -1,6 +1,7 @@
 ﻿using BinarySerialization;
 using ME3Tweaks.Wwiser.Formats;
 using ME3Tweaks.Wwiser.Model.Action;
+using ME3Tweaks.Wwiser.Model.Hierarchy.Enums;
 using ME3Tweaks.Wwiser.Model.ParameterNode;
 using ME3Tweaks.Wwiser.SerializationHelpers;
 
@@ -31,4 +32,7 @@ public class Action : HircItem
     [SubtypeFactory($"{nameof(Type)}.{nameof(Type.Value)}", typeof(ActionParamsFactory),
         BindingMode = BindingMode.OneWay)]
     public required IActionParams ActionParams { get; set; }
+
+    [Ignore]
+    public override HircType HircType =>  HircType.Action;
 }

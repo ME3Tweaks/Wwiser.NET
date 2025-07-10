@@ -1,5 +1,6 @@
 ﻿using BinarySerialization;
 using ME3Tweaks.Wwiser.Formats;
+using ME3Tweaks.Wwiser.Model.Hierarchy.Enums;
 using ME3Tweaks.Wwiser.Model.ParameterNode;
 using ME3Tweaks.Wwiser.Model.RTPC;
 using ME3Tweaks.Wwiser.SerializationHelpers;
@@ -33,6 +34,9 @@ public class Attenuation : HircItem
 
     [FieldOrder(6)] 
     public RtpcParameterNodeBase Rtcp { get; set; } = new();
+    
+    [Ignore]
+    public override HircType HircType =>  HircType.Attenuation;
 }
 
 public class CurveToUse : IBinarySerializable

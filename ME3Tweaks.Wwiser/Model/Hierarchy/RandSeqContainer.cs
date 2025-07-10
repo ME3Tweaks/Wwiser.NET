@@ -1,5 +1,6 @@
 ﻿using BinarySerialization;
 using ME3Tweaks.Wwiser.Formats;
+using ME3Tweaks.Wwiser.Model.Hierarchy.Enums;
 using ME3Tweaks.Wwiser.Model.ParameterNode;
 using ME3Tweaks.Wwiser.SerializationHelpers;
 
@@ -50,6 +51,9 @@ public class RandSeqContainer : HircItem, IHasNode
 
     [FieldOrder(12)] 
     public Playlist Playlist { get; set; } = new();
+    
+    [Ignore] 
+    public override HircType HircType => HircType.RandomSequenceContainer;
 }
 
 public class RanSeqFlags : IBinarySerializable

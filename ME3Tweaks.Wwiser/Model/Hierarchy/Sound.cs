@@ -1,4 +1,5 @@
 ﻿using BinarySerialization;
+using ME3Tweaks.Wwiser.Model.Hierarchy.Enums;
 using ME3Tweaks.Wwiser.Model.ParameterNode;
 using ME3Tweaks.Wwiser.SerializationHelpers;
 
@@ -23,4 +24,7 @@ public class Sound : HircItem, IHasNode
     [FieldOrder(4)]
     [SerializeWhenVersion(56, ComparisonOperator.LessThanOrEqual)]
     public short LoopModMax { get; set; }
+    
+    [Ignore] 
+    public override HircType HircType => HircType.Sound;
 }

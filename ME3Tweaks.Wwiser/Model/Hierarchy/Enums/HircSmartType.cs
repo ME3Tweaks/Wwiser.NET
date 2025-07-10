@@ -71,6 +71,8 @@ public class HircSmartType : IBinarySerializable
 
         return (HircType)initialValue;
     }
+    
+    public override string ToString() =>  Value.ToString();
 }
 
 public enum HircType : uint
