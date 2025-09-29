@@ -17,5 +17,7 @@ public class WwiseBank
     
     public PlatformChunk? PLAT { get; set; }
     
+    public EnvironmentSettings? ENVS { get; set; }
+    
     public PluginChunk? INIT { get; set; }
 }
