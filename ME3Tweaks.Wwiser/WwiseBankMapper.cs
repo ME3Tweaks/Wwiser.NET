@@ -13,10 +13,12 @@ internal class WwiseBankMapper
         // Convert embedded files to DATA and DIDX chunks, set padding accordingly
         var (data, didx) = WriteEmbeddedFiles(bank.EmbeddedFiles);
         if (data is not null && didx is not null) SetBankHeaderPadding(bank.BKHD, didx);
+
+        var envs = WriteEnvironmentSettings(bank.ENVS, bank.BKHD.BankGeneratorVersion);
         
         var chunks = new List<Chunk?> 
             {
-                bank.BKHD, didx, data, bank.HIRC, bank.STID, bank.STMG, bank.PLAT, bank.INIT
+                bank.BKHD, didx, data, bank.HIRC, bank.STID, bank.STMG, envs, bank.PLAT, bank.INIT
             }.Where(x => x is not null)
             .Select(x => x!)
             .Where(x => x.IsAllowedInVersion(bank.BKHD.BankGeneratorVersion))
@@ -55,6 +57,9 @@ internal class WwiseBankMapper
                     break;
                 case "STMG":
                     bank.STMG = chunk.Chunk as GlobalSettingsChunk;
+                    break;
+                case "ENVS":
+                    bank.ENVS = GetEnvironmentSettings(chunk.Chunk as EnvironmentSettingsChunk, bank.BKHD.BankGeneratorVersion);
                     break;
                 case "PLAT":
                     bank.PLAT = chunk.Chunk as PlatformChunk;
@@ -131,6 +136,62 @@ internal class WwiseBankMapper
         };
         
         return(dataChunk, didxChunk);
+    }
+
+    internal static EnvironmentSettings? GetEnvironmentSettings(EnvironmentSettingsChunk? env, uint version)
+    {
+        if (env is null) return null;
+        
+        var settings = new EnvironmentSettings();
+        var queue = new Queue<EnvironmentsCurve>(env.EnvironmentSettings);
+
+        EnvSettingY FillY() => new EnvSettingY()
+        {
+            CurveVol = queue.Dequeue(), 
+            CurveLPF = queue.Dequeue(), 
+            CurveHPF = version >= 112 ? queue.Dequeue() : null
+        };
+
+        settings.CurveObs = FillY();
+        settings.CurveOcc = FillY();
+        if (version >= 152)
+        {
+            settings.CurveDiff = FillY();
+            settings.CurveTrans = FillY();
+        }
+        return settings;
+    }
+    
+    internal static EnvironmentSettingsChunk? WriteEnvironmentSettings(EnvironmentSettings? env, uint version)
+    {
+        if (env is null) return null;
+        
+        var yValuesToWrite = new List<EnvSettingY?> { env.CurveObs, env.CurveOcc };
+        if (version >= 152)
+        {
+            yValuesToWrite.Add(env.CurveDiff);
+            yValuesToWrite.Add(env.CurveTrans);
+        }
+
+        var curvesToWrite = new List<EnvironmentsCurve>();
+        foreach (var y in yValuesToWrite)
+        {
+            if (y is null)
+            {
+                curvesToWrite.Add(new EnvironmentsCurve());
+                curvesToWrite.Add(new EnvironmentsCurve());
+                if (version >= 112) curvesToWrite.Add(new EnvironmentsCurve());
+                break;
+            }
+            curvesToWrite.Add(y.CurveVol);
+            curvesToWrite.Add(y.CurveLPF);
+            if (version >= 112) curvesToWrite.Add(y.CurveHPF ?? new EnvironmentsCurve());
+        }
+
+        return new EnvironmentSettingsChunk
+        {
+            EnvironmentSettings = curvesToWrite
+        };
     }
 
     internal void SetBankHeaderPadding(BankHeaderChunk bkhd, MediaIndexChunk? didx)

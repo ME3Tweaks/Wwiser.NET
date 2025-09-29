@@ -84,6 +84,21 @@ public class WwiseBankMapperTests
         }
     }
     
+    [TestCase("ENVS_v134.bin", 134)]
+    [TestCase("ENVS_v56.bin", 56)]
+    public void EnvironmentSettings_Reserializes(string filename, int version)
+    {
+        var data = TestData.GetTestDataBytes(@"EnvironmentSettings", filename);
+        var (_, result) = TestHelpers.Deserialize<ChunkContainer>(data, version);
+        var envs = WwiseBankMapper.GetEnvironmentSettings(result.Chunk as EnvironmentSettingsChunk, (uint)version);
+
+        var envsChunk = WwiseBankMapper.WriteEnvironmentSettings(envs, (uint)version);
+        if (envsChunk is null) Assert.Fail("Reserialized EnvironmentSettingsChunk is null");
+        
+        var reserialized = TestHelpers.Serialize(new ChunkContainer(envsChunk!), version);
+        Assert.That(reserialized, Is.EquivalentTo(data));
+    }
+    
     private uint PadTo16(uint position) => ((position + 15) / 16) * 16;
     
     private int PadTo16(int position) => ((position + 15) / 16) * 16;
