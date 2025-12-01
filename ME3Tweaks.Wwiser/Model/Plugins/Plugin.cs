@@ -4,13 +4,12 @@ namespace ME3Tweaks.Wwiser.Model.Plugins;
 
 public class Plugin
 {
-    // Todo: Convert to enums, company/plugin getters and setters maybe use custom serialization?
     [FieldOrder(0)]
     public uint PluginId { get; set; }
-    
+
+    [Ignore] 
+    public ushort CompanyId => (ushort)((PluginId >> 4) & 0x03FF);
+
     [Ignore]
-    public ushort CompanyId { get; set; }
-    
-    [Ignore]
-    public ushort PluginType { get; set; }
+    public ushort PluginType => (ushort)((PluginId >> 0) & 0x000F);
 }

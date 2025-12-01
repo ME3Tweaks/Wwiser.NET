@@ -13,7 +13,7 @@ public class LayerContainer : HircItem, IHasNode
     
     [FieldOrder(1)] 
     public Children Children { get; set; } = new();
-
+    
     [FieldOrder(2)] 
     public uint LayerCount { get; set; }
     
@@ -50,6 +50,7 @@ public class Layer : AkIdentifiable
     public uint AssociatedChildCount { get; set; }
 
     [FieldOrder(5)] 
+    [FieldCount(nameof(AssociatedChildCount))]
     public List<AssociatedChild> AssociatedChildren { get; set; } = new();
 }
 
@@ -59,5 +60,6 @@ public class AssociatedChild : AkIdentifiable
     public uint CurveSize { get; set; }
 
     [FieldOrder(1)] 
+    [FieldCount(nameof(CurveSize))]
     public List<RtpcGraphItem> Curves { get; set; } = new();
 }

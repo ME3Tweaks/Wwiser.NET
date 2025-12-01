@@ -3,7 +3,7 @@ using ME3Tweaks.Wwiser.SerializationHelpers;
 
 namespace ME3Tweaks.Wwiser.Model.Action;
 
-public class SetSwitch
+public class SetSwitch : IActionParams
 {
     [FieldOrder(1)]
     [SerializeWhenVersion(56, ComparisonOperator.LessThanOrEqual)]

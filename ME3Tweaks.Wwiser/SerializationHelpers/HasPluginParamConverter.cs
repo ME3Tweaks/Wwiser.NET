@@ -14,20 +14,18 @@ public class HasPluginParamConverter : IValueConverter
     /// <returns></returns>
     public object Convert(object value, object parameter, BinarySerializationContext context)
     {
-        if (value is not Plugin)
+        if (value is not Plugin plugin)
         {
             throw new ArgumentException();
         }
-
-        var plugin = value as Plugin;
+        
         var version = context.FindAncestor<BankSerializationContext>().Version;
-        var pluginType = plugin?.PluginId & 0x0f;
 
         return version switch
         {
             <= 26 => true,
-            <= 126 => pluginType is 2 or 5,
-            _ => pluginType is 2
+            <= 126 => plugin.PluginType is 2 or 5,
+            _ => plugin.PluginType is 2
         };
     }
 

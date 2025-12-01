@@ -6,7 +6,7 @@ using ME3Tweaks.Wwiser.SerializationHelpers;
 
 namespace ME3Tweaks.Wwiser.Model.Action;
 
-public class UseState
+public class UseState : IActionParams
 {
     [FieldOrder(0)]
     [SerializeWhenVersion(56)]
