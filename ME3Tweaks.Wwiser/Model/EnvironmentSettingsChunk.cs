@@ -9,7 +9,10 @@ internal class EnvironmentSettingsChunk : Chunk
     public override string Tag => @"ENVS";
     
     [FieldOrder(1)]
-    [FieldCount(nameof(BankSerializationContext.Version), RelativeSourceMode = RelativeSourceMode.SerializationContext, ConverterType = typeof(VersionToEnvsCurveCount))]
+    [FieldCount(nameof(BankSerializationContext.Version), 
+        RelativeSourceMode = RelativeSourceMode.SerializationContext, 
+        BindingMode = BindingMode.OneWay,
+        ConverterType = typeof(VersionToEnvsCurveCount))]
     public List<EnvironmentsCurve> EnvironmentSettings { get; set;  } = new();
 }
 

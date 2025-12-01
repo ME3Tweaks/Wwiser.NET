@@ -18,7 +18,7 @@ internal class WwiseBankMapper
         
         var chunks = new List<Chunk?> 
             {
-                bank.BKHD, didx, data, bank.HIRC, bank.STID, bank.STMG, envs, bank.PLAT, bank.INIT
+                bank.BKHD, bank.INIT, bank.STMG, didx, data, bank.HIRC, bank.STID, envs, bank.PLAT
             }.Where(x => x is not null)
             .Select(x => x!)
             .Where(x => x.IsAllowedInVersion(bank.BKHD.BankGeneratorVersion))
