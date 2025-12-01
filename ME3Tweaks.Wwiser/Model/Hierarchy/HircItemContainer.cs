@@ -14,5 +14,6 @@ public class HircItemContainer
     [FieldOrder(3)]
     [FieldLength(nameof(Size))]
     [SubtypeFactory($"{nameof(Type)}.{nameof(Type.Value)}", typeof(HircItemSubtypeFactory))]
+    [SubtypeDefault(typeof(EmptyHircItem))]
     public required HircItem Item { get; set; }
 }

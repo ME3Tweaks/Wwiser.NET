@@ -21,7 +21,7 @@ public class HircItemSubtypeFactory : ISubtypeFactory
         { typeof(FxCustom), HircType.FxCustom },
     };
     
-    public bool TryGetKey(Type valueType, [UnscopedRef] out object key)
+    public bool TryGetKey(Type valueType, out object? key)
     {
         if (TypeToEnum.TryGetValue(valueType, out var value))
         {
@@ -29,12 +29,11 @@ public class HircItemSubtypeFactory : ISubtypeFactory
             return true;
         }
 
-        // fallback
-        throw new ArgumentException($"Cannot parse Hirc type ${valueType}");
-        //return false;
+        key = null;
+        return false;
     }
 
-    public bool TryGetType(object key, [UnscopedRef] out Type type)
+    public bool TryGetType(object key, [UnscopedRef] out Type? type)
     {
         if (key is byte b)
         {
@@ -67,8 +66,8 @@ public class HircItemSubtypeFactory : ISubtypeFactory
             //HircType.Envelope =>
             //HircType.AudioDevice =>
             //HircType.TimeMod =>
-            _ => throw new ArgumentException($"Cannot parse Hirc type ${(HircType)key} yet")
+            _ => null
         };
-        return true;
+        return type != null;
     }
 }
