@@ -12,7 +12,7 @@ public class State : HircItem
     public StateParametersV56 Parameters { get; set; } = new StateParametersV56();
     
     [FieldOrder(1)]
-    [SerializeWhenVersionBetween(57, 126)]
+    [SerializeWhenVersion(56, ComparisonOperator.GreaterThan)]
     public PropBundleFloat Prop { get; set; } = new PropBundleFloat();
     
     [Ignore] 
