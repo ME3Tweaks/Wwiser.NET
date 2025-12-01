@@ -12,7 +12,7 @@ public class PluginChunk : Chunk
     public uint PluginCount { get; set; }
     
     [FieldOrder(1)]
-    [FieldLength(nameof(PluginCount))]
+    [FieldCount(nameof(PluginCount))]
     public List<AKPlugin> AKPluginList { get; set; } = new();
     
     public override bool IsAllowedInVersion(uint version) => version >= 118;
