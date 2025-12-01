@@ -26,11 +26,11 @@ public class WwiseBankMapperTests
         
         Assert.That(result[0].Id, Is.EqualTo(1));
         var expectedData0 = new byte[] { 0xAA, 0xAA, 0xAA };
-        CollectionAssert.AreEquivalent(result[0].Data, expectedData0);
+        Assert.That(result[0].Data, Is.EquivalentTo(expectedData0));
         
         Assert.That(result[3].Id, Is.EqualTo(4));
         var expectedData3 = new byte[] { 0xDD, 0xDD, 0xDD, 0xDD };
-        CollectionAssert.AreEquivalent(result[3].Data, expectedData3);
+        Assert.That(result[3].Data, Is.EquivalentTo(expectedData3));
     }
     
     [Test]
@@ -52,7 +52,7 @@ public class WwiseBankMapperTests
         Assert.That(result.data.Data.Count, Is.EqualTo(expectedCount));
 
         var expectedData = TestData.GetTestDataBytes("Data", "DATATester.bin");
-        CollectionAssert.AreEquivalent(result.data.Data, expectedData);
+        Assert.That(result.data.Data, Is.EquivalentTo(expectedData));
     }
     
     [Test]
