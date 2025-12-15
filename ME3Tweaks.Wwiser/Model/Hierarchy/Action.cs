@@ -20,18 +20,28 @@ public class Action : HircItem
     public RangedParameterInt Delay { get; set; } = new();
     
     [FieldOrder(3)]
+    [SerializeWhenVersion(56, ComparisonOperator.LessThanOrEqual)]
+    public uint SubSectionSize { get; set; }
+    
+    [FieldOrder(4)]
     [SerializeWhenVersion(65, ComparisonOperator.GreaterThan)]
     [SerializeAs(SerializedType.UInt1)]
     public bool IsBus { get; set; }
 
-    [FieldOrder(4)]
+    [FieldOrder(5)]
     [SerializeWhenVersion(56, ComparisonOperator.GreaterThan)]
     public InitialParamsV62 PropBundle { get; set; } = new();
 
-    [FieldOrder(5)]
+    [FieldOrder(6)]
+    [FieldLength(nameof(SubSectionSize), BindingMode = BindingMode.OneWayToSource)]
     [SubtypeFactory($"{nameof(Type)}.{nameof(Type.Value)}", typeof(ActionParamsFactory),
         BindingMode = BindingMode.OneWay)]
     public required IActionParams ActionParams { get; set; }
+    
+    [FieldOrder(7)]
+    [SerializeWhen(nameof(Type), true, 
+        ConverterType = typeof(HasBankIdConverter))]
+    public ActionBankData BankData { get; set; } = new();
 
     [Ignore]
     public override HircType HircType =>  HircType.Action;

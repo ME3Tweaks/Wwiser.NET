@@ -16,10 +16,10 @@ public class PlayTests
         {
             Assert.That(result.Type.Value, Is.EqualTo(ActionTypeValue.Play));
             Assert.That(result.IsBus, Is.EqualTo(false));
-            Assert.That(result.ActionParams, Is.InstanceOf<Play>());
+            Assert.That(result.ActionParams, Is.InstanceOf<Active>());
 
-            var play = result.ActionParams as Play;
-            Assert.That(play!.Params.CurveInterpolation, Is.EqualTo(CurveInterpolation.Linear));
+            var play = result.ActionParams as Active;
+            Assert.That(play!.CurveInterpolation, Is.EqualTo(CurveInterpolation.Linear));
         });
     }
     

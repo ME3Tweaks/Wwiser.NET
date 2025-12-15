@@ -15,8 +15,6 @@ public class ActionParamsFactory : ISubtypeFactory
     {
         type = (ActionTypeValue)key switch
         {
-            ActionTypeValue.Play => typeof(Play),
-            ActionTypeValue.PlayAndContinue => typeof(Play),
             ActionTypeValue.SetState => typeof(SetState),
             ActionTypeValue.SetSwitch => typeof(SetSwitch),
             ActionTypeValue.SetRTPC => typeof(SetRTPC),
@@ -32,7 +30,6 @@ public class ActionParamsFactory : ISubtypeFactory
             ActionTypeValue.Seek => typeof(Seek),
             ActionTypeValue.Release => typeof(Empty),
             ActionTypeValue.PlayEvent => typeof(Empty),
-            ActionTypeValue.PlayEventUnknown => typeof(Play),
             ActionTypeValue.UseState1 => typeof(UseState),
             ActionTypeValue.UseState2 => typeof(UseState),
             >= ActionTypeValue.Event1 and <= ActionTypeValue.Event3 => typeof(Empty),

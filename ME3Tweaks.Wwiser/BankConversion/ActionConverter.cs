@@ -23,14 +23,9 @@ public class ActionConverter(BankSerializationContext from, BankSerializationCon
     {
         AddRangedParameter(item.Delay, PropId.DelayTime);
 
-        if (item.ActionParams is Play play)
-        {
-            AddRangedParameter(play.Params.TransitionTime, PropId.TransitionTime);
-        }
-
         if (item.ActionParams is Active active)
         {
-            AddRangedParameter(active.Params.TransitionTime, PropId.TransitionTime);
+            AddRangedParameter(active.TransitionTime, PropId.TransitionTime);
         }
         
         return;

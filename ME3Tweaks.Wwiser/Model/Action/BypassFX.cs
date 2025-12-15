@@ -6,14 +6,10 @@ namespace ME3Tweaks.Wwiser.Model.Action;
 public class BypassFX : IActionParams
 {
     [FieldOrder(1)]
-    [SerializeWhenVersion(56, ComparisonOperator.LessThanOrEqual)]
-    public uint SubSectionSize { get; set; }
-    
-    [FieldOrder(2)]
     [SerializeAs(SerializedType.UInt1)]
     public bool IsBypass{ get; set; }
     
-    [FieldOrder(3)]
+    [FieldOrder(2)]
     [SerializeWhenVersionBetween(27, 145)]
     public byte TargetMask { get; set; }
     
