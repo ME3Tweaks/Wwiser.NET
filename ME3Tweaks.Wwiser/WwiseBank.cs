@@ -11,6 +11,8 @@ public class WwiseBank
     
     public HierarchyChunk? HIRC { get; set; }
     
+    public FxParamChunk? FXPR { get; set; }
+    
     public StringMappingChunk? STID { get; set; }
     
     public GlobalSettingsChunk? STMG { get; set; }

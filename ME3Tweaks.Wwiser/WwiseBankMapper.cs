@@ -18,7 +18,7 @@ internal class WwiseBankMapper
         
         var chunks = new List<Chunk?> 
             {
-                bank.BKHD, bank.INIT, bank.STMG, didx, data, bank.HIRC, bank.STID, envs, bank.PLAT
+                bank.BKHD, bank.INIT, bank.STMG, didx, data, bank.HIRC, bank.FXPR, bank.STID, envs, bank.PLAT
             }.Where(x => x is not null)
             .Select(x => x!)
             .Where(x => x.IsAllowedInVersion(bank.BKHD.BankGeneratorVersion))
@@ -51,6 +51,9 @@ internal class WwiseBankMapper
                     break;
                 case "HIRC":
                     bank.HIRC = chunk.Chunk as HierarchyChunk;
+                    break;
+                case "FXPR":
+                    bank.FXPR = chunk.Chunk as FxParamChunk;
                     break;
                 case "STID":
                     bank.STID = chunk.Chunk as StringMappingChunk;

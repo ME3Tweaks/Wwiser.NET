@@ -16,7 +16,7 @@ namespace ME3Tweaks.Wwiser.Model
         [Subtype(nameof(Tag), "BKHD", typeof(BankHeaderChunk))] // > 26
         [Subtype(nameof(Tag), "HIRC", typeof(HierarchyChunk))]
         [Subtype(nameof(Tag), "DATA", typeof(DataChunk))]
-        //[Subtype(nameof(Tag), "FXPR", typeof(FakeChunk))]
+        [Subtype(nameof(Tag), "FXPR", typeof(FxParamChunk))] // 026 >= 048 <=
         [Subtype(nameof(Tag), "ENVS", typeof(EnvironmentSettingsChunk))]
         [Subtype(nameof(Tag), "STID", typeof(StringMappingChunk))] // > v26
         [Subtype(nameof(Tag), "STMG", typeof(GlobalSettingsChunk))] // >= v14

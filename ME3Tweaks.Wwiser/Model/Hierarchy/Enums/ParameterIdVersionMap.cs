@@ -126,7 +126,12 @@ internal static class ParameterIdVersionMap
             { 0x24, RtpcParameterId.MakeUpGain },
             { 0x25, RtpcParameterId.Position_PAN_X_3D },
             { 0x26, RtpcParameterId.Position_PAN_Y_3D },
-            //{0x40, RtpcParameterId.MaxNumRTPC}
+            //{0x40, RtpcParameterId.MaxNumRTPC},
+            { 0x3C, RtpcParameterId.UnknownCustom1 },
+            { 0x3D, RtpcParameterId.UnknownCustom2 },
+            { 0x3E, RtpcParameterId.UnknownCustom3 },
+            { 0x40, RtpcParameterId.UnknownCustom4 },
+            { 0x41, RtpcParameterId.UnknownCustom5 }
         });
     
         internal static Lazy<BiDirectionalMap<byte, RtpcParameterId>> V72 => new(() =>
@@ -164,7 +169,12 @@ internal static class ParameterIdVersionMap
             { 0x1D, RtpcParameterId.FeedbackVolume },
             { 0x1E, RtpcParameterId.FeedbackLowpass },
             { 0x1F, RtpcParameterId.FeedbackPitch },
-            //{0x20, RtpcParameterId.MaxNumRTPC}
+            //{0x20, RtpcParameterId.MaxNumRTPC},
+            { 0x3C, RtpcParameterId.UnknownCustom1 },
+            { 0x3D, RtpcParameterId.UnknownCustom2 },
+            { 0x3E, RtpcParameterId.UnknownCustom3 },
+            { 0x40, RtpcParameterId.UnknownCustom4 },
+            { 0x41, RtpcParameterId.UnknownCustom5 }
         });
         
         internal static Lazy<BiDirectionalMap<byte, RtpcParameterId>> V65 => new(() =>
@@ -184,7 +194,7 @@ internal static class ParameterIdVersionMap
                 { 0xB, RtpcParameterId.Positioning_Divergence_Center_PCT },
                 { 0xC, RtpcParameterId.Positioning_Cone_Attenuation_ON_OFF },
                 { 0xD, RtpcParameterId.Positioning_Cone_Attenuation },
-                {0xE, RtpcParameterId.Positioning_Cone_LPF },
+                { 0xE, RtpcParameterId.Positioning_Cone_LPF },
                 { 0xF, RtpcParameterId.UnknownCustom4 }, // Different for each game / wwise version?
                 { 0x14, RtpcParameterId.Position_PAN_X_2D }, //Position_PAN_RL
                 { 0x15, RtpcParameterId.Position_PAN_Y_2D }, // Position_PAN_FR
@@ -198,6 +208,8 @@ internal static class ParameterIdVersionMap
                 { 0x1D, RtpcParameterId.FeedbackVolume },
                 { 0x1E, RtpcParameterId.FeedbackLowpass },
                 { 0x1F, RtpcParameterId.FeedbackPitch },
-                //{0x20, RtpcParameterId.MaxNumRTPC}
+                //{0x20, RtpcParameterId.MaxNumRTPC},
+                { 0x3D, RtpcParameterId.UnknownCustom5 },
+                { 0x3E, RtpcParameterId.UnknownCustom6 }
             });
 }

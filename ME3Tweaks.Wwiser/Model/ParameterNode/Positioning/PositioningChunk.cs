@@ -84,6 +84,9 @@ public class PositioningChunk : IBinarySerializable
     [Ignore] 
     public Automation AutomationData { get; set; } = new();
 
+    [Ignore] 
+    public bool UnkDynamicFlag { get; set; }
+
     public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext context)
     {
         var bankContext = context.FindAncestor<BankSerializationContext>();
@@ -146,7 +149,7 @@ public class PositioningChunk : IBinarySerializable
         if (version <= 129) stream.Write(BitConverter.GetBytes(AttenuationId));
         if (version <= 89) stream.WriteBoolByte(IsSpatialized);
 
-        if (HasDynamic) stream.WriteBoolByte(HasDynamic);
+        if (HasDynamic) stream.WriteBoolByte(UnkDynamicFlag);
     }
 
     private void WriteInitialFlags(Stream stream, uint version)
@@ -226,7 +229,7 @@ public class PositioningChunk : IBinarySerializable
         if (version <= 89) IsSpatialized = reader.ReadBoolean();
 
 
-        if (HasDynamic) stream.ReadBoolByte();
+        if (HasDynamic) UnkDynamicFlag = stream.ReadBoolByte();
     }
 
     private void ReadInitialFlags(BinaryReader reader, uint version)
