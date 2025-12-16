@@ -94,7 +94,7 @@ public class MediaInformation : IBinarySerializable
             // On <= 122, HasSource is bit 1. To serialize, set it to Prefetch which is bit 1 on the enum
             if (flags.HasFlag(MediaInformationFlags.HasSource))
             {
-                flags &= MediaInformationFlags.Prefetch;
+                flags |= MediaInformationFlags.Prefetch;
                 flags &= ~MediaInformationFlags.HasSource;
             }
             // Remove flags not relevant to this version
@@ -140,7 +140,7 @@ public class MediaInformation : IBinarySerializable
             if(version <= 112 && flags.HasFlag(MediaInformationFlags.Prefetch))
             {
                 // On <= 122, HasSource is bit 1. To deserialize, replace prefetch with HasSource
-                flags &= MediaInformationFlags.HasSource;
+                flags |= MediaInformationFlags.HasSource;
                 flags &= ~MediaInformationFlags.Prefetch;
             }
             Flags = flags;

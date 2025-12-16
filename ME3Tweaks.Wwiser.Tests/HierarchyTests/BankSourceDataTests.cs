@@ -8,6 +8,7 @@ public class BankSourceDataTests
     [TestCase("BSDV56.bin", 56)]
     [TestCase("BSDV56_2.bin", 56)]
     [TestCase("BSDV56_3.bin", 56)]
+    [TestCase("BSDV56_4.bin", 56)]
     [TestCase("BSDV44.bin", 44)]
     public void BankSourceData_Reserializes(string filename, int version)
     {
