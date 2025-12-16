@@ -19,7 +19,7 @@ public class StateCount : IBinarySerializable
         {
             VarCount.WriteResizingUint(stream, Value);
         }
-        else if (context.Version is > 36 and <= 52)
+        else if (context.Version > 36)
         {
             stream.Write(BitConverter.GetBytes((ushort)Value));
         }
@@ -36,7 +36,7 @@ public class StateCount : IBinarySerializable
         {
             Value = VarCount.ReadResizingUint(stream);
         }
-        else if (context.Version is > 36 and <= 52)
+        else if (context.Version > 36)
         {
             Span<byte> span = stackalloc byte[2];
             var read = stream.Read(span);

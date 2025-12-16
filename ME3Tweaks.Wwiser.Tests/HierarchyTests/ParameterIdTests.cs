@@ -67,7 +67,7 @@ public class ParameterIdTest
     [TestCase(0x2E,  RtpcParameterId.Positioning_EnableAttenuation)]
     [TestCase(0x2F,  RtpcParameterId.UserAuxSendLPF0)]
     [TestCase(0x38,  RtpcParameterId.GameAuxSendHPF)]
-    [TestCase(0x3E,  RtpcParameterId.UnknownCustom3)]
+    [TestCase(0x3E,  RtpcParameterId.UnknownCustom1)]
     public void ParameterID_ParsesAndReserializes_V128(int hex, RtpcParameterId expected)
     {
         byte[] bytes = [(byte)hex];
@@ -103,18 +103,16 @@ public class ParameterIdTest
     [TestCase(0x42)]
     public void ParameterID_ThrowsErrorOnBadByte_V128(byte hex)
     {
-        Assert.Throws<InvalidOperationException>(() =>
-        {
-            byte[] bytes = [hex];
-            TestHelpers.Deserialize<ParameterId>(bytes, 128);
-        });
+        byte[] bytes = [hex];
+        var (_, result) = TestHelpers.Deserialize<ParameterId>(bytes, 128);
+        Assert.That(result.ParamId, Is.EqualTo(RtpcParameterId.UnknownCustom1));
     }
 
     [TestCase(0x0,  RtpcParameterId.Volume)]
     [TestCase(0x10,  RtpcParameterId.MaxNumInstances)]
     [TestCase(0x1D,  RtpcParameterId.BypassFX0)]
     [TestCase(0x3B,  RtpcParameterId.BypassAllMetadata)]
-    [TestCase(0x3F,  RtpcParameterId.UnknownCustom3)]
+    [TestCase(0x3F,  RtpcParameterId.UnknownCustom1)]
     public void ParameterID_ParsesAndReserializes_V135(int hex, RtpcParameterId expected)
     {
         byte[] bytes = [(byte)hex];

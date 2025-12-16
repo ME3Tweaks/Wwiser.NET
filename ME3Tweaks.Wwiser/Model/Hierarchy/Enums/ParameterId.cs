@@ -7,6 +7,23 @@ public class ParameterId : IBinarySerializable
 {
     private RtpcParameterId? _paramId;
     private ModulatorRtpcParameterId? _modParamId;
+    private byte? _customValue;
+
+    [Ignore]
+    public byte? CustomValue
+    {
+        get => _customValue;
+        set
+        {
+            if (value is not null)
+            {
+                _paramId = RtpcParameterId.UnknownCustom1;
+                _modParamId = null;
+            }
+
+            _customValue = value;
+        }
+    }
 
     [Ignore]
     public RtpcParameterId? ParamId
@@ -14,7 +31,11 @@ public class ParameterId : IBinarySerializable
         get => _paramId;
         set
         {
-            if(value is not null) _modParamId = null;
+            if (value is not null && value != RtpcParameterId.UnknownCustom1)
+            {
+                _modParamId = null;
+                _customValue = null;
+            }
             _paramId = value;
         }
     }
@@ -25,7 +46,11 @@ public class ParameterId : IBinarySerializable
         get => _modParamId;
         set
         {
-            if(value is not null) _paramId = null;
+            if (value is not null)
+            {
+                _paramId = null;
+                _customValue = null;
+            }
             _modParamId = value;
         }
     }
@@ -45,14 +70,7 @@ public class ParameterId : IBinarySerializable
                 break;
             default:
             {
-                if (context.UseModulator)
-                {
-                    VarCount.WriteResizingUint(stream, (uint)ModParamId!);
-                }
-                else
-                {
-                    VarCount.WriteResizingUint(stream, value);
-                }
+                VarCount.WriteResizingUint(stream, value);
                 break;
             }
         }
@@ -62,7 +80,7 @@ public class ParameterId : IBinarySerializable
     {
         var context = serializationContext.FindAncestor<BankSerializationContext>();
         var res = DeserializeStatic(stream, context.Version, context.UseModulator);
-        (ParamId, ModParamId) = res;
+        (ParamId, ModParamId, CustomValue) = res;
     }
 
     public bool IsValidOnVersion(uint version)
@@ -88,7 +106,7 @@ public class ParameterId : IBinarySerializable
     /// <returns>Rtpc or Modulator parameter ID, one will always be null</returns>
     /// <exception cref="Exception">Unable to read data length</exception>
     /// <exception cref="ArgumentException">No parameter ID mapping is known for given Wwise version</exception>
-    public static (RtpcParameterId?, ModulatorRtpcParameterId?) DeserializeStatic(Stream stream, uint version, bool useModulator, bool isState = false)
+    public static (RtpcParameterId?, ModulatorRtpcParameterId?, byte?) DeserializeStatic(Stream stream, uint version, bool useModulator, bool isState = false)
     {
         byte value;
         switch (version)
@@ -115,24 +133,47 @@ public class ParameterId : IBinarySerializable
                 value = (byte)VarCount.ReadResizingUint(stream);
                 break;
         }
-
-        return version switch
+        
+        if (version >= 118 && useModulator)
         {
-            <= 65 => (ParameterIdVersionMap.V65.Value.Forward[value], null),
-            72 => (ParameterIdVersionMap.V72.Value.Forward[value], null),
-            88 => (ParameterIdVersionMap.V88.Value.Forward[value], null),
-            >= 112 and <= 113 => ConvertV112ToEnum(value),
-            >= 118 when useModulator => (null, (ModulatorRtpcParameterId)value)!,
-            >= 118 and < 120 => (ConvertV118ToEnum(value), null),
-            >= 120 and < 128 => (ConvertV120ToEnum(value), null),
-            >= 128 and <= 134 => (ConvertV128ToEnum(value), null),
-            >= 135 when value <= 0x3F => ((RtpcParameterId)value, null),
-            _ => throw new ArgumentException($"No known parameter id mapping for version {version}", nameof(version))
+            return (null, (ModulatorRtpcParameterId)value, null);
+        }
+        
+        if (version is >= 112 and <= 113 && value is >= 0x2A and <= 0x37)
+        {
+            return (null, (ModulatorRtpcParameterId)(value - 0x2A), null);
+        }
+
+        var tryGetValueByVersion = ParameterIdVersionMap.V65.Value.Forward.TryGetValue;
+        tryGetValueByVersion = version switch
+        {
+            <= 65 => ParameterIdVersionMap.V65.Value.Forward.TryGetValue,
+            72 => ParameterIdVersionMap.V72.Value.Forward.TryGetValue,
+            88 => ParameterIdVersionMap.V88.Value.Forward.TryGetValue,
+            >= 112 and <= 113 => ParameterIdVersionMap.V112.Value.Forward.TryGetValue,
+            >= 118 and < 120 => ConvertV118ToEnum,
+            >= 120 and < 128 => ConvertV120ToEnum,
+            >= 128 and <= 134 => ConvertV128ToEnum,
+            _ => ConvertToEnumDefault,
         };
+        
+        if (tryGetValueByVersion(value, out var paramId))
+        {
+            return (paramId, null, null);
+        }
+        else
+        {
+            return (RtpcParameterId.UnknownCustom1, null, value);
+        }
     }
 
     protected byte GetSerializableValue(uint version, bool useModulator)
     {
+        if(ParamId == RtpcParameterId.UnknownCustom1 && CustomValue.HasValue)
+        {
+            return CustomValue.Value;
+        }
+        
         var paramId = ParamId ?? 0;
         return version switch
         {
@@ -144,22 +185,9 @@ public class ParameterId : IBinarySerializable
             >= 118 and < 120 => ConvertV118ToByte(paramId),
             >= 120 and < 128 => ConvertV120ToByte(paramId),
             >= 128 and <= 134 => ConvertV128ToByte(paramId),
-            >= 135 when paramId <= RtpcParameterId.UnknownCustom3 => (byte)paramId,
+            >= 135 when paramId <= (RtpcParameterId)0x3F => (byte)paramId,
             _ => throw new ArgumentException($"No known parameter id mapping for version {version}", nameof(version))
         };
-    }
-
-    private static (RtpcParameterId?, ModulatorRtpcParameterId?) ConvertV112ToEnum(byte id)
-    {
-        if (ParameterIdVersionMap.V112.Value.Forward.TryGetValue(id, out var value))
-        {
-            return (value, null);
-        }
-        if (id is >= 0x2A and <= 0x37)
-        {
-            return (null, (ModulatorRtpcParameterId)(id - 0x2A));
-        }
-        throw new ArgumentException($"ID is out of range for v112", nameof(id));
     }
     
     private static byte ConvertV112ToByte(RtpcParameterId? rtpc, ModulatorRtpcParameterId? mod)
@@ -175,15 +203,27 @@ public class ParameterId : IBinarySerializable
         throw new ArgumentException($"Parameter id is not valid for v112 - v113");
     }
 
-    private static RtpcParameterId ConvertV118ToEnum(byte id)
+    private static bool ConvertV118ToEnum(byte id, out RtpcParameterId paramId)
     {
-        if(id > 0x2D) throw new ArgumentException("ID is out of range for v118", nameof(id));
+        if (id > 0x2D)
+        {
+            paramId = RtpcParameterId.UnknownCustom1;
+            return false;
+        }
 
         if (ParameterIdVersionMap.V118.Value.Forward.TryGetValue(id, out var value))
         {
-            return value;
+            paramId = value;
+            return true;
         }
-        return (RtpcParameterId)id;
+
+        if (Enum.IsDefined(typeof(RtpcParameterId), id))
+        {
+            paramId = (RtpcParameterId)id;
+            return true;
+        }
+        paramId = RtpcParameterId.UnknownCustom1;
+        return false;
     }
     
     private static byte ConvertV118ToByte(RtpcParameterId id)
@@ -200,10 +240,15 @@ public class ParameterId : IBinarySerializable
         return (byte)id;
     }
     
-    private static RtpcParameterId ConvertV120ToEnum(byte id)
+    private static bool ConvertV120ToEnum(byte id, out RtpcParameterId paramId)
     {
-        if(id > 0x2E) throw new ArgumentException("ID is out of range for v120 - v127", nameof(id));
-        return (RtpcParameterId)id;
+        if (id > 0x2E || !Enum.IsDefined(typeof(RtpcParameterId), id))
+        {
+            paramId = RtpcParameterId.UnknownCustom1;
+            return false;
+        }
+        paramId = (RtpcParameterId)id;
+        return true;
     }
     
     private static byte ConvertV120ToByte(RtpcParameterId id)
@@ -215,21 +260,35 @@ public class ParameterId : IBinarySerializable
         return (byte)id;
     }
 
-    private static RtpcParameterId ConvertV128ToEnum(byte id)
+    private static bool ConvertV128ToEnum(byte id, out RtpcParameterId paramId)
     {
-        switch (id)
-        {
-            case > 0x41:
-                throw new ArgumentException("ID is out of range for v128 - v134", nameof(id));
-            case > 0x38 and < 0x3C:
-                throw new ArgumentException("Unknown custom ID for v128 - v134", nameof(id));
-        }
-
         if (ParameterIdVersionMap.V128.Value.Forward.TryGetValue(id, out var value))
         {
-            return value;
+            paramId = value;
+            return true;
         }
-        return (RtpcParameterId)id;
+
+        if (Enum.IsDefined(typeof(RtpcParameterId), id) && id <= 0x38)
+        {
+            paramId = (RtpcParameterId)id;
+            return true;
+        }
+
+        paramId = RtpcParameterId.UnknownCustom1;
+        return false;
+    }
+    
+    
+    private static bool ConvertToEnumDefault(byte id, out RtpcParameterId paramId)
+    {
+        if (Enum.IsDefined(typeof(RtpcParameterId), id))
+        {
+            paramId = (RtpcParameterId)id;
+            return true;
+        }
+
+        paramId = RtpcParameterId.UnknownCustom1;
+        return false;
     }
     
     private static byte ConvertV128ToByte(RtpcParameterId id)
@@ -312,17 +371,14 @@ public class ParameterId : IBinarySerializable
         Position_PAN_Z_2D,
         BypassAllMetadata,
         MaxNumRTPC = 0x3C,
-        // These are custom for different games - not relevant for Mass Effect. Probably should never be converting versions that use these.
-        UnknownCustom1 = 0x3D,
-        UnknownCustom2 = 0x3E,
-        UnknownCustom3 = 0x3F,
-        UnknownCustom4 = 0x40,
-        UnknownCustom5 = 0x41,
-        UnknownCustom6 = 0x42,
         
+        // These are custom for different games - not relevant for Mass Effect. Probably should never be converting versions that use these.
         Positioning_Radius_LPF = 0x50, // v72
         Positioning_Radius_SIM_ON_OFF = 0x51, // v56<=
         Positioning_Radius_SIM_Attenuation = 0x52, // v56<=
+        
+        
+        UnknownCustom1 = 0x99,
     }
 
     public enum ModulatorRtpcParameterId : byte
@@ -372,6 +428,6 @@ public class StateParameterId : ParameterId
     {
         var context = serializationContext.FindAncestor<BankSerializationContext>();
         var res = DeserializeStatic(stream, context.Version, false, true);
-        (ParamId, ModParamId) = res;
+        (ParamId, ModParamId, _) = res;
     }
 }

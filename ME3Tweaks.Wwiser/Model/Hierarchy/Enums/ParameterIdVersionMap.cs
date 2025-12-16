@@ -20,11 +20,6 @@ internal static class ParameterIdVersionMap
             { 0x36, RtpcParameterId.UserAuxSendHPF3 },
             { 0x37, RtpcParameterId.GameAuxSendLPF },
             { 0x38, RtpcParameterId.GameAuxSendHPF },
-            { 0x3C, RtpcParameterId.UnknownCustom1 },
-            { 0x3D, RtpcParameterId.UnknownCustom2 },
-            { 0x3E, RtpcParameterId.UnknownCustom3 },
-            { 0x40, RtpcParameterId.UnknownCustom4 },
-            { 0x41, RtpcParameterId.UnknownCustom5 }
         });
     
     internal static Lazy<BiDirectionalMap<byte, RtpcParameterId>> V118 => new(() =>
@@ -127,11 +122,6 @@ internal static class ParameterIdVersionMap
             { 0x25, RtpcParameterId.Position_PAN_X_3D },
             { 0x26, RtpcParameterId.Position_PAN_Y_3D },
             //{0x40, RtpcParameterId.MaxNumRTPC},
-            { 0x3C, RtpcParameterId.UnknownCustom1 },
-            { 0x3D, RtpcParameterId.UnknownCustom2 },
-            { 0x3E, RtpcParameterId.UnknownCustom3 },
-            { 0x40, RtpcParameterId.UnknownCustom4 },
-            { 0x41, RtpcParameterId.UnknownCustom5 }
         });
     
         internal static Lazy<BiDirectionalMap<byte, RtpcParameterId>> V72 => new(() =>
@@ -170,11 +160,6 @@ internal static class ParameterIdVersionMap
             { 0x1E, RtpcParameterId.FeedbackLowpass },
             { 0x1F, RtpcParameterId.FeedbackPitch },
             //{0x20, RtpcParameterId.MaxNumRTPC},
-            { 0x3C, RtpcParameterId.UnknownCustom1 },
-            { 0x3D, RtpcParameterId.UnknownCustom2 },
-            { 0x3E, RtpcParameterId.UnknownCustom3 },
-            { 0x40, RtpcParameterId.UnknownCustom4 },
-            { 0x41, RtpcParameterId.UnknownCustom5 }
         });
         
         internal static Lazy<BiDirectionalMap<byte, RtpcParameterId>> V65 => new(() =>
@@ -185,9 +170,6 @@ internal static class ParameterIdVersionMap
                 { 0x2, RtpcParameterId.Pitch },
                 { 0x3, RtpcParameterId.LPF },
                 { 0x4, RtpcParameterId.PlayMechanismSpecialTransitionsValue },
-                { 0x5, RtpcParameterId.UnknownCustom1}, // Different for each game / wwise version?
-                { 0x6, RtpcParameterId.UnknownCustom2}, // Different for each game / wwise version?
-                { 0x7, RtpcParameterId.UnknownCustom3}, // Different for each game / wwise version?
                 { 0x8, RtpcParameterId.Priority },
                 { 0x9, RtpcParameterId.MaxNumInstances },
                 { 0xA, RtpcParameterId.Positioning_Radius_LPF },
@@ -195,7 +177,6 @@ internal static class ParameterIdVersionMap
                 { 0xC, RtpcParameterId.Positioning_Cone_Attenuation_ON_OFF },
                 { 0xD, RtpcParameterId.Positioning_Cone_Attenuation },
                 { 0xE, RtpcParameterId.Positioning_Cone_LPF },
-                { 0xF, RtpcParameterId.UnknownCustom4 }, // Different for each game / wwise version?
                 { 0x14, RtpcParameterId.Position_PAN_X_2D }, //Position_PAN_RL
                 { 0x15, RtpcParameterId.Position_PAN_Y_2D }, // Position_PAN_FR
                 { 0x16, RtpcParameterId.Positioning_Radius_SIM_ON_OFF },
@@ -209,7 +190,5 @@ internal static class ParameterIdVersionMap
                 { 0x1E, RtpcParameterId.FeedbackLowpass },
                 { 0x1F, RtpcParameterId.FeedbackPitch },
                 //{0x20, RtpcParameterId.MaxNumRTPC},
-                { 0x3D, RtpcParameterId.UnknownCustom5 },
-                { 0x3E, RtpcParameterId.UnknownCustom6 }
             });
 }

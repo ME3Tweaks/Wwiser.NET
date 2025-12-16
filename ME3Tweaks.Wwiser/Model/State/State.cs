@@ -30,7 +30,7 @@ public class State : AkIdentifiable
     [SerializeWhenVersion(145, ComparisonOperator.GreaterThan)]
     public List<ushort> PropertyIds { get; set; } = new();
     
-    [FieldOrder(4)]
+    [FieldOrder(5)]
     [FieldCount(nameof(PropCount), BindingMode = BindingMode.OneWay)]
     [SerializeWhenVersion(145, ComparisonOperator.GreaterThan)]
     public List<float> PropertyValues { get; set; } = new();
