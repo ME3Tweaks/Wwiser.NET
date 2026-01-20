@@ -13,8 +13,7 @@ public class Rtpc
     
     [FieldOrder(1)]
     [SerializeWhenVersion(48, ComparisonOperator.LessThanOrEqual)]
-    [SerializeAs(SerializedType.UInt1)]
-    public bool IsRendered { get; set; }
+    public byte IsRendered { get; set; } // TODO: This is usually a bool-byte, except it's 2 in ME2 sometimes. Enum?
     
     [FieldOrder(3)]
     public uint RtpcId { get; set; }

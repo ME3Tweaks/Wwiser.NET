@@ -1,15 +1,10 @@
 ﻿using BinarySerialization;
-using ME3Tweaks.Wwiser.Formats;
 using ME3Tweaks.Wwiser.SerializationHelpers;
 
 namespace ME3Tweaks.Wwiser.Model.State;
 
 public class State : AkIdentifiable
 {
-    [FieldOrder(0)]
-    [SerializeWhenVersion(120, ComparisonOperator.LessThanOrEqual)]
-    public uint StateId { get; set; }
-    
     [FieldOrder(1)]
     [SerializeWhenVersion(52, ComparisonOperator.LessThanOrEqual)]
     [SerializeAs(SerializedType.UInt1)]

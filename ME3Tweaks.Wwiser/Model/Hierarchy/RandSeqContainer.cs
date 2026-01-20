@@ -131,11 +131,10 @@ public class RanSeqFlags : IBinarySerializable
 
 public class Playlist
 {
-    [FieldOrder(0)]
-    public ushort PlaylistLength { get; set; }
+    [FieldOrder(0)] public V38ShortCount PlaylistLength { get; set; } = new();
 
     [FieldOrder(1)]
-    [FieldCount(nameof(PlaylistLength))]
+    [FieldCount($"{nameof(PlaylistLength)}.{nameof(PlaylistLength.Value)}")]
     public List<PlaylistItem> Items { get; set; } = new();
 }
 
